@@ -1,14 +1,20 @@
 <?php
-require 'db.php';
-echo"สกาเลจหยองสุดโหด";
+$host = 'stock_db';
+$db   = 'stock_system';
+$user = 'user';
+$pass = 'password';
+$charset = 'utf8mb4';
+
+$dsn = "mysql:host=$host;dbname=$db;charset=$charset";
+$options = [
+    PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+    PDO::ATTR_EMULATE_PREPARES   => false,
+];
+
 try {
-    if ($pdo) {
-        echo "<h1>Connected to Database successfully!</h1>";
-        echo "<p>Database: stock_system</p>";
-        echo "<p>User: user</p>";
-    }
-} catch (Exception $e) {
-    echo "<h1>Connection Failed</h1>";
-    echo "<p>" . $e->getMessage() . "</p>";
+    $pdo = new PDO($dsn, $user, $pass, $options);
+} catch (\PDOException $e) {
+    throw new \PDOException($e->getMessage(), (int)$e->getCode());
 }
 ?>
