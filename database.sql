@@ -6,11 +6,65 @@ CREATE TABLE IF NOT EXISTS users (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Insert sample users if they don't exist
--- We will handle duplicate checks via valid SQL or just let the unique constraint fail gracefully in the setup script logic, 
--- but for raw SQL, we can use INSERT IGNORE.
--- Passwords are: admin123, user123 (hashed using bcrypt)
+CREATE TABLE IF NOT EXISTS categories (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(50) NOT NULL UNIQUE
+);
 
+CREATE TABLE IF NOT EXISTS products (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    category_id INT NOT NULL,
+    price DECIMAL(10, 2) NOT NULL,
+    stock INT NOT NULL DEFAULT 0,
+    image_url VARCHAR(255),
+    specifications JSON,
+    FOREIGN KEY (category_id) REFERENCES categories(id)
+);
+
+-- Insert sample users
 INSERT IGNORE INTO users (username, password, role) VALUES 
-('admin', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'admin'),
-('user', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'user');
+('admin', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'admin'), -- password: admin123
+('user', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'user');   -- password: admin123 (reused hash for user123 simplicity in setup if needed, but original comments said user123)
+
+-- Insert Categories
+INSERT IGNORE INTO categories (name) VALUES 
+('cpu'), ('mainboard'), ('ram'), ('gpu'), ('psu'), ('case'), ('monitor'), ('ssd');
+
+-- Insert Sample Products
+
+-- CPUs
+INSERT INTO products (name, category_id, price, stock, image_url, specifications) VALUES
+('Intel Core i5-13600K', 1, 11900.00, 10, 'https://example.com/i5-13600k.jpg', '{"socket": "LGA1700", "tdp": 125, "cores": 14, "threads": 20, "base_clock": "3.5GHz", "boost_clock": "5.1GHz"}'),
+('Intel Core i9-14900K', 1, 24900.00, 5, 'https://example.com/i9-14900k.jpg', '{"socket": "LGA1700", "tdp": 125, "cores": 24, "threads": 32, "base_clock": "3.2GHz", "boost_clock": "6.0GHz"}'),
+('AMD Ryzen 7 7800X3D', 1, 14900.00, 8, 'https://example.com/7800x3d.jpg', '{"socket": "AM5", "tdp": 120, "cores": 8, "threads": 16, "base_clock": "4.2GHz", "boost_clock": "5.0GHz"}');
+
+-- Mainboards
+INSERT INTO products (name, category_id, price, stock, image_url, specifications) VALUES
+('MSI MAG Z790 TOMAHAWK WIFI', 2, 9500.00, 10, 'https://example.com/z790.jpg', '{"socket": "LGA1700", "chipset": "Z790", "form_factor": "ATX", "memory_type": "DDR5", "max_memory": 192, "memory_slots": 4}'),
+('ASUS ROG STRIX B760-A GAMING WIFI', 2, 7900.00, 12, 'https://example.com/b760.jpg', '{"socket": "LGA1700", "chipset": "B760", "form_factor": "ATX", "memory_type": "DDR4", "max_memory": 128, "memory_slots": 4}'),
+('GIGABYTE B650 AORUS ELITE AX', 2, 7200.00, 15, 'https://example.com/b650.jpg', '{"socket": "AM5", "chipset": "B650", "form_factor": "ATX", "memory_type": "DDR5", "max_memory": 128, "memory_slots": 4}');
+
+-- RAM
+INSERT INTO products (name, category_id, price, stock, image_url, specifications) VALUES
+('Corsair Vengeance DDR5 32GB (2x16GB) 6000MHz', 3, 5200.00, 20, 'https://example.com/ddr5-32gb.jpg', '{"memory_type": "DDR5", "capacity": "32GB", "speed": "6000MHz", "modules": 2}'),
+('Kingston Fury Beast DDR4 16GB (2x8GB) 3200MHz', 3, 1900.00, 30, 'https://example.com/ddr4-16gb.jpg', '{"memory_type": "DDR4", "capacity": "16GB", "speed": "3200MHz", "modules": 2}');
+
+-- GPU
+INSERT INTO products (name, category_id, price, stock, image_url, specifications) VALUES
+('NVIDIA GeForce RTX 4070', 4, 23000.00, 10, 'https://example.com/rtx4070.jpg', '{"chipset": "NVIDIA", "vram": "12GB", "length_mm": 261, "tdp": 200, "recommended_psu": 600}'),
+('NVIDIA GeForce RTX 4090', 4, 65000.00, 3, 'https://example.com/rtx4090.jpg', '{"chipset": "NVIDIA", "vram": "24GB", "length_mm": 336, "tdp": 450, "recommended_psu": 850}');
+
+-- PSU
+INSERT INTO products (name, category_id, price, stock, image_url, specifications) VALUES
+('Corsair RM850e 850W Gold', 5, 4200.00, 15, 'https://example.com/rm850e.jpg', '{"wattage": 850, "efficiency": "80+ Gold", "modular": "Full"}'),
+('Thermaltake TR2 S 650W', 5, 1590.00, 20, 'https://example.com/tr2s-650w.jpg', '{"wattage": 650, "efficiency": "80+ White", "modular": "No"}');
+
+-- Case
+INSERT INTO products (name, category_id, price, stock, image_url, specifications) VALUES
+('NZXT H5 Flow', 6, 3200.00, 8, 'https://example.com/h5-flow.jpg', '{"form_factor": ["ATX", "mATX", "ITX"], "max_gpu_length": 365, "max_cpu_height": 165}'),
+('Lian Li O11 Dynamic', 6, 5500.00, 5, 'https://example.com/o11.jpg', '{"form_factor": ["E-ATX", "ATX", "mATX", "ITX"], "max_gpu_length": 420, "max_cpu_height": 155}');
+
+-- SSD
+INSERT INTO products (name, category_id, price, stock, image_url, specifications) VALUES
+('Samsung 980 PRO 1TB', 8, 3500.00, 25, 'https://example.com/980pro.jpg', '{"interface": "M.2 NVMe", "capacity": "1TB", "read_speed": "7000MB/s"}');

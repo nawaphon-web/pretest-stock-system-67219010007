@@ -8,6 +8,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'user') {
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -19,12 +20,14 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'user') {
             max-width: 800px;
             width: 100%;
         }
+
         .header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 2rem;
         }
+
         .card {
             background: var(--card-bg);
             padding: 2rem;
@@ -32,6 +35,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'user') {
             border: 1px solid rgba(255, 255, 255, 0.1);
             text-align: left;
         }
+
         .btn-logout {
             background: var(--error-color);
             width: auto;
@@ -44,28 +48,32 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'user') {
         }
     </style>
 </head>
+
 <body>
     <div class="dashboard-container">
         <div class="header">
             <h1>User Dashboard</h1>
             <a href="logout.php" class="btn-logout">Logout</a>
         </div>
-        
+
         <div class="card">
             <h2>Hello, <?php echo htmlspecialchars($_SESSION['username']); ?>!</h2>
             <p style="color: var(--text-muted); margin-top: 0.5rem;">Welcome to the employee portal.</p>
-            
-            <div style="margin-top: 2rem; display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
+
+            <div
+                style="margin-top: 2rem; display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
                 <div style="background: rgba(255,255,255,0.05); padding: 1.5rem; border-radius: 0.5rem;">
                     <i class="fa-solid fa-cart-shopping" style="font-size: 2rem; color: var(--primary-color);"></i>
                     <h3 style="margin-top: 0.5rem;">New Sale</h3>
                 </div>
-                <div style="background: rgba(255,255,255,0.05); padding: 1.5rem; border-radius: 0.5rem;">
-                    <i class="fa-solid fa-list" style="font-size: 2rem; color: #10b981;"></i>
-                    <h3 style="margin-top: 0.5rem;">View Products</h3>
+                <div style="background: rgba(255,255,255,0.05); padding: 1.5rem; border-radius: 0.5rem; cursor: pointer;"
+                    onclick="window.location.href='builder.php'">
+                    <i class="fa-solid fa-computer" style="font-size: 2rem; color: #10b981;"></i>
+                    <h3 style="margin-top: 0.5rem;">PC Builder</h3>
                 </div>
             </div>
         </div>
     </div>
 </body>
+
 </html>

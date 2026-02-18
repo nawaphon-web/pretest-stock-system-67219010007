@@ -1,0 +1,201 @@
+<?php
+session_start();
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit;
+}
+?>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Intelligent PC Builder - TechStock</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <div class="builder-container">
+        <!-- Sidebar / Summary -->
+        <div class="build-summary">
+            <h2>Your Rig</h2>
+            <div id="build-list">
+                <!-- Selected parts will appear here -->
+                <div class="empty-state">No parts selected</div>
+            </div>
+
+            <div class="stats">
+                <div class="stat-item">
+                    <span>Est. Wattage</span>
+                    <strong id="total-tdp">0 W</strong>
+                </div>
+                <div class="stat-item">
+                    <span>Total Price</span>
+                    <strong id="total-price" style="color: var(--primary-color);">฿0.00</strong>
+                </div>
+            </div>
+
+            <button class="btn-checkout" onclick="alert('Proceeding to checkout...')">Checkout</button>
+            <a href="user_dashboard.php" class="btn-back">Back to Dashboard</a>
+        </div>
+
+        <!-- Main Selection Area -->
+        <div class="selection-area">
+            <div class="steps-nav">
+                <button class="step-btn active" data-category="cpu" onclick="loadCategory('cpu')">CPU</button>
+                <button class="step-btn" data-category="mainboard"
+                    onclick="loadCategory('mainboard')">Mainboard</button>
+                <button class="step-btn" data-category="ram" onclick="loadCategory('ram')">RAM</button>
+                <button class="step-btn" data-category="gpu" onclick="loadCategory('gpu')">GPU</button>
+                <button class="step-btn" data-category="ssd" onclick="loadCategory('ssd')">Storage</button>
+                <button class="step-btn" data-category="psu" onclick="loadCategory('psu')">Power Supply</button>
+                <button class="step-btn" data-category="case" onclick="loadCategory('case')">Case</button>
+            </div>
+
+            <div id="product-list" class="product-grid">
+                <!-- Products loaded via AJAX -->
+                <div class="loading">Loading parts...</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // State
+        const currentBuild = {};
+        let currentCategory = 'cpu';
+
+        // Load initial category
+        document.addEventListener('DOMContentLoaded', () => {
+            loadCategory('cpu');
+        });
+
+        async function loadCategory(category) {
+            currentCategory = category;
+
+            // Update UI tabs
+            document.querySelectorAll('.step-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.dataset.category === category) btn.classList.add('active');
+            });
+
+            const grid = document.getElementById('product-list');
+            grid.innerHTML = '<div class="loading">Fetching compatible parts...</div>';
+
+            try {
+                // Prepare query params
+                const params = new URLSearchParams();
+                params.append('category', category);
+                params.append('current_build', JSON.stringify(currentBuild));
+
+                const response = await fetch(`api/get_parts.php?${params.toString()}`);
+                const products = await response.json();
+
+                renderProducts(products);
+            } catch (err) {
+                grid.innerHTML = '<div class="error">Failed to load products.</div>';
+                console.error(err);
+            }
+        }
+
+        function renderProducts(products) {
+            const grid = document.getElementById('product-list');
+            grid.innerHTML = '';
+
+            if (products.length === 0) {
+                grid.innerHTML = '<div class="empty-state">No compatible parts found. Try changing your selection.</div>';
+                return;
+            }
+
+            products.forEach(p => {
+                const card = document.createElement('div');
+                card.className = `product-card ${p.is_compatible ? '' : 'incompatible'}`;
+
+                let specsHtml = '<ul class="specs-list">';
+                if (p.specs) {
+                    for (const [key, value] of Object.entries(p.specs)) {
+                        // Cleanup key name for display (e.g., base_clock -> Base Clock)
+                        const label = key.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+                        specsHtml += `<li><strong>${label}:</strong> ${value}</li>`;
+                    }
+                }
+                specsHtml += '</ul>';
+
+                const actionBtn = p.is_compatible
+                    ? `<button class="btn-select" onclick="selectPart('${currentCategory}', ${p.id}, '${p.name}', ${p.price}, ${p.specs?.tdp || 0})">Select</button>`
+                    : `<button class="btn-disabled" disabled>Incompatible</button>`;
+
+                const warning = p.is_compatible ? '' : `<div class="warning-msg"><i class="fa-solid fa-triangle-exclamation"></i> ${p.incompatibility_reason}</div>`;
+
+                card.innerHTML = `
+                    <div class="product-image">
+                        <i class="fa-solid fa-microchip placeholder-icon"></i>
+                        <!-- <img src="${p.image_url}" alt="${p.name}"> -->
+                    </div>
+                    <div class="product-info">
+                        <h3>${p.name}</h3>
+                        <div class="price">฿${parseFloat(p.price).toLocaleString()}</div>
+                        ${specsHtml}
+                        ${warning}
+                        ${actionBtn}
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function selectPart(category, id, name, price, tdp) {
+            currentBuild[category] = { id, name, price, tdp };
+            updateSummary();
+
+            // Auto-advance to next category logic could go here
+            // For now, let user click.
+            alert(`Selected ${name}`);
+        }
+
+        function updateSummary() {
+            const list = document.getElementById('build-list');
+            list.innerHTML = '';
+
+            let totalPrice = 0;
+            let totalTdp = 0;
+
+            if (Object.keys(currentBuild).length === 0) {
+                list.innerHTML = '<div class="empty-state">No parts selected</div>';
+            } else {
+                for (const [cat, part] of Object.entries(currentBuild)) {
+                    totalPrice += part.price;
+                    totalTdp += part.tdp;
+
+                    const item = document.createElement('div');
+                    item.className = 'summary-item';
+                    item.innerHTML = `
+                        <div class="info">
+                            <span class="cat-label">${cat.toUpperCase()}</span>
+                            <span class="part-name">${part.name}</span>
+                        </div>
+                        <div class="item-price">฿${part.price.toLocaleString()}</div>
+                        <button class="btn-remove" onclick="removePart('${cat}')"><i class="fa-solid fa-xmark"></i></button>
+                    `;
+                    list.appendChild(item);
+                }
+            }
+
+            // Base TDP overhead
+            totalTdp += 50;
+
+            document.getElementById('total-price').textContent = `฿${totalPrice.toLocaleString()}`;
+            document.getElementById('total-tdp').textContent = `${totalTdp} W`;
+        }
+
+        function removePart(category) {
+            delete currentBuild[category];
+            updateSummary();
+            // Reload current category to refresh compatibility if needed
+            loadCategory(currentCategory);
+        }
+    </script>
+</body>
+
+</html>
