@@ -37,7 +37,11 @@ if (!isset($_SESSION['user_id'])) {
                 </div>
             </div>
 
-            <button class="btn-checkout" onclick="alert('Proceeding to checkout...')">Checkout</button>
+            <form id="checkout-form" action="checkout.php" method="POST" style="display: none;">
+                <input type="hidden" name="build_data" id="form-build-data">
+                <input type="hidden" name="assembly" id="form-assembly">
+            </form>
+            <button class="btn-checkout" onclick="proceedToCheckout()">Checkout</button>
             <a href="user_dashboard.php" class="btn-back">Back to Dashboard</a>
         </div>
 
@@ -45,6 +49,7 @@ if (!isset($_SESSION['user_id'])) {
         <div class="selection-area">
             <div class="steps-nav">
                 <button class="step-btn active" data-category="cpu" onclick="loadCategory('cpu')">CPU</button>
+                <button class="step-btn" data-category="cooler" onclick="loadCategory('cooler')">Cooler</button>
                 <button class="step-btn" data-category="mainboard"
                     onclick="loadCategory('mainboard')">Mainboard</button>
                 <button class="step-btn" data-category="ram" onclick="loadCategory('ram')">RAM</button>
@@ -54,9 +59,37 @@ if (!isset($_SESSION['user_id'])) {
                 <button class="step-btn" data-category="case" onclick="loadCategory('case')">Case</button>
             </div>
 
+            <div class="assembly-options">
+                <h3><i class="fa-solid fa-screwdriver-wrench"></i> Assembly Service</h3>
+                <div class="options-grid">
+                    <label class="option-card">
+                        <input type="radio" name="assembly" value="box" checked onchange="updateAssembly(0)">
+                        <div class="option-content">
+                            <span class="option-title">Individual Boxes</span>
+                            <span class="option-desc">Ship parts as-is</span>
+                            <span class="option-price">FREE</span>
+                        </div>
+                    </label>
+                    <label class="option-card">
+                        <input type="radio" name="assembly" value="build" onchange="updateAssembly(500)">
+                        <div class="option-content">
+                            <span class="option-title">Professional Build</span>
+                            <span class="option-desc">Assembly & Cable Mgmt</span>
+                            <span class="option-price">฿500</span>
+                        </div>
+                    </label>
+                </div>
+            </div>
+
             <div id="product-list" class="product-grid">
                 <!-- Products loaded via AJAX -->
                 <div class="loading">Loading parts...</div>
+            </div>
+
+            <div class="action-footer">
+                <button class="btn-share" onclick="shareSpecs()">
+                    <i class="fa-solid fa-share-nodes"></i> Share Specs
+                </button>
             </div>
         </div>
     </div>
@@ -66,10 +99,17 @@ if (!isset($_SESSION['user_id'])) {
         const currentBuild = {};
         let currentCategory = 'cpu';
 
+        let assemblyPrice = 0;
+
         // Load initial category
         document.addEventListener('DOMContentLoaded', () => {
             loadCategory('cpu');
         });
+
+        function updateAssembly(price) {
+            assemblyPrice = price;
+            updateSummary();
+        }
 
         async function loadCategory(category) {
             currentCategory = category;
@@ -130,8 +170,8 @@ if (!isset($_SESSION['user_id'])) {
 
                 card.innerHTML = `
                     <div class="product-image">
-                        <i class="fa-solid fa-microchip placeholder-icon"></i>
-                        <!-- <img src="${p.image_url}" alt="${p.name}"> -->
+                        <img src="${p.image_url}" alt="${p.name}" style="width: 100%; height: 100%; object-fit: cover;">
+                        <div class="image-overlay"></div>
                     </div>
                     <div class="product-info">
                         <h3>${p.name}</h3>
@@ -149,19 +189,22 @@ if (!isset($_SESSION['user_id'])) {
             currentBuild[category] = { id, name, price, tdp };
             updateSummary();
 
-            // Auto-advance to next category logic could go here
-            // For now, let user click.
-            alert(`Selected ${name}`);
+            // Auto-advance to next category logic
+            const categories = ['cpu', 'cooler', 'mainboard', 'ram', 'gpu', 'ssd', 'psu', 'case'];
+            const nextIdx = categories.indexOf(category) + 1;
+            if (nextIdx < categories.length) {
+                loadCategory(categories[nextIdx]);
+            }
         }
 
         function updateSummary() {
             const list = document.getElementById('build-list');
             list.innerHTML = '';
 
-            let totalPrice = 0;
+            let totalPrice = assemblyPrice;
             let totalTdp = 0;
 
-            if (Object.keys(currentBuild).length === 0) {
+            if (Object.keys(currentBuild).length === 0 && assemblyPrice === 0) {
                 list.innerHTML = '<div class="empty-state">No parts selected</div>';
             } else {
                 for (const [cat, part] of Object.entries(currentBuild)) {
@@ -180,6 +223,19 @@ if (!isset($_SESSION['user_id'])) {
                     `;
                     list.appendChild(item);
                 }
+
+                if (assemblyPrice > 0) {
+                    const item = document.createElement('div');
+                    item.className = 'summary-item assembly-item';
+                    item.innerHTML = `
+                        <div class="info">
+                            <span class="cat-label">SERVICE</span>
+                            <span class="part-name">Pro Assembly</span>
+                        </div>
+                        <div class="item-price">฿${assemblyPrice.toLocaleString()}</div>
+                    `;
+                    list.appendChild(item);
+                }
             }
 
             // Base TDP overhead
@@ -194,6 +250,33 @@ if (!isset($_SESSION['user_id'])) {
             updateSummary();
             // Reload current category to refresh compatibility if needed
             loadCategory(currentCategory);
+        }
+
+        function proceedToCheckout() {
+            if (Object.keys(currentBuild).length === 0) {
+                alert("Please select some parts first!");
+                return;
+            }
+            document.getElementById('form-build-data').value = JSON.stringify(currentBuild);
+            document.getElementById('form-assembly').value = assemblyPrice > 0 ? 'build' : 'box';
+            document.getElementById('checkout-form').submit();
+        }
+
+        function shareSpecs() {
+            if (Object.keys(currentBuild).length === 0) {
+                alert("Please select some parts first!");
+                return;
+            }
+            const summary = Object.entries(currentBuild)
+                .map(([cat, part]) => `${cat.toUpperCase()}: ${part.name}`)
+                .join('\n');
+            const fullText = `My PC Build:\n${summary}\nTotal: ${document.getElementById('total-price').textContent}`;
+
+            navigator.clipboard.writeText(fullText).then(() => {
+                alert("Specs copied to clipboard!");
+            }).catch(err => {
+                console.error('Could not copy text: ', err);
+            });
         }
     </script>
 </body>

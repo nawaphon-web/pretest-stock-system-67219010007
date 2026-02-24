@@ -29,7 +29,7 @@ INSERT IGNORE INTO users (username, password, role) VALUES
 
 -- Insert Categories
 INSERT IGNORE INTO categories (name) VALUES 
-('cpu'), ('mainboard'), ('ram'), ('gpu'), ('psu'), ('case'), ('monitor'), ('ssd');
+('cpu'), ('mainboard'), ('ram'), ('gpu'), ('psu'), ('case'), ('monitor'), ('ssd'), ('cooler');
 
 -- Insert Sample Products
 
@@ -68,3 +68,71 @@ INSERT INTO products (name, category_id, price, stock, image_url, specifications
 -- SSD
 INSERT INTO products (name, category_id, price, stock, image_url, specifications) VALUES
 ('Samsung 980 PRO 1TB', 8, 3500.00, 25, 'https://example.com/980pro.jpg', '{"interface": "M.2 NVMe", "capacity": "1TB", "read_speed": "7000MB/s"}');
+
+-- Suppliers
+CREATE TABLE IF NOT EXISTS suppliers (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL UNIQUE,
+    contact_info TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Inventory (S/N Tracking)
+CREATE TABLE IF NOT EXISTS inventory (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    product_id INT NOT NULL,
+    serial_number VARCHAR(100) NOT NULL UNIQUE,
+    supplier_id INT,
+    status ENUM('available', 'sold', 'rma', 'returned') DEFAULT 'available',
+    received_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (product_id) REFERENCES products(id),
+    FOREIGN KEY (supplier_id) REFERENCES suppliers(id)
+);
+
+-- Orders
+CREATE TABLE IF NOT EXISTS orders (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    total_amount DECIMAL(10, 2) NOT NULL,
+    status ENUM('pending', 'paid', 'processing', 'shipped', 'completed', 'cancelled') DEFAULT 'pending',
+    assembly_service BOOLEAN DEFAULT FALSE,
+    tax_info JSON,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
+-- Order Items
+CREATE TABLE IF NOT EXISTS order_items (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    order_id INT NOT NULL,
+    product_id INT NOT NULL,
+    inventory_id INT, -- Linked to specific S/N
+    price DECIMAL(10, 2) NOT NULL,
+    FOREIGN KEY (order_id) REFERENCES orders(id),
+    FOREIGN KEY (product_id) REFERENCES products(id),
+    FOREIGN KEY (inventory_id) REFERENCES inventory(id)
+);
+
+-- RMA (Return Merchandise Authorization)
+CREATE TABLE IF NOT EXISTS rma_requests (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    inventory_id INT NOT NULL,
+    reason TEXT NOT NULL,
+    status ENUM('received', 'checking', 'vendor_claim', 'returning', 'done') DEFAULT 'received',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id),
+    FOREIGN KEY (inventory_id) REFERENCES inventory(id)
+);
+
+-- Insert Sample Suppliers
+INSERT IGNORE INTO suppliers (name) VALUES ('Synnex'), ('Ingram Micro'), ('Ascenti Resources');
+
+-- Insert Sample Inventory (S/N)
+INSERT IGNORE INTO inventory (product_id, serial_number, supplier_id) VALUES 
+(1, 'SN-CPU-I5-001', 1),
+(1, 'SN-CPU-I5-002', 1),
+(5, 'SN-GPU-4070-001', 3),
+(5, 'SN-GPU-4070-002', 3);
+

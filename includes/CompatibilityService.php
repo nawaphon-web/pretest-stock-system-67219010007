@@ -51,16 +51,34 @@ class CompatibilityService
         return true; // Assume true if specs missing
     }
 
+    // Check if CPU Cooler fits in the Case
+    public static function checkCoolerCase($cooler, $case)
+    {
+        if (!$cooler || !$case)
+            return true;
+
+        $coolerHeight = $cooler->getSpec('height_mm');
+        $maxCoolerHeight = $case->getSpec('max_cpu_height');
+
+        if ($coolerHeight && $maxCoolerHeight) {
+            return $coolerHeight <= $maxCoolerHeight;
+        }
+        return true;
+    }
+
     // Calculate total TDP of the system
     public static function calculateTotalTdp($parts)
     {
         $totalTdp = 0;
         foreach ($parts as $part) {
             if ($part) {
-                $tdp = $part->getSpec('tdp');
-                if ($tdp) {
-                    $totalTdp += $tdp;
+                $tdp = $part->getSpec('tdp') ?? 0;
+                // Add default TDP if missing for certain categories
+                if ($tdp === 0) {
+                    $cat = strtolower($part->category_id); // Assuming we can get category name or mapping
+                    // In a real system, we'd map category_id to name
                 }
+                $totalTdp += $tdp;
             }
         }
         // Base system overhead (fans, ssd, etc.)
@@ -69,11 +87,11 @@ class CompatibilityService
     }
 
     // Recommendation for PSU wattage
-    public static function recommendPsuWattage($totalTdp)
+    public static function recommendPsuWattage($totalTdp, $gpuRecommended = 0)
     {
-        // Rule of thumb: Load should be around 50-70% of PSU capacity for efficiency
-        // Or at least +100-150W headroom.
-        return ceil(($totalTdp * 1.5) / 50) * 50; // Round up to nearest 50
+        // Use GPU recommendation as floor if available
+        $base = max($totalTdp * 1.5, $gpuRecommended);
+        return ceil($base / 50) * 50; // Round up to nearest 50
     }
 }
 ?>
