@@ -18,9 +18,9 @@ $products = Product::findByCategory($pdo, $category);
 $compatibleProducts = [];
 
 // Load current build parts if they exist
-$cpu = isset($currentBuild['cpu']) ? Product::findById($pdo, $currentBuild['cpu']) : null;
-$mainboard = isset($currentBuild['mainboard']) ? Product::findById($pdo, $currentBuild['mainboard']) : null;
-$case = isset($currentBuild['case']) ? Product::findById($pdo, $currentBuild['case']) : null;
+$cpu = isset($currentBuild['cpu']) ? Product::findById($pdo, $currentBuild['cpu']['id']) : null;
+$mainboard = isset($currentBuild['mainboard']) ? Product::findById($pdo, $currentBuild['mainboard']['id']) : null;
+$case = isset($currentBuild['case']) ? Product::findById($pdo, $currentBuild['case']['id']) : null;
 
 foreach ($products as $product) {
     $isCompatible = true;
