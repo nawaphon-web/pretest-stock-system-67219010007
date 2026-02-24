@@ -1,0 +1,190 @@
+<?php
+session_start();
+require 'db.php';
+
+if (!isset($_GET['build_data'])) {
+    die("No build data provided.");
+}
+
+$build = json_decode($_GET['build_data'], true);
+$assembly = isset($_GET['assembly']) && $_GET['assembly'] === 'build' ? 500 : 0;
+$taxInfo = [
+    'name' => $_GET['tax_name'] ?? '',
+    'id' => $_GET['tax_id'] ?? '',
+    'address' => $_GET['tax_address'] ?? ''
+];
+
+$total = $assembly;
+foreach ($build as $part) {
+    $total += $part['price'];
+}
+
+$date = date('d/m/Y');
+$quoNo = "QUO-" . date('Ymd') . "-" . rand(1000, 9999);
+?>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Quotation -
+        <?php echo $quoNo; ?>
+    </title>
+    <style>
+        body {
+            font-family: sans-serif;
+            padding: 40px;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 2px solid #3b82f6;
+            padding-bottom: 10px;
+            margin-bottom: 30px;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #3b82f6;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 30px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+        }
+
+        th {
+            background: #f8fafc;
+            text-align: left;
+            padding: 12px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .total-row {
+            font-size: 20px;
+            font-weight: bold;
+            color: #3b82f6;
+        }
+
+        .footer {
+            margin-top: 50px;
+            text-align: center;
+            color: #64748b;
+            font-size: 12px;
+        }
+
+        @media print {
+            .no-print {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="no-print" style="margin-bottom: 20px;">
+        <button onclick="window.print()"
+            style="padding: 10px 20px; background: #3b82f6; color: white; border: none; border-radius: 5px; cursor: pointer;">Print
+            to PDF</button>
+    </div>
+
+    <div class="header">
+        <div class="logo">TECHSTOCK IT SOLUTIONS</div>
+        <div style="text-align: right;">
+            <strong>QUOTATION</strong><br>
+            No:
+            <?php echo $quoNo; ?><br>
+            Date:
+            <?php echo $date; ?>
+        </div>
+    </div>
+
+    <div class="info-grid">
+        <div>
+            <strong>Company:</strong><br>
+            TechStock Co., Ltd.<br>
+            123 IT Street, Bangkok<br>
+            Tax ID: 0105560000000
+        </div>
+        <div>
+            <strong>Customer:</strong><br>
+            <?php echo $taxInfo['name'] ?: 'General Customer'; ?><br>
+            <?php if ($taxInfo['id'])
+                echo "Tax ID: " . $taxInfo['id'] . "<br>"; ?>
+            <?php echo nl2br($taxInfo['address'] ?: 'N/A'); ?>
+        </div>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Category</th>
+                <th>Description</th>
+                <th style="text-align: right;">Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($build as $cat => $part): ?>
+                <tr>
+                    <td><strong>
+                            <?php echo strtoupper($cat); ?>
+                        </strong></td>
+                    <td>
+                        <?php echo $part['name']; ?>
+                    </td>
+                    <td style="text-align: right;">฿
+                        <?php echo number_format($part['price'], 2); ?>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+
+            <?php if ($assembly > 0): ?>
+                <tr>
+                    <td><strong>SERVICE</strong></td>
+                    <td>Professional PC Assembly & Testing</td>
+                    <td style="text-align: right;">฿500.00</td>
+                </tr>
+            <?php endif; ?>
+        </tbody>
+        <tfoot>
+            <tr class="total-row">
+                <td colspan="2" style="text-align: right;">Total Amount</td>
+                <td style="text-align: right;">฿
+                    <?php echo number_format($total, 2); ?>
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+
+    <div style="margin-top: 40px;">
+        <p><strong>Terms & Conditions:</strong></p>
+        <ul style="font-size: 13px; color: #64748b;">
+            <li>This quotation is valid for 7 days from the date issued.</li>
+            <li>Prices include 7% VAT (if applicable).</li>
+            <li>Warranty is provided per component basis as specified by manufacturers.</li>
+        </ul>
+    </div>
+
+    <div class="footer">
+        Generated by TechStock Intelligent Builder System
+    </div>
+</body>
+
+</html>

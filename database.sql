@@ -1,5 +1,4 @@
 -- TechStock Database Schema and Sample Data
-
 SET FOREIGN_KEY_CHECKS = 0;
 DROP TABLE IF EXISTS product_reservations;
 DROP TABLE IF EXISTS rma_requests;
@@ -10,7 +9,6 @@ DROP TABLE IF EXISTS products;
 DROP TABLE IF EXISTS categories;
 DROP TABLE IF EXISTS suppliers;
 DROP TABLE IF EXISTS users;
-SET FOREIGN_KEY_CHECKS = 1;
 
 CREATE TABLE users (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -101,86 +99,80 @@ CREATE TABLE product_reservations (
     FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
--- Insert Users (admin123 / user123)
-INSERT INTO users (username, password, role) VALUES 
-('admin', '$2y$10$f/9S5i6fOqO/Qn5mY/K5He1oKoEa3Ro9llC/.og/at2.uheWG/igi', 'admin'),
-('user', '$2y$10$f/9S5i6fOqO/Qn5mY/K5He1oKoEa3Ro9llC/.og/at2.uheWG/igi', 'user');
+INSERT INTO users (username, password, role) VALUES ('admin', '$2y$10$f/9S5i6fOqO/Qn5mY/K5He1oKoEa3Ro9llC/.og/at2.uheWG/igi', 'admin');
+INSERT INTO users (username, password, role) VALUES ('user', '$2y$10$f/9S5i6fOqO/Qn5mY/K5He1oKoEa3Ro9llC/.og/at2.uheWG/igi', 'user');
 
--- Insert Categories
-INSERT INTO categories (id, name) VALUES 
-(1, 'cpu'), (2, 'mainboard'), (3, 'ram'), (4, 'gpu'), (5, 'psu'), (6, 'case'), (7, 'monitor'), (8, 'ssd'), (9, 'cooler');
+INSERT INTO categories (id, name) VALUES (1, 'cpu');
+INSERT INTO categories (id, name) VALUES (2, 'mainboard');
+INSERT INTO categories (id, name) VALUES (3, 'ram');
+INSERT INTO categories (id, name) VALUES (4, 'gpu');
+INSERT INTO categories (id, name) VALUES (5, 'psu');
+INSERT INTO categories (id, name) VALUES (6, 'case');
+INSERT INTO categories (id, name) VALUES (7, 'monitor');
+INSERT INTO categories (id, name) VALUES (8, 'ssd');
+INSERT INTO categories (id, name) VALUES (9, 'cooler');
+INSERT INTO categories (id, name) VALUES (10, 'keyboard');
+INSERT INTO categories (id, name) VALUES (11, 'mouse');
 
--- Insert Products
--- CPUs (1)
-INSERT INTO products (name, category_id, price, stock, icon, specifications) VALUES
-('Intel Core i5-13600K', 1, 11900, 15, 'fa-microchip', '{"socket": "LGA1700", "tdp": 125, "cores": 14, "threads": 20}'),
-('Intel Core i9-14900K', 1, 24900, 8, 'fa-microchip', '{"socket": "LGA1700", "tdp": 125, "cores": 24, "threads": 32}'),
-('AMD Ryzen 7 7800X3D', 1, 14900, 12, 'fa-microchip', '{"socket": "AM5", "tdp": 120, "cores": 8, "threads": 16}'),
-('AMD Ryzen 5 7600', 1, 8900, 20, 'fa-microchip', '{"socket": "AM5", "tdp": 65, "cores": 6, "threads": 12}'),
-('Intel Core i7-14700K', 1, 15900, 10, 'fa-microchip', '{"socket": "LGA1700", "tdp": 125, "cores": 20, "threads": 28}');
+-- Products (11 categories * 5 = 55)
+INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (1, 1, 'Intel i5-13600K', 11900, 5, 'fa-microchip', '{"socket": "LGA1700"}');
+INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (2, 1, 'Intel i9-14900K', 24900, 5, 'fa-microchip', '{"socket": "LGA1700"}');
+INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (3, 1, 'AMD R7 7800X3D', 14900, 5, 'fa-microchip', '{"socket": "AM5"}');
+INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (4, 1, 'AMD R5 7600', 8900, 5, 'fa-microchip', '{"socket": "AM5"}');
+INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (5, 1, 'Intel i7-14700K', 15900, 5, 'fa-microchip', '{"socket": "LGA1700"}');
+INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (6, 2, 'MSI Z790 TOMAHAWK', 9500, 5, 'fa-microchip', '{"socket": "LGA1700"}');
+INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (7, 2, 'ASUS B760-A GAMING', 7900, 5, 'fa-microchip', '{"socket": "LGA1700"}');
+INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (8, 2, 'GIGABYTE B650 AORUS', 7200, 5, 'fa-microchip', '{"socket": "AM5"}');
+INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (9, 2, 'ASUS PRIME A620M-K', 3500, 5, 'fa-microchip', '{"socket": "AM5"}');
+INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (10, 2, 'MSI B760M BOMBER', 3900, 5, 'fa-microchip', '{"socket": "LGA1700"}');
+INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (11, 3, 'Corsair D5 32GB', 5200, 5, 'fa-memory', '{"type": "DDR5"}');
+INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (12, 3, 'Kingston D4 16GB', 1900, 5, 'fa-memory', '{"type": "DDR4"}');
+INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (13, 3, 'G.Skill D5 32GB', 5900, 5, 'fa-memory', '{"type": "DDR5"}');
+INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (14, 3, 'Team D4 16GB', 2200, 5, 'fa-memory', '{"type": "DDR4"}');
+INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (15, 3, 'Corsair D5 64GB', 12000, 5, 'fa-memory', '{"type": "DDR5"}');
+INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (16, 4, 'RTX 4070 FE', 23000, 5, 'fa-bolt', '{}');
+INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (17, 4, 'RTX 4090 OC', 75000, 5, 'fa-bolt', '{}');
+INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (18, 4, 'RX 7800 XT', 19500, 5, 'fa-bolt', '{}');
+INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (19, 4, 'RTX 4060 Ti', 14500, 5, 'fa-bolt', '{}');
+INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (20, 4, 'RX 7600', 9900, 5, 'fa-bolt', '{}');
+INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (21, 5, 'RM850e 850W', 4200, 5, 'fa-plug', '{}');
+INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (22, 5, 'BM3 750W', 2900, 5, 'fa-plug', '{}');
+INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (23, 5, 'MWE Gold 1050W', 5900, 5, 'fa-plug', '{}');
+INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (24, 5, 'Focus 650W', 3500, 5, 'fa-plug', '{}');
+INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (25, 5, 'SilverStone 500W', 1290, 5, 'fa-plug', '{}');
+INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (26, 6, 'NZXT H5 Flow', 3200, 5, 'fa-box', '{}');
+INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (27, 6, 'O11 Dynamic EVO', 5900, 5, 'fa-box', '{}');
+INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (28, 6, 'MasterBox Q300L', 1390, 5, 'fa-box', '{}');
+INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (29, 6, '4000D Airflow', 3500, 5, 'fa-box', '{}');
+INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (30, 6, 'Fractal North', 5500, 5, 'fa-box', '{}');
+INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (31, 7, 'LG 27GP850', 12900, 5, 'fa-desktop', '{}');
+INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (32, 7, 'Odyssey G5', 9900, 5, 'fa-desktop', '{}');
+INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (33, 7, 'ASUS VG249', 5500, 5, 'fa-desktop', '{}');
+INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (34, 7, 'Dell U2723QE', 21900, 5, 'fa-desktop', '{}');
+INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (35, 7, 'AOC 24G2SP', 4900, 5, 'fa-desktop', '{}');
+INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (36, 8, '990 PRO 2TB', 6900, 5, 'fa-hard-drive', '{}');
+INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (37, 8, 'SN850X 1TB', 3900, 5, 'fa-hard-drive', '{}');
+INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (38, 8, 'Crucial P3 1TB', 2500, 5, 'fa-hard-drive', '{}');
+INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (39, 8, 'Kingston NV2', 1290, 5, 'fa-hard-drive', '{}');
+INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (40, 8, 'HIKSEMI 2TB', 4500, 5, 'fa-hard-drive', '{}');
+INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (41, 9, 'AK400 Digital', 1290, 5, 'fa-fan', '{}');
+INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (42, 9, 'NH-D15 chromax', 4100, 5, 'fa-fan', '{}');
+INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (43, 9, 'Kraken 360', 11900, 5, 'fa-fan', '{}');
+INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (44, 9, 'H150i iCUE', 7900, 5, 'fa-fan', '{}');
+INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (45, 9, 'Hyper 212', 1190, 5, 'fa-fan', '{}');
+INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (46, 10, 'G915 TKL', 6900, 5, 'fa-keyboard', '{}');
+INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (47, 10, 'BlackWidow V4', 7900, 5, 'fa-keyboard', '{}');
+INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (48, 10, 'K70 RGB TKL', 4500, 5, 'fa-keyboard', '{}');
+INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (49, 10, 'Keychron V1', 3200, 5, 'fa-keyboard', '{}');
+INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (50, 10, 'Apex Pro TKL', 7500, 5, 'fa-keyboard', '{}');
+INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (51, 11, 'G Pro X Superlight', 5600, 5, 'fa-mouse', '{}');
+INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (52, 11, 'DeathAdder V3', 4900, 5, 'fa-mouse', '{}');
+INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (53, 11, 'Aerox 3 Wireless', 2900, 5, 'fa-mouse', '{}');
+INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (54, 11, 'Zowie EC2-C', 2400, 5, 'fa-mouse', '{}');
+INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (55, 11, 'Glorious Model O 2', 2200, 5, 'fa-mouse', '{}');
 
--- Mainboards (2)
-INSERT INTO products (name, category_id, price, stock, icon, specifications) VALUES
-('MSI MAG Z790 TOMAHAWK WIFI', 2, 9500, 10, 'fa-microchip', '{"socket": "LGA1700", "chipset": "Z790", "form_factor": "ATX", "memory_type": "DDR5", "memory_slots": 4}'),
-('ASUS ROG STRIX B760-A GAMING WIFI', 2, 7900, 12, 'fa-microchip', '{"socket": "LGA1700", "chipset": "B760", "form_factor": "ATX", "memory_type": "DDR4", "memory_slots": 4}'),
-('GIGABYTE B650 AORUS ELITE AX', 2, 7200, 15, 'fa-microchip', '{"socket": "AM5", "chipset": "B650", "form_factor": "ATX", "memory_type": "DDR5", "memory_slots": 4}'),
-('ASUS PRIME A620M-K', 2, 3500, 25, 'fa-microchip', '{"socket": "AM5", "chipset": "A620", "form_factor": "mATX", "memory_type": "DDR5", "memory_slots": 2}'),
-('MSI B760M BOMBER DDR4', 2, 3900, 30, 'fa-microchip', '{"socket": "LGA1700", "chipset": "B760", "form_factor": "mATX", "memory_type": "DDR4", "memory_slots": 2}');
+INSERT INTO suppliers (id, name) VALUES (1, 'Synnex');
 
--- RAM (3)
-INSERT INTO products (name, category_id, price, stock, icon, specifications) VALUES
-('Corsair Vengeance DDR5 32GB 6000MHz', 3, 5200, 20, 'fa-memory', '{"memory_type": "DDR5", "capacity": "32GB", "speed": "6000MHz", "modules": 2}'),
-('Kingston Fury Beast DDR4 16GB 3200MHz', 3, 1900, 40, 'fa-memory', '{"memory_type": "DDR4", "capacity": "16GB", "speed": "3200MHz", "modules": 2}'),
-('G.Skill Trident Z5 RGB 32GB DDR5 6400', 3, 5900, 15, 'fa-memory', '{"memory_type": "DDR5", "capacity": "32GB", "speed": "6400MHz", "modules": 2}'),
-('TeamGroup T-Force Delta RGB DDR4 16GB', 3, 2200, 25, 'fa-memory', '{"memory_type": "DDR4", "capacity": "16GB", "speed": "3600MHz", "modules": 2}'),
-('Corsair Dominator Titanium 64GB DDR5', 3, 12000, 5, 'fa-memory', '{"memory_type": "DDR5", "capacity": "64GB", "speed": "6600MHz", "modules": 2}');
+INSERT INTO inventory (product_id, serial_number, supplier_id, status) SELECT id, CONCAT('SN-', category_id, '-', id, '-001'), 1, 'available' FROM products;
 
--- GPU (4)
-INSERT INTO products (name, category_id, price, stock, icon, specifications) VALUES
-('NVIDIA GeForce RTX 4070 FE', 4, 23000, 10, 'fa-bolt', '{"chipset": "NVIDIA", "vram": "12GB", "length_mm": 244, "tdp": 200}'),
-('ASUS ROG Strix RTX 4090 OC', 4, 75000, 3, 'fa-bolt', '{"chipset": "NVIDIA", "vram": "24GB", "length_mm": 357, "tdp": 450}'),
-('Sapphire Pulse Radeon RX 7800 XT', 4, 19500, 15, 'fa-bolt', '{"chipset": "AMD", "vram": "16GB", "length_mm": 280, "tdp": 263}'),
-('MSI Ventus 2X RTX 4060 Ti', 4, 14500, 20, 'fa-bolt', '{"chipset": "NVIDIA", "vram": "8GB", "length_mm": 199, "tdp": 160}'),
-('Gigabyte RX 7600 Gaming OC', 4, 9900, 18, 'fa-bolt', '{"chipset": "AMD", "vram": "8GB", "length_mm": 282, "tdp": 165}');
-
--- PSU (5)
-INSERT INTO products (name, category_id, price, stock, icon, specifications) VALUES
-('Corsair RM850e 850W Gold', 5, 4200, 15, 'fa-plug', '{"wattage": 850, "efficiency": "80+ Gold", "modular": "Full"}'),
-('Thermaltake Smart BM3 750W', 5, 2900, 25, 'fa-plug', '{"wattage": 750, "efficiency": "80+ Bronze", "modular": "Semi"}'),
-('Cooler Master MWE Gold 1050 V2', 5, 5900, 10, 'fa-plug', '{"wattage": 1050, "efficiency": "80+ Gold", "modular": "Full"}'),
-('Seasonic Focus GX-650', 5, 3500, 20, 'fa-plug', '{"wattage": 650, "efficiency": "80+ Gold", "modular": "Full"}'),
-('SilverStone ST50F-ES230 500W', 5, 1290, 50, 'fa-plug', '{"wattage": 500, "efficiency": "80+ White", "modular": "No"}');
-
--- Case (6)
-INSERT INTO products (name, category_id, price, stock, icon, specifications) VALUES
-('NZXT H5 Flow Black', 6, 3200, 15, 'fa-box', '{"form_factor": ["ATX", "mATX", "ITX"], "max_gpu_length": 365, "max_cpu_height": 165}'),
-('Lian Li O11 Dynamic EVO', 6, 5900, 8, 'fa-box', '{"form_factor": ["E-ATX", "ATX", "mATX", "ITX"], "max_gpu_length": 422, "max_cpu_height": 167}'),
-('Cooler Master MasterBox Q300L', 6, 1390, 30, 'fa-box', '{"form_factor": ["mATX", "ITX"], "max_gpu_length": 360, "max_cpu_height": 159}'),
-('Corsair 4000D Airflow', 6, 3500, 20, 'fa-box', '{"form_factor": ["ATX", "mATX", "ITX"], "max_gpu_length": 360, "max_cpu_height": 170}'),
-('Fractal Design North Charcoal', 6, 5500, 5, 'fa-box', '{"form_factor": ["ATX", "mATX", "ITX"], "max_gpu_length": 355, "max_cpu_height": 170}');
-
--- Monitor (7)
-INSERT INTO products (name, category_id, price, stock, icon, specifications) VALUES
-('LG UltraGear 27GP850-B', 7, 12900, 10, 'fa-desktop', '{"size": "27\"", "resolution": "2K QHD", "refresh_rate": "165Hz", "panel": "Nano IPS"}'),
-('Samsung Odyssey G5 32\"', 7, 9900, 12, 'fa-desktop', '{"size": "32\"", "resolution": "2K QHD", "refresh_rate": "144Hz", "panel": "VA"}'),
-('ASUS TUF Gaming VG249Q3A', 7, 5500, 20, 'fa-desktop', '{"size": "23.8\"", "resolution": "Full HD", "refresh_rate": "180Hz", "panel": "IPS"}'),
-('Dell UltraSharp U2723QE', 7, 21900, 8, 'fa-desktop', '{"size": "27\"", "resolution": "4K UHD", "refresh_rate": "60Hz", "panel": "IPS Black"}'),
-('AOC 24G2SP/67', 7, 4900, 25, 'fa-desktop', '{"size": "23.8\"", "resolution": "Full HD", "refresh_rate": "165Hz", "panel": "IPS"}');
-
--- SSD (8)
-INSERT INTO products (name, category_id, price, stock, icon, specifications) VALUES
-('Samsung 990 PRO 2TB', 8, 6900, 15, 'fa-hard-drive', '{"capacity": "2TB", "interface": "PCIe 4.0", "read_speed": "7450MB/s"}'),
-('WD Black SN850X 1TB', 8, 3900, 20, 'fa-hard-drive', '{"capacity": "1TB", "interface": "PCIe 4.0", "read_speed": "7300MB/s"}'),
-('Crucial P3 Plus 1TB', 8, 2500, 30, 'fa-hard-drive', '{"capacity": "1TB", "interface": "PCIe 4.0", "read_speed": "5000MB/s"}'),
-('Kingston NV2 500GB', 8, 1290, 50, 'fa-hard-drive', '{"capacity": "500GB", "interface": "PCIe 4.0", "read_speed": "3500MB/s"}'),
-('HIKSEMI FUTURE 2TB', 8, 4500, 15, 'fa-hard-drive', '{"capacity": "2TB", "interface": "PCIe 4.0", "read_speed": "7450MB/s"}');
-
--- Cooler (9)
-INSERT INTO products (name, category_id, price, stock, icon, specifications) VALUES
-('DeepCool AK400 Digital', 9, 1290, 20, 'fa-fan', '{"sockets": ["LGA1700", "AM4", "AM5"], "height_mm": 155, "tdp_rating": 220}'),
-('Noctua NH-D15 chromax', 9, 4100, 5, 'fa-fan', '{"sockets": ["LGA1700", "AM4", "AM5", "LGA1200"], "height_mm": 165, "tdp_rating": 250}'),
-('NZXT Kraken Elite 360', 9, 11900, 10, 'fa-fan', '{"sockets": ["LGA1700", "AM4", "AM5"], "height_mm": 59, "tdp_rating": 300, "type": "Liquid (AIO)"}'),
-('Corsair iCUE H150i', 9, 7900, 12, 'fa-fan', '{"sockets": ["LGA1700", "AM4", "AM5"], "height_mm": 52, "tdp_rating": 350, "type": "Liquid (AIO)"}'),
-('Cooler Master Hyper 212', 9, 1190, 30, 'fa-fan', '{"sockets": ["LGA1700", "AM4", "AM5"], "height_mm": 154, "tdp_rating": 180}');
-
-INSERT INTO suppliers (id, name) VALUES (1, 'Synnex'), (2, 'Ingram Micro'), (3, 'Ascenti Resources');
+SET FOREIGN_KEY_CHECKS = 1;

@@ -94,11 +94,31 @@ foreach ($build as $part) {
                 </div>
             </div>
 
-            <div style="margin-top: 2rem; display: flex; gap: 1rem;">
+            <div style="margin-top: 1rem;">
                 <button type="submit" name="action" value="order" class="btn-checkout">Place Order</button>
-                <button type="submit" name="action" value="quotation" class="btn-back" style="flex: 1;">Get Quotation
-                    (PDF)</button>
+                <button type="button" onclick="generateQuotation()" class="btn-back"
+                    style="flex: 1; margin-top: 1rem;">Get Quotation (PDF View)</button>
             </div>
+
+            <script>
+                function generateQuotation() {
+                    const buildData = '<?php echo json_encode($build); ?>';
+                    const assembly = '<?php echo $assembly > 0 ? 'build' : 'box'; ?>';
+                    const taxName = document.querySelector('[name="tax_name"]').value;
+                    const taxId = document.querySelector('[name="tax_id"]').value;
+                    const taxAddress = document.querySelector('[name="tax_address"]').value;
+
+                    const params = new URLSearchParams({
+                        build_data: buildData,
+                        assembly: assembly,
+                        tax_name: taxName,
+                        tax_id: taxId,
+                        tax_address: taxAddress
+                    });
+
+                    window.open('quotation_view.php?' + params.toString(), '_blank');
+                }
+            </script>
             <a href="builder.php"
                 style="display: block; text-align: center; margin-top: 1rem; color: var(--text-muted); text-decoration: none;">Back
                 to Builder</a>

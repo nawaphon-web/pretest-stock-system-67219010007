@@ -47,6 +47,23 @@ if (!isset($_SESSION['user_id'])) {
 
         <!-- Main Selection Area -->
         <div class="selection-area">
+            <div class="budget-builder"
+                style="background: rgba(59, 130, 246, 0.1); padding: 1.5rem; border-radius: 1rem; margin-bottom: 2rem; border: 1px solid rgba(59, 130, 246, 0.3);">
+                <h3 style="color: var(--primary-color); margin-bottom: 1rem;"><i
+                        class="fa-solid fa-wand-magic-sparkles"></i>
+                    จัดสเปกตามงบประมาณ (Smart Budget Build)</h3>
+                <div style="display: flex; gap: 1rem; align-items: flex-end;">
+                    <div class="form-group" style="margin-bottom: 0; flex: 1;">
+                        <label>งบประมาณ (บาท)</label>
+                        <input type="number" id="budget-input" placeholder="เช่น 30000" min="15000">
+                    </div>
+                    <button class="btn-checkout" style="width: auto; margin-top: 0; padding: 0.75rem 2rem;"
+                        onclick="generateBudgetBuild()">แนะนำสเปก</button>
+                </div>
+                <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.5rem;">*
+                    ระบบจะคำนวณและเลือกอุปกรณ์ที่คุ้มค่าที่สุดภายใต้งบระบุ</p>
+            </div>
+
             <div class="steps-nav">
                 <button class="step-btn active" data-category="cpu" onclick="loadCategory('cpu')">ซีพียู (CPU)</button>
                 <button class="step-btn" data-category="cooler" onclick="loadCategory('cooler')">ซิงค์พัดลม
@@ -60,6 +77,9 @@ if (!isset($_SESSION['user_id'])) {
                 <button class="step-btn" data-category="psu" onclick="loadCategory('psu')">พาวเวอร์ซัพพลาย
                     (PSU)</button>
                 <button class="step-btn" data-category="case" onclick="loadCategory('case')">เคส (Case)</button>
+                <button class="step-btn" data-category="keyboard" onclick="loadCategory('keyboard')">คีย์บอร์ด
+                    (Keyboard)</button>
+                <button class="step-btn" data-category="mouse" onclick="loadCategory('mouse')">เมาส์ (Mouse)</button>
             </div>
 
             <div class="assembly-options">
@@ -97,6 +117,24 @@ if (!isset($_SESSION['user_id'])) {
         </div>
     </div>
 
+    <!-- Comparison Tray -->
+    <div id="compare-tray" class="compare-tray">
+        <div class="compare-items" id="compare-items">
+            <!-- Items added here -->
+        </div>
+        <button class="btn-compare-action" onclick="showComparison()">เปรียบเทียบเลย</button>
+    </div>
+
+    <!-- Comparison Modal -->
+    <div id="compare-overlay" class="compare-overlay" onclick="closeComparison()"></div>
+    <div id="compare-modal" class="compare-modal">
+        <button class="btn-close-modal" onclick="closeComparison()"><i class="fa-solid fa-xmark"></i></button>
+        <h2 style="margin-bottom: 2rem;">เปรียบเทียบสินค้า</h2>
+        <div id="compare-grid" class="compare-grid">
+            <!-- Comparison data here -->
+        </div>
+    </div>
+
     <script>
         // State
         const currentBuild = {};
@@ -104,8 +142,25 @@ if (!isset($_SESSION['user_id'])) {
 
         let assemblyPrice = 0;
 
-        // Load initial category
+        // Load initial category or auto-load build
         document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const loadBuild = urlParams.get('load_build');
+            const shouldCheckout = urlParams.get('checkout');
+
+            if (loadBuild) {
+                try {
+                    const build = JSON.parse(decodeURIComponent(loadBuild));
+                    Object.assign(currentBuild, build);
+                    updateSummary();
+                    if (shouldCheckout) {
+                        proceedToCheckout();
+                    }
+                } catch (e) {
+                    console.error("Failed to load build:", e);
+                }
+            }
+
             loadCategory('cpu');
         });
 
@@ -169,6 +224,10 @@ if (!isset($_SESSION['user_id'])) {
                     ? `<button class="btn-select" onclick="selectPart('${currentCategory}', ${p.id}, '${p.name}', ${p.price}, ${p.specs?.tdp || 0})">เลือก</button>`
                     : `<button class="btn-disabled" disabled>ไม่รองรับ</button>`;
 
+                const compareBtn = `<button class="btn-back" style="margin-top: 0.5rem; padding: 0.4rem;" onclick="toggleCompare(${JSON.stringify(p).replace(/"/g, '&quot;')})">
+                    <i class="fa-solid fa-scale-balanced"></i> เปรียบเทียบ
+                </button>`;
+
                 const warning = p.is_compatible ? '' : `<div class="warning-msg"><i class="fa-solid fa-triangle-exclamation"></i> ${p.incompatibility_reason}</div>`;
 
                 const stockStatus = p.stock > 0
@@ -187,6 +246,7 @@ if (!isset($_SESSION['user_id'])) {
                         ${specsHtml}
                         ${warning}
                         ${actionBtn}
+                        ${compareBtn}
                     </div>
                 `;
                 grid.appendChild(card);
@@ -198,7 +258,7 @@ if (!isset($_SESSION['user_id'])) {
             updateSummary();
 
             // Auto-advance to next category logic
-            const categories = ['cpu', 'cooler', 'mainboard', 'ram', 'gpu', 'ssd', 'psu', 'case'];
+            const categories = ['cpu', 'cooler', 'mainboard', 'ram', 'gpu', 'ssd', 'psu', 'case', 'keyboard', 'mouse'];
             const nextIdx = categories.indexOf(category) + 1;
             if (nextIdx < categories.length) {
                 loadCategory(categories[nextIdx]);
@@ -270,6 +330,15 @@ if (!isset($_SESSION['user_id'])) {
             document.getElementById('checkout-form').submit();
         }
 
+        async function generateBudgetBuild() {
+            const budget = document.getElementById('budget-input').value;
+            if (!budget || budget < 15000) {
+                alert("กรุณาระบุงบประมาณอย่างน้อย 15,000 บาท");
+                return;
+            }
+            window.location.href = `budget_result.php?budget=${budget}`;
+        }
+
         function shareSpecs() {
             if (Object.keys(currentBuild).length === 0) {
                 alert("กรุณาเลือกอุปกรณ์ก่อน!");
@@ -285,6 +354,84 @@ if (!isset($_SESSION['user_id'])) {
             }).catch(err => {
                 console.error('Could not copy text: ', err);
             });
+        }
+
+        // Compare Logic
+        let compareList = [];
+
+        function toggleCompare(product) {
+            const index = compareList.findIndex(p => p.id === product.id);
+            if (index > -1) {
+                compareList.splice(index, 1);
+            } else {
+                if (compareList.length >= 3) {
+                    alert("เปรียบเทียบได้สูงสุด 3 ชิ้นเท่านั้น");
+                    return;
+                }
+                compareList.push(product);
+            }
+            renderCompareTray();
+        }
+
+        function renderCompareTray() {
+            const tray = document.getElementById('compare-tray');
+            const items = document.getElementById('compare-items');
+            items.innerHTML = '';
+
+            if (compareList.length > 0) {
+                tray.style.display = 'flex';
+                compareList.forEach(p => {
+                    const thumb = document.createElement('div');
+                    thumb.className = 'compare-item-thumb';
+                    thumb.innerHTML = `
+                        <i class="fa-solid ${p.icon || 'fa-box'}"></i>
+                        <span>${p.name}</span>
+                        <i class="fa-solid fa-xmark" style="cursor:pointer; color:var(--error-color)" onclick="toggleCompare({id: ${p.id}})"></i>
+                    `;
+                    items.appendChild(thumb);
+                });
+            } else {
+                tray.style.display = 'none';
+            }
+        }
+
+        function showComparison() {
+            if (compareList.length < 2) {
+                alert("กรุณาเลือกอย่างน้อย 2 ชิ้นเพื่อเปรียบเทียบ");
+                return;
+            }
+            document.getElementById('compare-overlay').style.display = 'block';
+            const modal = document.getElementById('compare-modal');
+            modal.style.display = 'block';
+
+            const grid = document.getElementById('compare-grid');
+            grid.innerHTML = '';
+
+            compareList.forEach(p => {
+                const col = document.createElement('div');
+                col.className = 'compare-col';
+
+                let specsHtml = '';
+                if (p.specs) {
+                    for (const [key, value] of Object.entries(p.specs)) {
+                        const label = key.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+                        specsHtml += `<div><strong>${label}:</strong> ${value}</div>`;
+                    }
+                }
+
+                col.innerHTML = `
+                    <i class="fa-solid ${p.icon || 'fa-box'}" style="font-size: 3rem; color: var(--primary-color);"></i>
+                    <h3>${p.name}</h3>
+                    <div class="price" style="margin-bottom: 2rem;">฿${parseFloat(p.price).toLocaleString()}</div>
+                    <div class="compare-specs">${specsHtml}</div>
+                `;
+                grid.appendChild(col);
+            });
+        }
+
+        function closeComparison() {
+            document.getElementById('compare-overlay').style.display = 'none';
+            document.getElementById('compare-modal').style.display = 'none';
         }
     </script>
 </body>

@@ -21,6 +21,7 @@ $compatibleProducts = [];
 $cpu = isset($currentBuild['cpu']) ? Product::findById($pdo, $currentBuild['cpu']['id']) : null;
 $mainboard = isset($currentBuild['mainboard']) ? Product::findById($pdo, $currentBuild['mainboard']['id']) : null;
 $case = isset($currentBuild['case']) ? Product::findById($pdo, $currentBuild['case']['id']) : null;
+$cooler = isset($currentBuild['cooler']) ? Product::findById($pdo, $currentBuild['cooler']['id']) : null;
 
 foreach ($products as $product) {
     $isCompatible = true;
