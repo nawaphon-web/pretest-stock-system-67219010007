@@ -101,11 +101,8 @@ foreach ($products as $product) {
         }
     }
 
-    // Strict Filtering: Skip incompatible items for certain categories
-    $strictCategories = ['cpu', 'mainboard', 'ram', 'cooler', 'gpu', 'case'];
-    if (in_array($category, $strictCategories) && !$isCompatible) {
-        continue;
-    }
+    // Simplified filtering: No more strict hiding.
+    // Let the frontend handle the styling of incompatible items.
 
     $compatibleProducts[] = [
         'id' => $product->id,

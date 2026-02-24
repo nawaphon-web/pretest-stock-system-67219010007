@@ -73,7 +73,12 @@ INSERT INTO products (name, category_id, price, stock, image_url, specifications
 INSERT INTO products (name, category_id, price, stock, image_url, specifications) VALUES
 ('DeepCool AK400 Digital', 9, 1290.00, 15, 'https://example.com/ak400.jpg', '{"sockets": ["LGA1700", "AM4", "AM5"], "height_mm": 155, "tdp_rating": 220}'),
 ('Noctua NH-D15 chromax.black', 9, 4100.00, 5, 'https://example.com/nh-d15.jpg', '{"sockets": ["LGA1700", "AM4", "AM5", "LGA1200"], "height_mm": 165, "tdp_rating": 250}'),
-('Cooler Master Hyper 212 Spectrum V3', 9, 990.00, 20, 'https://example.com/hyper212.jpg', '{"sockets": ["LGA1700", "AM4", "AM5"], "height_mm": 152, "tdp_rating": 180}');
+('Cooler Master Hyper 212 Spectrum V3', 9, 990.00, 20, 'https://example.com/hyper212.jpg', '{"sockets": ["LGA1700", "AM4", "AM5"], "height_mm": 152, "tdp_rating": 180}'),
+('NZXT Kraken Elite 360 RGB', 9, 11900.00, 10, 'https://example.com/kraken-360.jpg', '{"sockets": ["LGA1700", "AM4", "AM5", "LGA1200"], "height_mm": 59, "tdp_rating": 300, "type": "Liquid (AIO)"}'),
+('Corsair iCUE H100i RGB ELITE', 9, 5900.00, 12, 'https://example.com/h100i.jpg', '{"sockets": ["LGA1700", "AM4", "AM5"], "height_mm": 52, "tdp_rating": 250, "type": "Liquid (AIO)"}'),
+('Thermaltake TH240 ARGB Sync', 9, 2900.00, 15, 'https://example.com/th240.jpg', '{"sockets": ["LGA1700", "AM4", "AM5", "LGA1200"], "height_mm": 48, "tdp_rating": 220, "type": "Liquid (AIO)"}'),
+('EK-Quantum Power Kit D-RGB P360', 9, 24000.00, 3, 'https://example.com/ek-p360.jpg', '{"sockets": ["LGA1700", "AM4", "AM5"], "height_mm": 60, "tdp_rating": 500, "type": "Custom Loop Kit"}'),
+('Lian Li Galahad II Trinity Performance 360', 9, 6500.00, 8, 'https://example.com/galahad-2.jpg', '{"sockets": ["LGA1700", "AM4", "AM5"], "height_mm": 61, "tdp_rating": 320, "type": "Liquid (AIO)"}');
 
 -- Suppliers
 CREATE TABLE IF NOT EXISTS suppliers (

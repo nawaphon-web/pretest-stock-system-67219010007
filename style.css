@@ -402,23 +402,42 @@ button:hover {
     background: var(--primary-color);
 }
 
+.product-card.incompatible {
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    background: rgba(239, 68, 68, 0.05);
+}
+
+.product-card.incompatible:hover {
+    border-color: var(--error-color);
+    box-shadow: 0 10px 30px -10px rgba(239, 68, 68, 0.3);
+}
+
+.product-card.incompatible .price {
+    color: var(--error-color);
+}
+
 .btn-disabled {
     width: 100%;
     padding: 0.5rem;
-    background: rgba(239, 68, 68, 0.1);
-    color: var(--error-color);
+    background: var(--error-color);
+    color: white;
     border: none;
     border-radius: 0.5rem;
     cursor: not-allowed;
+    font-weight: 600;
 }
 
 .warning-msg {
     color: var(--error-color);
-    font-size: 0.75rem;
-    margin-bottom: 0.5rem;
+    font-size: 0.8rem;
+    margin-bottom: 0.75rem;
     display: flex;
     align-items: center;
-    gap: 0.25rem;
+    gap: 0.3rem;
+    font-weight: 600;
+    padding: 0.5rem;
+    background: rgba(239, 68, 68, 0.1);
+    border-radius: 4px;
 }
 
 /* Assembly Options */
