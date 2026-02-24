@@ -171,12 +171,17 @@ if (!isset($_SESSION['user_id'])) {
 
                 const warning = p.is_compatible ? '' : `<div class="warning-msg"><i class="fa-solid fa-triangle-exclamation"></i> ${p.incompatibility_reason}</div>`;
 
+                const stockStatus = p.stock > 0
+                    ? `<span class="stock-badge in-stock">มีของ (${p.stock})</span>`
+                    : `<span class="stock-badge out-of-stock">สินค้าหมด</span>`;
+
                 card.innerHTML = `
-                    <div class="product-image">
-                        <img src="${p.image_url}" alt="${p.name}" style="width: 100%; height: 100%; object-fit: cover;">
-                        <div class="image-overlay"></div>
+                    <div class="product-icon-container">
+                        <i class="fa-solid ${p.icon || 'fa-box'} main-icon"></i>
+                        <div class="icon-overlay"></div>
                     </div>
                     <div class="product-info">
+                        ${stockStatus}
                         <h3>${p.name}</h3>
                         <div class="price">฿${parseFloat(p.price).toLocaleString()}</div>
                         ${specsHtml}

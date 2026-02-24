@@ -7,6 +7,7 @@ class Product
     public $price;
     public $stock;
     public $image_url;
+    public $icon;
     public $specifications; // Array
 
     public function __construct($data)
@@ -17,6 +18,7 @@ class Product
         $this->price = $data['price'];
         $this->stock = $data['stock'];
         $this->image_url = $data['image_url'];
+        $this->icon = $data['icon'] ?? '';
         // flexible parsing for JSON specs
         $this->specifications = is_string($data['specifications']) ? json_decode($data['specifications'], true) : $data['specifications'];
     }
@@ -65,13 +67,14 @@ class Product
     // Create a new product
     public static function create($pdo, $data)
     {
-        $stmt = $pdo->prepare("INSERT INTO products (name, category_id, price, stock, image_url, specifications) VALUES (?, ?, ?, ?, ?, ?)");
+        $stmt = $pdo->prepare("INSERT INTO products (name, category_id, price, stock, image_url, icon, specifications) VALUES (?, ?, ?, ?, ?, ?, ?)");
         return $stmt->execute([
             $data['name'],
             $data['category_id'],
             $data['price'],
             $data['stock'],
             $data['image_url'],
+            $data['icon'] ?? '',
             json_encode($data['specifications'])
         ]);
     }
@@ -79,13 +82,14 @@ class Product
     // Update an existing product
     public static function update($pdo, $id, $data)
     {
-        $stmt = $pdo->prepare("UPDATE products SET name = ?, category_id = ?, price = ?, stock = ?, image_url = ?, specifications = ? WHERE id = ?");
+        $stmt = $pdo->prepare("UPDATE products SET name = ?, category_id = ?, price = ?, stock = ?, image_url = ?, icon = ?, specifications = ? WHERE id = ?");
         return $stmt->execute([
             $data['name'],
             $data['category_id'],
             $data['price'],
             $data['stock'],
             $data['image_url'],
+            $data['icon'] ?? '',
             json_encode($data['specifications']),
             $id
         ]);

@@ -109,6 +109,8 @@ foreach ($products as $product) {
         'name' => $product->name,
         'price' => $product->price,
         'image_url' => $product->image_url,
+        'icon' => $product->icon,
+        'stock' => $product->stock,
         'specs' => $product->specifications,
         'is_compatible' => $isCompatible,
         'incompatibility_reason' => $reason

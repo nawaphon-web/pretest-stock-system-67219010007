@@ -3,24 +3,19 @@ require 'db.php';
 
 try {
     $sql = file_get_contents('database.sql');
+    // Using exec for the whole block. If it fails, we'll suggest splitting.
     $pdo->exec($sql);
-    echo "Database setup completed successfully.<br>";
-    echo "Default Users created:<br>";
-    echo "Admin: admin / password (actually I put 'password' hash in SQL but the prompt said admin123. Let me fix the hash in SQL if needed. Wait, the hash in SQL is for 'password'. Let's stick to simple defaults.)<br>";
-    echo "Wait, let's reset to ensure we know the password.<br>";
+    echo "Database structure and initial data loaded.<br>";
 
-    // Let's re-hash to be sure
+    // Reset passwords to known values
     $admin_pass = password_hash('admin123', PASSWORD_DEFAULT);
     $user_pass = password_hash('user123', PASSWORD_DEFAULT);
 
-    // Update or Insert
-    $stmt = $pdo->prepare("INSERT INTO users (username, password, role) VALUES (:u, :p, 'admin') ON DUPLICATE KEY UPDATE password=:p2");
-    $stmt->execute(['u' => 'admin', 'p' => $admin_pass, 'p2' => $admin_pass]);
+    $stmt = $pdo->prepare("UPDATE users SET password = ? WHERE username = ?");
+    $stmt->execute([$admin_pass, 'admin']);
+    $stmt->execute([$user_pass, 'user']);
 
-    $stmt = $pdo->prepare("INSERT INTO users (username, password, role) VALUES (:u, :p, 'user') ON DUPLICATE KEY UPDATE password=:p2");
-    $stmt->execute(['u' => 'user', 'p' => $user_pass, 'p2' => $user_pass]);
-
-    echo "Users updated with passwords: admin123 / user123";
+    echo "Passwords reset to: admin123 / user123";
 
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
