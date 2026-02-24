@@ -39,6 +39,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -47,35 +48,46 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <!-- Font Awesome for icon -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
+
 <body>
     <div class="login-container">
-        <div class="logo-icon">
-            <i class="fa-solid fa-laptop-code"></i>
+        <div class="logo-icon" style="color: var(--neon-blue); animation: glow-pulse 3s infinite;">
+            <i class="fa-solid fa-microchip"></i>
         </div>
-        <h2>Welcome Back</h2>
-        <p class="subtitle">Sign in to your account</p>
+        <h2 class="shimmer-text" style="font-size: 2.5rem; letter-spacing: -2px;">TECHSTOCK</h2>
+        <p class="subtitle" style="text-transform: uppercase; letter-spacing: 2px;">เข้าสู่ระบบสมาชิก</p>
 
         <?php if ($error): ?>
-            <div class="alert alert-danger">
-                <?php echo htmlspecialchars($error); ?>
+            <div class="alert"
+                style="background: rgba(239, 68, 68, 0.1); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.2); padding: 1rem; border-radius: 0.5rem; margin-bottom: 2rem;">
+                <i class="fa-solid fa-triangle-exclamation"></i> <?php echo htmlspecialchars($error); ?>
             </div>
         <?php endif; ?>
 
         <form method="POST" action="">
             <div class="form-group">
-                <label for="username">Username</label>
-                <input type="text" id="username" name="username" placeholder="Enter your username" required>
+                <label for="username" style="color: var(--primary-color);">ชื่อผู้ใช้งาน (USERNAME)</label>
+                <input type="text" id="username" name="username" placeholder="Username" required
+                    style="background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); color: white; padding: 1rem; border-radius: 0.75rem; transition: 0.3s;"
+                    onfocus="this.style.borderColor='var(--primary-color)'"
+                    onblur="this.style.borderColor='var(--glass-border)'">
             </div>
             <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                <label for="password" style="color: var(--primary-color);">รหัสผ่าน (PASSWORD)</label>
+                <input type="password" id="password" name="password" placeholder="••••••••" required
+                    style="background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); color: white; padding: 1rem; border-radius: 0.75rem; transition: 0.3s;"
+                    onfocus="this.style.borderColor='var(--primary-color)'"
+                    onblur="this.style.borderColor='var(--glass-border)'">
             </div>
-            <button type="submit">Log In</button>
+            <button type="submit" class="cyber-btn" style="width: 100%; margin-top: 1rem;">เข้าสู่ระบบ</button>
         </form>
 
-        <div class="footer-link">
-            <p>Don't have an account? <a href="#">Contact Admin</a></p>
+        <div class="footer-link"
+            style="margin-top: 2rem; border-top: 1px solid var(--glass-border); padding-top: 2rem;">
+            <p style="color: var(--text-muted);">ระบบความปลอดภัยขั้นสูง <br><a href="#"
+                    style="color: var(--primary-color); text-decoration: none;">ลืมรหัสผ่าน?</a></p>
         </div>
     </div>
 </body>
+
 </html>

@@ -136,25 +136,208 @@ $newArrivals = Product::getNewArrivals($pdo, 4);
     </footer>
 
     <style>
-        @keyframes bounce {
+        .hero-section-advanced {
+            min-height: 90vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 4rem 2rem;
+            position: relative;
+            overflow: hidden;
+            background: radial-gradient(circle at 70% 30%, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 20% 70%, rgba(216, 180, 254, 0.05) 0%, transparent 50%);
+        }
 
-            0%,
-            20%,
-            50%,
-            80%,
-            100% {
-                transform: translateY(0);
-            }
+        .hero-glow {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: var(--primary-color);
+            filter: blur(200px);
+            opacity: 0.1;
+            top: 10%;
+            right: 10%;
+            z-index: 0;
+            pointer-events: none;
+        }
 
-            40% {
-                transform: translateY(-10px);
-            }
+        .landing-grid-advanced {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 4rem;
+        }
 
-            60% {
-                transform: translateY(-5px);
-            }
+        .nav-card-tech {
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 2rem;
+            padding: 3rem;
+            text-align: center;
+            text-decoration: none;
+            transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-card-tech:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary-color);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .nav-card-tech i {
+            font-size: 3rem;
+            color: var(--primary-color);
+            margin-bottom: 2rem;
+            filter: drop-shadow(0 0 10px rgba(59, 130, 246, 0.3));
+        }
+
+        .nav-card-tech span {
+            display: block;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: white;
+            letter-spacing: 1px;
+        }
+
+        .section-header-tech {
+            margin-bottom: 4rem;
+            text-align: center;
+        }
+
+        .section-header-tech h2 {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .section-header-tech p {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: white;
+            letter-spacing: -1px;
         }
     </style>
-</body>
+    </head>
+
+    <body class="landing-page" style="background: var(--bg-color);">
+        <div class="hero-glow"></div>
+
+        <!-- Hero Section -->
+        <header class="hero-section-advanced">
+            <div class="hero-content" style="text-align: center; position: relative; z-index: 1;">
+                <div
+                    style="font-size: 0.8rem; text-transform: uppercase; letter-spacing: 4px; color: var(--primary-color); margin-bottom: 2rem;">
+                    // NEXT_GEN_HARDWARE_INTERFACE</div>
+                <h1 class="shimmer-text"
+                    style="font-size: clamp(3rem, 10vw, 6rem); line-height: 1; margin-bottom: 2rem;">TECHSTOCK_OS</h1>
+                <p style="font-size: 1.25rem; max-width: 700px; margin: 0 auto 4rem; line-height: 1.6;">
+                    Experience high-performance computing through our elite workstation configuration engine and premium
+                    hardware inventory.
+                </p>
+
+                <div class="landing-grid-advanced" style="max-width: 900px; margin-inline: auto;">
+                    <a href="builder.php" class="nav-card-tech">
+                        <i class="fa-solid fa-microchip"></i>
+                        <span>SYSTEM_BUILDER</span>
+                    </a>
+                    <a href="login.php" class="nav-card-tech">
+                        <i class="fa-solid fa-right-to-bracket"></i>
+                        <span>ACCESS_TERMINAL</span>
+                    </a>
+                    <a href="rma_check.php" class="nav-card-tech">
+                        <i class="fa-solid fa-shield-halved"></i>
+                        <span>ASSET_PROTECTION</span>
+                    </a>
+                </div>
+            </div>
+        </header>
+
+        <!-- Hot Deals Section -->
+        <section id="promotions" class="section">
+            <div class="section-header-tech">
+                <h2>[01] ACTIVE_MARKET_DEALS</h2>
+                <p>CURATED_HARDWARE_SUBSIDIES</p>
+            </div>
+
+            <div class="promo-grid">
+                <?php foreach ($promotions as $p): ?>
+                    <div class="glass-panel" style="padding: 3rem; border-radius: 2.5rem; text-align: center;">
+                        <div
+                            style="background: var(--accent-color); color: white; display: inline-block; padding: 0.25rem 1rem; border-radius: 2rem; font-size: 0.6rem; font-weight: 900; margin-bottom: 2rem;">
+                            FLASH_DEAL</div>
+                        <div style="font-size: 4rem; color: var(--accent-color); margin-bottom: 2rem;"><i
+                                class="fa-solid <?php echo $p->icon ?: 'fa-box'; ?>"></i></div>
+                        <h3 style="font-size: 1.5rem; margin-bottom: 1rem;"><?php echo $p->name; ?></h3>
+                        <div
+                            style="display: flex; justify-content: center; align-items: baseline; gap: 1rem; margin-bottom: 2rem;">
+                            <span
+                                style="font-size: 2rem; font-weight: 800; color: white;">฿<?php echo number_format($p->sale_price); ?></span>
+                            <span
+                                style="text-decoration: line-through; color: var(--text-muted);">฿<?php echo number_format($p->price); ?></span>
+                        </div>
+                        <button class="cyber-btn"
+                            style="width: 100%; border-color: var(--accent-color); color: var(--accent-color);"
+                            onclick="location.href='builder.php'">ACQUIRE_ASSET</button>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+        </section>
+
+        <!-- New Arrivals Section -->
+        <section class="section">
+            <div class="section-header-tech">
+                <h2>[02] NEURAL_SYNC_INVENTORY</h2>
+                <p>RECENT_HARDWARE_INTEGRATIONS</p>
+            </div>
+
+            <div class="promo-grid">
+                <?php foreach ($newArrivals as $p): ?>
+                    <div class="glass-panel" style="padding: 3rem; border-radius: 2.5rem; text-align: center;">
+                        <div
+                            style="background: var(--secondary-color); color: white; display: inline-block; padding: 0.25rem 1rem; border-radius: 2rem; font-size: 0.6rem; font-weight: 900; margin-bottom: 2rem;">
+                            NEW_ARRIVAL</div>
+                        <div style="font-size: 4rem; color: var(--secondary-color); margin-bottom: 2rem;"><i
+                                class="fa-solid <?php echo $p->icon ?: 'fa-box'; ?>"></i></div>
+                        <h3 style="font-size: 1.5rem; margin-bottom: 1rem;"><?php echo $p->name; ?></h3>
+                        <div style="font-size: 2rem; font-weight: 800; color: white; margin-bottom: 2rem;">
+                            ฿<?php echo number_format($p->price); ?></div>
+                        <button class="cyber-btn"
+                            style="width: 100%; border-color: var(--secondary-color); color: var(--secondary-color);"
+                            onclick="location.href='builder.php'">VIEW_DETAILS</button>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+        </section>
+
+        <footer
+            style="padding: 6rem 2rem; text-align: center; background: rgba(0,0,0,0.3); border-top: 1px solid var(--glass-border);">
+            <div style="margin-bottom: 3rem;">
+                <div class="shimmer-text" style="font-size: 2.5rem; font-weight: 800; letter-spacing: -2px;">TECHSTOCK
+                </div>
+                <p
+                    style="color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 4px; margin-top: 1rem;">
+                    INTELLIGENT_HARDWARE_SYSTEMS</p>
+            </div>
+            <div style="display: flex; justify-content: center; gap: 3rem; margin-bottom: 4rem;">
+                <a href="#"
+                    style="color: var(--text-muted); text-decoration: none; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 2px;">Data
+                    Protocols</a>
+                <a href="#"
+                    style="color: var(--text-muted); text-decoration: none; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 2px;">Security
+                    Grid</a>
+                <a href="#"
+                    style="color: var(--text-muted); text-decoration: none; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 2px;">Access
+                    Logs</a>
+            </div>
+            <div style="font-size: 0.6rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px;">
+                &copy; 2026 TechStock Global Grid. All neural links reserved.
+            </div>
+        </footer>
+    </body>
 
 </html>

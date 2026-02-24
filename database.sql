@@ -1,5 +1,7 @@
 -- TechStock Database Schema and Sample Data
 SET FOREIGN_KEY_CHECKS = 0;
+DROP TABLE IF EXISTS bundle_items;
+DROP TABLE IF EXISTS bundles;
 DROP TABLE IF EXISTS product_reservations;
 DROP TABLE IF EXISTS rma_requests;
 DROP TABLE IF EXISTS order_items;
@@ -102,6 +104,25 @@ CREATE TABLE product_reservations (
     FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
+CREATE TABLE bundles (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    description TEXT,
+    total_price DECIMAL(10, 2) NOT NULL,
+    discount_price DECIMAL(10, 2),
+    image_url VARCHAR(255),
+    icon VARCHAR(50) DEFAULT 'fa-box-open',
+    is_hot BOOLEAN DEFAULT FALSE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE bundle_items (
+    bundle_id INT NOT NULL,
+    product_id INT NOT NULL,
+    FOREIGN KEY (bundle_id) REFERENCES bundles(id),
+    FOREIGN KEY (product_id) REFERENCES products(id)
+);
+
 INSERT INTO users (username, password, role) VALUES ('admin', '$2y$10$f/9S5i6fOqO/Qn5mY/K5He1oKoEa3Ro9llC/.og/at2.uheWG/igi', 'admin');
 INSERT INTO users (username, password, role) VALUES ('user', '$2y$10$f/9S5i6fOqO/Qn5mY/K5He1oKoEa3Ro9llC/.og/at2.uheWG/igi', 'user');
 
@@ -177,5 +198,17 @@ INSERT INTO products (id, category_id, name, price, stock, icon, specifications,
 INSERT INTO suppliers (id, name) VALUES (1, 'Synnex');
 
 INSERT INTO inventory (product_id, serial_number, supplier_id, status) SELECT id, CONCAT('SN-', category_id, '-', id, '-001'), 1, 'available' FROM products;
+
+-- Bundles (Curated PC Sets)
+INSERT INTO bundles (id, name, description, total_price, discount_price, is_hot, icon) VALUES (1, 'Office Performance Set', 'เหมาะสำหรับการทำงานทั่วไป เอกสาร และการเรียนรู้', 20000, 18900, 0, 'fa-briefcase');
+INSERT INTO bundles (id, name, description, total_price, discount_price, is_hot, icon) VALUES (2, 'Pro Gaming 2024', 'เซตเกมมิ่งระดับโปร รองรับการเล่นเกมระดับ 2K สบายๆ', 65000, 59900, 1, 'fa-gamepad');
+INSERT INTO bundles (id, name, description, total_price, discount_price, is_hot, icon) VALUES (3, 'Elite Creator Workstation', 'ที่สุดของการประมวลผล สำหรับงานตัดต่อ 4K และ 3D เรนเดอร์', 150000, 139000, 1, 'fa-gem');
+
+-- Bundle 1 Items
+INSERT INTO bundle_items (bundle_id, product_id) VALUES (1, 4), (1, 9), (1, 12), (1, 25), (1, 28), (1, 39);
+-- Bundle 2 Items (Gaming)
+INSERT INTO bundle_items (bundle_id, product_id) VALUES (2, 1), (2, 7), (2, 11), (2, 16), (2, 21), (2, 26), (2, 37);
+-- Bundle 3 Items (Elite)
+INSERT INTO bundle_items (bundle_id, product_id) VALUES (3, 2), (3, 6), (3, 15), (3, 17), (3, 23), (3, 27), (3, 36);
 
 SET FOREIGN_KEY_CHECKS = 1;
