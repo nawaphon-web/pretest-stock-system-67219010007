@@ -733,3 +733,221 @@ button:hover {
     font-size: 1.5rem;
     cursor: pointer;
 }
+
+/* Landing Page Specifics */
+.landing-page {
+    display: block;
+    overflow-y: auto;
+    height: 100vh;
+    width: 100vw;
+}
+
+.hero-section {
+    position: relative;
+    height: 70vh;
+    min-height: 500px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+    overflow: hidden;
+}
+
+.hero-bg-accent {
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(59, 130, 246, 0.15) 0%, transparent 70%);
+    top: -100px;
+    right: -100px;
+    z-index: 1;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+    padding: 2rem;
+    max-width: 900px;
+}
+
+.hero-content h1 {
+    font-size: clamp(2.5rem, 8vw, 4.5rem);
+    font-weight: 800;
+    margin-bottom: 1.5rem;
+    line-height: 1.1;
+    background: linear-gradient(to right, #fff, var(--primary-color));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.hero-content p {
+    font-size: 1.25rem;
+    color: var(--text-muted);
+    margin-bottom: 2.5rem;
+    max-width: 600px;
+    margin-inline: auto;
+}
+
+.section {
+    padding: 6rem 2rem;
+    max-width: 1300px;
+    margin: 0 auto;
+}
+
+.section-header {
+    margin-bottom: 3rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.section-title {
+    font-size: 2.25rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.section-subtitle {
+    color: var(--text-muted);
+}
+
+.promo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+}
+
+.promo-card {
+    background: var(--card-bg);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 1.5rem;
+    padding: 2rem;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.promo-card:hover {
+    transform: translateY(-12px);
+    border-color: var(--primary-color);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    background: rgba(30, 41, 59, 0.9);
+}
+
+.promo-tag {
+    position: absolute;
+    top: 1.25rem;
+    right: 1.25rem;
+    padding: 0.4rem 1rem;
+    border-radius: 2rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    z-index: 3;
+}
+
+.tag-new {
+    background: #10b981;
+    color: white;
+}
+
+.tag-deal {
+    background: #f43f5e;
+    color: white;
+}
+
+.promo-icon {
+    font-size: 3.5rem;
+    color: var(--primary-color);
+    margin-bottom: 1.5rem;
+    opacity: 0.9;
+}
+
+.promo-info h3 {
+    font-size: 1.25rem;
+    margin-bottom: 0.75rem;
+    color: white;
+}
+
+.promo-price {
+    margin-top: auto;
+    padding-top: 1.5rem;
+}
+
+.price-flex {
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+}
+
+.old-price {
+    text-decoration: line-through;
+    color: var(--text-muted);
+    font-size: 1rem;
+}
+
+.sale-price {
+    color: #f43f5e;
+    font-size: 1.75rem;
+    font-weight: 800;
+}
+
+.normal-price {
+    color: var(--primary-color);
+    font-size: 1.75rem;
+    font-weight: 800;
+}
+
+.buy-now-btn {
+    margin-top: 1.5rem;
+    width: 100%;
+    padding: 0.8rem;
+    border-radius: 1rem;
+    background: rgba(59, 130, 246, 0.1);
+    color: var(--primary-color);
+    border: 1px solid rgba(59, 130, 246, 0.3);
+    font-weight: 600;
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+.promo-card:hover .buy-now-btn {
+    background: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+}
+
+.landing-nav {
+    display: flex;
+    gap: 1.5rem;
+    margin-top: 3rem;
+    justify-content: center;
+}
+
+.nav-card {
+    background: rgba(255, 255, 255, 0.03);
+    padding: 1.5rem 2.5rem;
+    border-radius: 1.25rem;
+    text-decoration: none;
+    color: white;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: 0.3s;
+}
+
+.nav-card:hover {
+    background: rgba(59, 130, 246, 0.15);
+    border-color: var(--primary-color);
+    transform: translateY(-5px);
+}
+
+.nav-card i {
+    font-size: 1.25rem;
+    color: var(--primary-color);
+}

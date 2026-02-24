@@ -9,6 +9,9 @@ class Product
     public $image_url;
     public $icon;
     public $specifications; // Array
+    public $is_new;
+    public $is_promotion;
+    public $sale_price;
 
     public function __construct($data)
     {
@@ -21,6 +24,9 @@ class Product
         $this->icon = $data['icon'] ?? '';
         // flexible parsing for JSON specs
         $this->specifications = is_string($data['specifications']) ? json_decode($data['specifications'], true) : $data['specifications'];
+        $this->is_new = (bool) ($data['is_new'] ?? false);
+        $this->is_promotion = (bool) ($data['is_promotion'] ?? false);
+        $this->sale_price = isset($data['sale_price']) ? floatval($data['sale_price']) : null;
     }
 
     public static function findAll($pdo)
@@ -62,6 +68,30 @@ class Product
             return new Product($row);
         }
         return null;
+    }
+
+    public static function getNewArrivals($pdo, $limit = 8)
+    {
+        $stmt = $pdo->prepare("SELECT * FROM products WHERE is_new = 1 ORDER BY id DESC LIMIT ?");
+        $stmt->bindValue(1, (int) $limit, PDO::PARAM_INT);
+        $stmt->execute();
+        $products = [];
+        while ($row = $stmt->fetch()) {
+            $products[] = new Product($row);
+        }
+        return $products;
+    }
+
+    public static function getPromotions($pdo, $limit = 8)
+    {
+        $stmt = $pdo->prepare("SELECT * FROM products WHERE is_promotion = 1 ORDER BY id DESC LIMIT ?");
+        $stmt->bindValue(1, (int) $limit, PDO::PARAM_INT);
+        $stmt->execute();
+        $products = [];
+        while ($row = $stmt->fetch()) {
+            $products[] = new Product($row);
+        }
+        return $products;
     }
 
     // Create a new product

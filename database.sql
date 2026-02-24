@@ -32,6 +32,9 @@ CREATE TABLE products (
     image_url VARCHAR(255),
     icon VARCHAR(50),
     specifications JSON,
+    is_new BOOLEAN DEFAULT FALSE,
+    is_promotion BOOLEAN DEFAULT FALSE,
+    sale_price DECIMAL(10, 2),
     FOREIGN KEY (category_id) REFERENCES categories(id)
 );
 
@@ -115,8 +118,8 @@ INSERT INTO categories (id, name) VALUES (10, 'keyboard');
 INSERT INTO categories (id, name) VALUES (11, 'mouse');
 
 -- Products (11 categories * 5 = 55)
-INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (1, 1, 'Intel i5-13600K', 11900, 5, 'fa-microchip', '{"socket": "LGA1700"}');
-INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (2, 1, 'Intel i9-14900K', 24900, 5, 'fa-microchip', '{"socket": "LGA1700"}');
+INSERT INTO products (id, category_id, name, price, stock, icon, specifications, is_new, is_promotion, sale_price) VALUES (1, 1, 'Intel i5-13600K', 11900, 5, 'fa-microchip', '{"socket": "LGA1700"}', 0, 1, 10900);
+INSERT INTO products (id, category_id, name, price, stock, icon, specifications, is_new, is_promotion, sale_price) VALUES (2, 1, 'Intel i9-14900K', 24900, 5, 'fa-microchip', '{"socket": "LGA1700"}', 1, 0, NULL);
 INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (3, 1, 'AMD R7 7800X3D', 14900, 5, 'fa-microchip', '{"socket": "AM5"}');
 INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (4, 1, 'AMD R5 7600', 8900, 5, 'fa-microchip', '{"socket": "AM5"}');
 INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (5, 1, 'Intel i7-14700K', 15900, 5, 'fa-microchip', '{"socket": "LGA1700"}');
@@ -130,8 +133,8 @@ INSERT INTO products (id, category_id, name, price, stock, icon, specifications)
 INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (13, 3, 'G.Skill D5 32GB', 5900, 5, 'fa-memory', '{"type": "DDR5"}');
 INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (14, 3, 'Team D4 16GB', 2200, 5, 'fa-memory', '{"type": "DDR4"}');
 INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (15, 3, 'Corsair D5 64GB', 12000, 5, 'fa-memory', '{"type": "DDR5"}');
-INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (16, 4, 'RTX 4070 FE', 23000, 5, 'fa-bolt', '{}');
-INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (17, 4, 'RTX 4090 OC', 75000, 5, 'fa-bolt', '{}');
+INSERT INTO products (id, category_id, name, price, stock, icon, specifications, is_new, is_promotion, sale_price) VALUES (16, 4, 'RTX 4070 FE', 23000, 5, 'fa-bolt', '{}', 0, 1, 21900);
+INSERT INTO products (id, category_id, name, price, stock, icon, specifications, is_new, is_promotion, sale_price) VALUES (17, 4, 'RTX 4090 OC', 75000, 5, 'fa-bolt', '{}', 1, 0, NULL);
 INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (18, 4, 'RX 7800 XT', 19500, 5, 'fa-bolt', '{}');
 INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (19, 4, 'RTX 4060 Ti', 14500, 5, 'fa-bolt', '{}');
 INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (20, 4, 'RX 7600', 9900, 5, 'fa-bolt', '{}');
@@ -168,8 +171,8 @@ INSERT INTO products (id, category_id, name, price, stock, icon, specifications)
 INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (51, 11, 'G Pro X Superlight', 5600, 5, 'fa-mouse', '{}');
 INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (52, 11, 'DeathAdder V3', 4900, 5, 'fa-mouse', '{}');
 INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (53, 11, 'Aerox 3 Wireless', 2900, 5, 'fa-mouse', '{}');
-INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (54, 11, 'Zowie EC2-C', 2400, 5, 'fa-mouse', '{}');
-INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (55, 11, 'Glorious Model O 2', 2200, 5, 'fa-mouse', '{}');
+INSERT INTO products (id, category_id, name, price, stock, icon, specifications, is_new, is_promotion, sale_price) VALUES (54, 11, 'Zowie EC2-C', 2400, 5, 'fa-mouse', '{}', 0, 1, 2100);
+INSERT INTO products (id, category_id, name, price, stock, icon, specifications, is_new, is_promotion, sale_price) VALUES (55, 11, 'Glorious Model O 2', 2200, 5, 'fa-mouse', '{}', 1, 0, NULL);
 
 INSERT INTO suppliers (id, name) VALUES (1, 'Synnex');
 

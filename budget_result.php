@@ -207,7 +207,9 @@ if ($budget < 15000) {
                 gpu: 'fa-bolt',
                 ssd: 'fa-hard-drive',
                 psu: 'fa-plug',
-                case: 'fa-box'
+                case: 'fa-box',
+                keyboard: 'fa-keyboard',
+                mouse: 'fa-mouse'
             };
 
             for (const [cat, part] of Object.entries(data.build)) {
