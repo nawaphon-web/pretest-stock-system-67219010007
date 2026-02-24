@@ -14,9 +14,10 @@ class WarrantyService
     public function checkWarranty($serialNumber)
     {
         $stmt = $this->pdo->prepare("
-            SELECT i.*, p.name as product_name, o.created_at as sale_date
+            SELECT i.*, p.name as product_name, o.created_at as sale_date, s.name as supplier_name
             FROM inventory i
             JOIN products p ON i.product_id = p.id
+            LEFT JOIN suppliers s ON i.supplier_id = s.id
             LEFT JOIN order_items oi ON i.id = oi.inventory_id
             LEFT JOIN orders o ON oi.order_id = o.id
             WHERE i.serial_number = ?
