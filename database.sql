@@ -126,6 +126,19 @@ CREATE TABLE IF NOT EXISTS rma_requests (
     FOREIGN KEY (inventory_id) REFERENCES inventory(id)
 );
 
+-- Product Reservations (Temporarily hold stock for 15 mins)
+CREATE TABLE IF NOT EXISTS product_reservations (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    product_id INT NOT NULL,
+    session_id VARCHAR(255) NOT NULL,
+    user_id INT,
+    quantity INT DEFAULT 1,
+    expires_at TIMESTAMP NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (product_id) REFERENCES products(id),
+    FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
 -- Insert Sample Suppliers
 INSERT IGNORE INTO suppliers (name) VALUES ('Synnex'), ('Ingram Micro'), ('Ascenti Resources');
 

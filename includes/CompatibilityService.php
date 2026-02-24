@@ -6,7 +6,7 @@ class CompatibilityService
     public static function checkCpuMainboard($cpu, $mainboard)
     {
         if (!$cpu || !$mainboard)
-            return true; // Can't check if one is missing
+            return true;
         $cpuSocket = $cpu->getSpec('socket');
         $mbSocket = $mainboard->getSpec('socket');
         return $cpuSocket === $mbSocket;
@@ -26,14 +26,36 @@ class CompatibilityService
             return false;
         }
 
-        // Check Slots (Simplified: just checking if board has enough slots for total sticks)
-        // Ideally we'd need to know how many sticks come in the RAM pack. 
-        // For this demo, let's assume 'modules' key in RAM specs tells us count (e.g. 2x16GB -> 2 modules)
+        // Check Slots
         $ramModules = $ram->getSpec('modules') ?? 1;
         $totalModules = $ramModules * $ramCount;
         $mbSlots = $mainboard->getSpec('memory_slots');
 
-        return $totalModules <= $mbSlots;
+        if ($mbSlots && $totalModules > $mbSlots) {
+            return false;
+        }
+
+        return true;
+    }
+
+    // Check if CPU Cooler fits the CPU socket
+    public static function checkCoolerCpuSocket($cooler, $cpu)
+    {
+        if (!$cooler || !$cpu)
+            return true;
+
+        $cpuSocket = $cpu->getSpec('socket');
+        $supportedSockets = $cooler->getSpec('sockets');
+
+        if (!$cpuSocket || !$supportedSockets)
+            return true;
+
+        if (is_array($supportedSockets)) {
+            return in_array($cpuSocket, $supportedSockets);
+        }
+
+        // If it's a string, check if it contains the socket name
+        return stripos($supportedSockets, $cpuSocket) !== false;
     }
 
     // Check if GPU fits in the Case
@@ -48,7 +70,7 @@ class CompatibilityService
         if ($gpuLength && $maxGpuLength) {
             return $gpuLength <= $maxGpuLength;
         }
-        return true; // Assume true if specs missing
+        return true;
     }
 
     // Check if CPU Cooler fits in the Case

@@ -48,6 +48,17 @@ foreach ($products as $product) {
         }
     }
 
+    if ($category === 'cooler') {
+        if ($cpu && !CompatibilityService::checkCoolerCpuSocket($product, $cpu)) {
+            $isCompatible = false;
+            $reason = "ซิงค์ไม่รองรับซ็อกเก็ตนี้ (CPU: {$cpu->getSpec('socket')})";
+        }
+        if ($case && !CompatibilityService::checkCoolerCase($product, $case)) {
+            $isCompatible = false;
+            $reason = "ซิงค์สูงเกินไปสำหรับเคสนี้ (ซิงค์: {$product->getSpec('height_mm')}มม. vs เคส: {$case->getSpec('max_cpu_height')}มม.)";
+        }
+    }
+
     if ($category === 'gpu' && $case) {
         if (!CompatibilityService::checkGpuCase($product, $case)) {
             $isCompatible = false;
@@ -57,9 +68,14 @@ foreach ($products as $product) {
 
     if ($category === 'case' && $product) {
         $gpu = isset($currentBuild['gpu']) ? Product::findById($pdo, $currentBuild['gpu']['id']) : null;
+        $cooler = isset($currentBuild['cooler']) ? Product::findById($pdo, $currentBuild['cooler']['id']) : null;
         if ($gpu && !CompatibilityService::checkGpuCase($gpu, $product)) {
             $isCompatible = false;
             $reason = "เคสเล็กเกินไปสำหรับการ์ดจอนี้ (การ์ดจอ: {$gpu->getSpec('length_mm')}มม. vs เคส: {$product->getSpec('max_gpu_length')}มม.)";
+        }
+        if ($cooler && !CompatibilityService::checkCoolerCase($cooler, $product)) {
+            $isCompatible = false;
+            $reason = "เคสเล็กเกินไปสำหรับซิงค์นี้ (ซิงค์: {$cooler->getSpec('height_mm')}มม. vs เคส: {$product->getSpec('max_cpu_height')}มม.)";
         }
     }
 
@@ -83,6 +99,12 @@ foreach ($products as $product) {
             $isCompatible = false;
             $reason = "กำลังไฟ PSU ที่แนะนำคือ {$recommendedWattage}W (สเปคนี้ต้องการประมาณ " . round($totalTdp) . "W TDP)";
         }
+    }
+
+    // Strict Filtering: Skip incompatible items for certain categories
+    $strictCategories = ['cpu', 'mainboard', 'ram', 'cooler', 'gpu', 'case'];
+    if (in_array($category, $strictCategories) && !$isCompatible) {
+        continue;
     }
 
     $compatibleProducts[] = [
