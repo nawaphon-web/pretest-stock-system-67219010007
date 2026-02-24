@@ -11,7 +11,7 @@ if (!isset($_SESSION['user_id'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Intelligent PC Builder - TechStock</title>
+    <title>ระบบจัดสเปคคอมพิวเตอร์อัจฉริยะ - TechStock</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
@@ -20,19 +20,19 @@ if (!isset($_SESSION['user_id'])) {
     <div class="builder-container">
         <!-- Sidebar / Summary -->
         <div class="build-summary">
-            <h2>Your Rig</h2>
+            <h2>สเปคของคุณ</h2>
             <div id="build-list">
                 <!-- Selected parts will appear here -->
-                <div class="empty-state">No parts selected</div>
+                <div class="empty-state">ยังไม่ได้เลือกอุปกรณ์</div>
             </div>
 
             <div class="stats">
                 <div class="stat-item">
-                    <span>Est. Wattage</span>
+                    <span>กำลังไฟที่ใช้ (โดยประมาณ)</span>
                     <strong id="total-tdp">0 W</strong>
                 </div>
                 <div class="stat-item">
-                    <span>Total Price</span>
+                    <span>ราคารวม</span>
                     <strong id="total-price" style="color: var(--primary-color);">฿0.00</strong>
                 </div>
             </div>
@@ -41,40 +41,43 @@ if (!isset($_SESSION['user_id'])) {
                 <input type="hidden" name="build_data" id="form-build-data">
                 <input type="hidden" name="assembly" id="form-assembly">
             </form>
-            <button class="btn-checkout" onclick="proceedToCheckout()">Checkout</button>
-            <a href="user_dashboard.php" class="btn-back">Back to Dashboard</a>
+            <button class="btn-checkout" onclick="proceedToCheckout()">ไปที่หน้าชำระเงิน</button>
+            <a href="user_dashboard.php" class="btn-back">กลับไปยังหน้าหลัก</a>
         </div>
 
         <!-- Main Selection Area -->
         <div class="selection-area">
             <div class="steps-nav">
-                <button class="step-btn active" data-category="cpu" onclick="loadCategory('cpu')">CPU</button>
-                <button class="step-btn" data-category="cooler" onclick="loadCategory('cooler')">Cooler</button>
-                <button class="step-btn" data-category="mainboard"
-                    onclick="loadCategory('mainboard')">Mainboard</button>
-                <button class="step-btn" data-category="ram" onclick="loadCategory('ram')">RAM</button>
-                <button class="step-btn" data-category="gpu" onclick="loadCategory('gpu')">GPU</button>
-                <button class="step-btn" data-category="ssd" onclick="loadCategory('ssd')">Storage</button>
-                <button class="step-btn" data-category="psu" onclick="loadCategory('psu')">Power Supply</button>
-                <button class="step-btn" data-category="case" onclick="loadCategory('case')">Case</button>
+                <button class="step-btn active" data-category="cpu" onclick="loadCategory('cpu')">ซีพียู (CPU)</button>
+                <button class="step-btn" data-category="cooler" onclick="loadCategory('cooler')">ซิงค์พัดลม
+                    (Cooler)</button>
+                <button class="step-btn" data-category="mainboard" onclick="loadCategory('mainboard')">เมนบอร์ด
+                    (Mainboard)</button>
+                <button class="step-btn" data-category="ram" onclick="loadCategory('ram')">แรม (RAM)</button>
+                <button class="step-btn" data-category="gpu" onclick="loadCategory('gpu')">การ์ดจอ (GPU)</button>
+                <button class="step-btn" data-category="ssd" onclick="loadCategory('ssd')">ฮาร์ดดิสก์/SSD
+                    (Storage)</button>
+                <button class="step-btn" data-category="psu" onclick="loadCategory('psu')">พาวเวอร์ซัพพลาย
+                    (PSU)</button>
+                <button class="step-btn" data-category="case" onclick="loadCategory('case')">เคส (Case)</button>
             </div>
 
             <div class="assembly-options">
-                <h3><i class="fa-solid fa-screwdriver-wrench"></i> Assembly Service</h3>
+                <h3><i class="fa-solid fa-screwdriver-wrench"></i> บริการประกอบคอมพิวเตอร์</h3>
                 <div class="options-grid">
                     <label class="option-card">
                         <input type="radio" name="assembly" value="box" checked onchange="updateAssembly(0)">
                         <div class="option-content">
-                            <span class="option-title">Individual Boxes</span>
-                            <span class="option-desc">Ship parts as-is</span>
-                            <span class="option-price">FREE</span>
+                            <span class="option-title">แยกชิ้นส่วนลงกล่อง</span>
+                            <span class="option-desc">จัดส่งอุปกรณ์แบบแยกกล่องตามปกติ</span>
+                            <span class="option-price">ฟรี</span>
                         </div>
                     </label>
                     <label class="option-card">
                         <input type="radio" name="assembly" value="build" onchange="updateAssembly(500)">
                         <div class="option-content">
-                            <span class="option-title">Professional Build</span>
-                            <span class="option-desc">Assembly & Cable Mgmt</span>
+                            <span class="option-title">บริการประกอบมืออาชีพ</span>
+                            <span class="option-desc">ประกอบเครื่องพร้อมจัดสายไฟให้สวยงาม</span>
                             <span class="option-price">฿500</span>
                         </div>
                     </label>
@@ -83,12 +86,12 @@ if (!isset($_SESSION['user_id'])) {
 
             <div id="product-list" class="product-grid">
                 <!-- Products loaded via AJAX -->
-                <div class="loading">Loading parts...</div>
+                <div class="loading">กำลังโหลดข้อมูล...</div>
             </div>
 
             <div class="action-footer">
                 <button class="btn-share" onclick="shareSpecs()">
-                    <i class="fa-solid fa-share-nodes"></i> Share Specs
+                    <i class="fa-solid fa-share-nodes"></i> แชร์สเปค
                 </button>
             </div>
         </div>
@@ -121,7 +124,7 @@ if (!isset($_SESSION['user_id'])) {
             });
 
             const grid = document.getElementById('product-list');
-            grid.innerHTML = '<div class="loading">Fetching compatible parts...</div>';
+            grid.innerHTML = '<div class="loading">กำลังค้นหาอุปกรณ์ที่รองรับ...</div>';
 
             try {
                 // Prepare query params
@@ -134,7 +137,7 @@ if (!isset($_SESSION['user_id'])) {
 
                 renderProducts(products);
             } catch (err) {
-                grid.innerHTML = '<div class="error">Failed to load products.</div>';
+                grid.innerHTML = '<div class="error">ไม่สามารถโหลดข้อมูลอุปกรณ์ได้</div>';
                 console.error(err);
             }
         }
@@ -144,7 +147,7 @@ if (!isset($_SESSION['user_id'])) {
             grid.innerHTML = '';
 
             if (products.length === 0) {
-                grid.innerHTML = '<div class="empty-state">No compatible parts found. Try changing your selection.</div>';
+                grid.innerHTML = '<div class="empty-state">ไม่พบอุปกรณ์ที่รองรับ ลองเปลี่ยนการเลือกอุปกรณ์อื่น</div>';
                 return;
             }
 
@@ -163,8 +166,8 @@ if (!isset($_SESSION['user_id'])) {
                 specsHtml += '</ul>';
 
                 const actionBtn = p.is_compatible
-                    ? `<button class="btn-select" onclick="selectPart('${currentCategory}', ${p.id}, '${p.name}', ${p.price}, ${p.specs?.tdp || 0})">Select</button>`
-                    : `<button class="btn-disabled" disabled>Incompatible</button>`;
+                    ? `<button class="btn-select" onclick="selectPart('${currentCategory}', ${p.id}, '${p.name}', ${p.price}, ${p.specs?.tdp || 0})">เลือก</button>`
+                    : `<button class="btn-disabled" disabled>ไม่รองรับ</button>`;
 
                 const warning = p.is_compatible ? '' : `<div class="warning-msg"><i class="fa-solid fa-triangle-exclamation"></i> ${p.incompatibility_reason}</div>`;
 
@@ -205,7 +208,7 @@ if (!isset($_SESSION['user_id'])) {
             let totalTdp = 0;
 
             if (Object.keys(currentBuild).length === 0 && assemblyPrice === 0) {
-                list.innerHTML = '<div class="empty-state">No parts selected</div>';
+                list.innerHTML = '<div class="empty-state">ยังไม่ได้เลือกอุปกรณ์</div>';
             } else {
                 for (const [cat, part] of Object.entries(currentBuild)) {
                     totalPrice += part.price;
@@ -230,7 +233,7 @@ if (!isset($_SESSION['user_id'])) {
                     item.innerHTML = `
                         <div class="info">
                             <span class="cat-label">SERVICE</span>
-                            <span class="part-name">Pro Assembly</span>
+                            <span class="part-name">ประกอบมืออาชีพ</span>
                         </div>
                         <div class="item-price">฿${assemblyPrice.toLocaleString()}</div>
                     `;
@@ -254,7 +257,7 @@ if (!isset($_SESSION['user_id'])) {
 
         function proceedToCheckout() {
             if (Object.keys(currentBuild).length === 0) {
-                alert("Please select some parts first!");
+                alert("กรุณาเลือกอุปกรณ์ก่อน!");
                 return;
             }
             document.getElementById('form-build-data').value = JSON.stringify(currentBuild);
@@ -264,16 +267,16 @@ if (!isset($_SESSION['user_id'])) {
 
         function shareSpecs() {
             if (Object.keys(currentBuild).length === 0) {
-                alert("Please select some parts first!");
+                alert("กรุณาเลือกอุปกรณ์ก่อน!");
                 return;
             }
             const summary = Object.entries(currentBuild)
                 .map(([cat, part]) => `${cat.toUpperCase()}: ${part.name}`)
                 .join('\n');
-            const fullText = `My PC Build:\n${summary}\nTotal: ${document.getElementById('total-price').textContent}`;
+            const fullText = `คอมพิวเตอร์ที่ฉันจัดสเปค:\n${summary}\nราคารวม: ${document.getElementById('total-price').textContent}`;
 
             navigator.clipboard.writeText(fullText).then(() => {
-                alert("Specs copied to clipboard!");
+                alert("คัดลอกสเปคไปยังคลิปบอร์ดแล้ว!");
             }).catch(err => {
                 console.error('Could not copy text: ', err);
             });

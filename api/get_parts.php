@@ -9,7 +9,7 @@ $category = $_GET['category'] ?? '';
 $currentBuild = json_decode($_GET['current_build'] ?? '{}', true);
 
 if (!$category) {
-    echo json_encode(['error' => 'Category required']);
+    echo json_encode(['error' => 'จำเป็นต้องระบุหมวดหมู่']);
     exit;
 }
 
@@ -30,28 +30,28 @@ foreach ($products as $product) {
     if ($category === 'mainboard' && $cpu) {
         if (!CompatibilityService::checkCpuMainboard($cpu, $product)) {
             $isCompatible = false;
-            $reason = "Socket mismatch (CPU: {$cpu->getSpec('socket')} vs MB: {$product->getSpec('socket')})";
+            $reason = "ซ็อกเก็ตไม่ตรงกัน (CPU: {$cpu->getSpec('socket')} vs MB: {$product->getSpec('socket')})";
         }
     }
 
     if ($category === 'cpu' && $mainboard) {
         if (!CompatibilityService::checkCpuMainboard($product, $mainboard)) {
             $isCompatible = false;
-            $reason = "Socket mismatch";
+            $reason = "ซ็อกเก็ตไม่ตรงกัน";
         }
     }
 
     if ($category === 'ram' && $mainboard) {
         if (!CompatibilityService::checkRamMainboard($product, $mainboard)) {
             $isCompatible = false;
-            $reason = "Memory Type mismatch (Board: {$mainboard->getSpec('memory_type')})";
+            $reason = "ประเภทหน่วยความจำไม่ตรงกัน (บอร์ดรองรับ: {$mainboard->getSpec('memory_type')})";
         }
     }
 
     if ($category === 'gpu' && $case) {
         if (!CompatibilityService::checkGpuCase($product, $case)) {
             $isCompatible = false;
-            $reason = "GPU too long for Case (GPU: {$product->getSpec('length_mm')}mm vs Case: {$case->getSpec('max_gpu_length')}mm)";
+            $reason = "การ์ดจอยาวเกินไปสำหรับเคสนี้ (การ์ดจอ: {$product->getSpec('length_mm')}มม. vs เคส: {$case->getSpec('max_gpu_length')}มม.)";
         }
     }
 
@@ -59,7 +59,7 @@ foreach ($products as $product) {
         $gpu = isset($currentBuild['gpu']) ? Product::findById($pdo, $currentBuild['gpu']['id']) : null;
         if ($gpu && !CompatibilityService::checkGpuCase($gpu, $product)) {
             $isCompatible = false;
-            $reason = "Case too small for GPU (GPU: {$gpu->getSpec('length_mm')}mm vs Case: {$product->getSpec('max_gpu_length')}mm)";
+            $reason = "เคสเล็กเกินไปสำหรับการ์ดจอนี้ (การ์ดจอ: {$gpu->getSpec('length_mm')}มม. vs เคส: {$product->getSpec('max_gpu_length')}มม.)";
         }
     }
 
@@ -81,7 +81,7 @@ foreach ($products as $product) {
 
         if ($product->getSpec('wattage') < $recommendedWattage) {
             $isCompatible = false;
-            $reason = "Recommended PSU wattage is {$recommendedWattage}W (Current build needs ~" . round($totalTdp) . "W TDP)";
+            $reason = "กำลังไฟ PSU ที่แนะนำคือ {$recommendedWattage}W (สเปคนี้ต้องการประมาณ " . round($totalTdp) . "W TDP)";
         }
     }
 
