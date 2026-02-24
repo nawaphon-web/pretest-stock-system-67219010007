@@ -62,6 +62,42 @@ class Product
         return null;
     }
 
+    // Create a new product
+    public static function create($pdo, $data)
+    {
+        $stmt = $pdo->prepare("INSERT INTO products (name, category_id, price, stock, image_url, specifications) VALUES (?, ?, ?, ?, ?, ?)");
+        return $stmt->execute([
+            $data['name'],
+            $data['category_id'],
+            $data['price'],
+            $data['stock'],
+            $data['image_url'],
+            json_encode($data['specifications'])
+        ]);
+    }
+
+    // Update an existing product
+    public static function update($pdo, $id, $data)
+    {
+        $stmt = $pdo->prepare("UPDATE products SET name = ?, category_id = ?, price = ?, stock = ?, image_url = ?, specifications = ? WHERE id = ?");
+        return $stmt->execute([
+            $data['name'],
+            $data['category_id'],
+            $data['price'],
+            $data['stock'],
+            $data['image_url'],
+            json_encode($data['specifications']),
+            $id
+        ]);
+    }
+
+    // Delete a product
+    public static function delete($pdo, $id)
+    {
+        $stmt = $pdo->prepare("DELETE FROM products WHERE id = ?");
+        return $stmt->execute([$id]);
+    }
+
     // Helper to get a specific spec value safely
     public function getSpec($key)
     {
