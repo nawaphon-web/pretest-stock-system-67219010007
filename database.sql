@@ -69,6 +69,12 @@ INSERT INTO products (name, category_id, price, stock, image_url, specifications
 INSERT INTO products (name, category_id, price, stock, image_url, specifications) VALUES
 ('Samsung 980 PRO 1TB', 8, 3500.00, 25, 'https://example.com/980pro.jpg', '{"interface": "M.2 NVMe", "capacity": "1TB", "read_speed": "7000MB/s"}');
 
+-- Coolers
+INSERT INTO products (name, category_id, price, stock, image_url, specifications) VALUES
+('DeepCool AK400 Digital', 9, 1290.00, 15, 'https://example.com/ak400.jpg', '{"sockets": ["LGA1700", "AM4", "AM5"], "height_mm": 155, "tdp_rating": 220}'),
+('Noctua NH-D15 chromax.black', 9, 4100.00, 5, 'https://example.com/nh-d15.jpg', '{"sockets": ["LGA1700", "AM4", "AM5", "LGA1200"], "height_mm": 165, "tdp_rating": 250}'),
+('Cooler Master Hyper 212 Spectrum V3', 9, 990.00, 20, 'https://example.com/hyper212.jpg', '{"sockets": ["LGA1700", "AM4", "AM5"], "height_mm": 152, "tdp_rating": 180}');
+
 -- Suppliers
 CREATE TABLE IF NOT EXISTS suppliers (
     id INT AUTO_INCREMENT PRIMARY KEY,
