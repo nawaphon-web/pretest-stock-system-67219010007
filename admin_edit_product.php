@@ -35,21 +35,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($data['specifications'] === null && $_POST['specifications'] !== '') {
         $error = "รูปแบบ JSON ใน Specifications ไม่ถูกต้อง";
-    } else {
+    }
+    else {
         if ($id) {
             if (Product::update($pdo, $id, $data)) {
                 $success = "อัปเดตข้อมูลสินค้าสำเร็จ";
                 $product = Product::findById($pdo, $id); // Reload
-            } else {
+            }
+            else {
                 $error = "ไม่สามารถอัปเดตข้อมูลได้";
             }
-        } else {
+        }
+        else {
             if (Product::create($pdo, $data)) {
                 $success = "เพิ่มสินค้าใหม่สำเร็จ";
                 // If it's a new product, we might want to stay on the page or go back
                 header("Location: admin_products.php?success=1");
                 exit;
-            } else {
+            }
+            else {
                 $error = "ไม่สามารถเพิ่มสินค้าได้";
             }
         }
@@ -60,7 +64,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 $specsJson = '';
 if ($product && $product->specifications) {
     $specsJson = json_encode($product->specifications, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
-} elseif (!$product) {
+}
+elseif (!$product) {
     // Default template for new item if category is known
     $specsJson = "{}";
 }
@@ -163,13 +168,15 @@ if ($product && $product->specifications) {
             <div class="alert alert-error">
                 <?php echo $error; ?>
             </div>
-        <?php endif; ?>
+        <?php
+endif; ?>
 
         <?php if ($success): ?>
             <div class="alert alert-success">
                 <?php echo $success; ?>
             </div>
-        <?php endif; ?>
+        <?php
+endif; ?>
 
         <form method="POST">
             <div class="form-group">
@@ -183,10 +190,11 @@ if ($product && $product->specifications) {
                     <label>หมวดหมู่</label>
                     <select name="category_id" class="form-control" required>
                         <?php foreach ($categories as $cat): ?>
-                            <option value="<?php echo $cat['id']; ?>" <?php echo ($product && $product->category_id == $cat['id']) ? 'selected' : ''; ?>>
+                            <option value="<?php echo $cat['id']; ?>" <?php echo($product && $product->category_id == $cat['id']) ? 'selected' : ''; ?>>
                                 <?php echo strtoupper($cat['name']); ?>
                             </option>
-                        <?php endforeach; ?>
+                        <?php
+endforeach; ?>
                     </select>
                 </div>
                 <div class="form-group">
