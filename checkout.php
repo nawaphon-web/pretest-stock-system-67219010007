@@ -47,14 +47,16 @@ foreach ($build as $part) {
                             <?php echo number_format($part['price'], 2); ?>
                         </span>
                     </li>
-                <?php endforeach; ?>
+                <?php
+endforeach; ?>
                 <?php if ($assembly > 0): ?>
                     <li
                         style="display: flex; justify-content: space-between; margin-bottom: 0.5rem; color: var(--primary-color);">
                         <span>Professional Assembly</span>
                         <span>฿500.00</span>
                     </li>
-                <?php endif; ?>
+                <?php
+endif; ?>
                 <li
                     style="display: flex; justify-content: space-between; margin-top: 1rem; font-size: 1.5rem; font-weight: 700; color: var(--primary-color);">
                     <span>Total</span>
@@ -95,7 +97,7 @@ foreach ($build as $part) {
             </div>
 
             <div style="margin-top: 1rem;">
-                <button type="submit" name="action" value="order" class="btn-checkout">Place Order</button>
+                <button type="submit" name="action" value="order" class="btn-checkout">Pre Order</button>
                 <button type="button" onclick="generateQuotation()" class="btn-back"
                     style="flex: 1; margin-top: 1rem;">Get Quotation (PDF View)</button>
             </div>

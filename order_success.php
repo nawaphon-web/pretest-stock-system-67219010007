@@ -26,7 +26,7 @@ if (!$order) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Payment Successful - TechStock</title>
+    <title>Transaction Complete - TechStock</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -58,15 +58,14 @@ if (!$order) {
         <div class="success-icon">
             <i class="fa-solid fa-circle-check"></i>
         </div>
-        <h1>Payment Successful!</h1>
-        <p style="color: var(--text-muted); margin: 1rem 0 2rem;">
-            Order #<?php echo str_pad($orderId, 6, '0', STR_PAD_LEFT); ?> has been confirmed.
-            Our team will start processing your request immediately.
+        <h1 style="font-size: 3rem;">รายการเสร็จสิ้น</h1>
+        <p style="color: var(--text-muted); margin: 1rem 0 2rem; font-size: 1.2rem;">
+            Order #<?php echo str_pad($orderId, 6, '0', STR_PAD_LEFT); ?> ได้รับการยืนยันเรียบร้อยแล้ว
         </p>
         
         <div style="display: flex; gap: 1rem; justify-content: center;">
-            <a href="user_dashboard.php" class="btn-checkout" style="text-decoration: none;">Go to Dashboard</a>
-            <a href="quotation_view.php?order_id=<?php echo $orderId; ?>" class="btn-back" style="text-decoration: none;">View Receipt</a>
+            <a href="user_dashboard.php" class="btn-checkout" style="text-decoration: none; padding: 1rem 2rem;">กลับสู่หน้าแรก</a>
+            <a href="quotation_view.php?order_id=<?php echo $orderId; ?>" class="btn-back" style="text-decoration: none; padding: 1rem 2rem;">ดูรายละเอียด</a>
         </div>
     </div>
 </body>

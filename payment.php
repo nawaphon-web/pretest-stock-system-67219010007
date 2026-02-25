@@ -36,133 +36,65 @@ if ($order['status'] !== 'pending') {
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        .payment-card {
-            max-width: 600px;
-            margin: 4rem auto;
+        .payment-container {
+            max-width: 1000px;
+            margin: 2rem auto;
             background: var(--card-bg);
-            padding: 2.5rem;
+            padding: 2rem;
             border-radius: 1.5rem;
             border: 1px solid rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(20px);
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
         }
-        .payment-methods {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1.5rem;
-            margin-top: 2rem;
-        }
-        .method-btn {
-            background: rgba(255, 255, 255, 0.05);
+        .info-frame {
+            width: 100%;
+            height: 500px;
             border: 1px solid rgba(255, 255, 255, 0.1);
-            color: white;
-            padding: 1.5rem;
             border-radius: 1rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 1rem;
+            margin-bottom: 2rem;
+            background: white;
         }
-        .method-btn:hover {
-            background: rgba(59, 130, 246, 0.1);
-            border-color: var(--primary-color);
-            transform: translateY(-5px);
-        }
-        .method-btn i {
-            font-size: 2rem;
-            color: var(--primary-color);
-        }
-        .qr-section {
-            display: none;
+        .confirm-section {
             text-align: center;
-            margin-top: 2rem;
-            padding-top: 2rem;
+            padding: 2rem;
             border-top: 1px solid rgba(255, 255, 255, 0.1);
         }
-        .qr-placeholder {
-            width: 200px;
-            height: 200px;
-            background: white;
-            margin: 0 auto 1.5rem;
-            padding: 10px;
-            border-radius: 10px;
-        }
-        .qr-placeholder img {
-            width: 100%;
-            height: 100%;
-        }
-        .total-badge {
-            background: var(--primary-gradient);
-            padding: 1rem 2rem;
-            border-radius: 1rem;
-            display: inline-block;
-            margin: 1rem 0;
-            font-weight: 700;
-            font-size: 1.2rem;
+        .total-amount {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
         }
     </style>
 </head>
-<body>
-    <div class="payment-card">
-        <h1 style="text-align: center;"><i class="fa-solid fa-shield-check" style="color: #10b981;"></i> Secure Payment</h1>
-        <p style="text-align: center; color: var(--text-muted); margin-bottom: 2rem;">Order #<?php echo str_pad($orderId, 6, '0', STR_PAD_LEFT); ?></p>
+<body style="padding: 1rem;">
+    <div class="payment-container">
+        <h1 style="text-align: center; margin-bottom: 1rem;"><i class="fa-solid fa-qrcode"></i> QR Code Payment Info</h1>
         
-        <div style="text-align: center;">
-            <div class="total-badge">
-                Total Amount: ฿<?php echo number_format($order['total_amount'], 2); ?>
+        <p style="text-align: center; color: var(--text-muted); margin-bottom: 2rem;">
+            Please review the QR Code payment guide below before confirming your payment for Order #<?php echo str_pad($orderId, 6, '0', STR_PAD_LEFT); ?>.
+        </p>
+
+        <!-- Showing the requested URL content -->
+        <iframe src="https://packtica.co.th/what-is-qr-code-and-how-many-types/" class="info-frame"></iframe>
+
+        <div class="confirm-section">
+            <div style="margin-bottom: 1.5rem;">
+                <span style="color: var(--text-muted);">Total Amount to Pay:</span>
+                <div class="total-amount">฿<?php echo number_format($order['total_amount'], 2); ?></div>
             </div>
-        </div>
 
-        <div class="payment-methods" id="methods">
-            <button class="method-btn" onclick="showQR()">
-                <i class="fa-solid fa-qrcode"></i>
-                <span>Thai QR Payment</span>
-            </button>
-            <button class="method-btn" onclick="simulatePayment('Credit Card')">
-                <i class="fa-solid fa-credit-card"></i>
-                <span>Credit / Debit Card</span>
-            </button>
-            <button class="method-btn" onclick="simulatePayment('Mobile Banking')">
-                <i class="fa-solid fa-mobile-screen-button"></i>
-                <span>Mobile Banking</span>
-            </button>
-            <button class="method-btn" onclick="simulatePayment('Installment')">
-                <i class="fa-solid fa-calendar-days"></i>
-                <span>0% Installment</span>
-            </button>
+            <form action="confirm_payment.php" method="POST">
+                <input type="hidden" name="order_id" value="<?php echo $orderId; ?>">
+                <input type="hidden" name="payment_method" value="QR Code (Guided)">
+                <button type="submit" class="cyber-btn" style="width: 100%; max-width: 400px; padding: 1.25rem; font-size: 1.25rem;">
+                    <i class="fa-solid fa-check-circle"></i> ยืนยันจ่ายเงิน
+                </button>
+            </form>
+            
+            <p style="margin-top: 1.5rem; font-size: 0.8rem; color: var(--text-muted);">
+                By clicking confirm, you acknowledge that you have completed the payment process.
+            </p>
         </div>
-
-        <div class="qr-section" id="qrSection">
-            <h3>Scan to Pay</h3>
-            <div class="qr-placeholder">
-                <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=TECHSTOCK_ORDER_<?php echo $orderId; ?>" alt="QR Code">
-            </div>
-            <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 2rem;">Scan with any banking app</p>
-            <button class="btn-checkout" onclick="simulatePayment('QR Code')">I've Paid Successfully</button>
-            <button class="btn-back" style="margin-top: 1rem;" onclick="hideQR()">Back to Methods</button>
-        </div>
-
-        <form id="paymentForm" action="confirm_payment.php" method="POST" style="display: none;">
-            <input type="hidden" name="order_id" value="<?php echo $orderId; ?>">
-            <input type="hidden" name="payment_method" id="paymentMethod">
-        </form>
     </div>
-
-    <script>
-        function showQR() {
-            document.getElementById('methods').style.display = 'none';
-            document.getElementById('qrSection').style.display = 'block';
-        }
-        function hideQR() {
-            document.getElementById('methods').style.display = 'grid';
-            document.getElementById('qrSection').style.display = 'none';
-        }
-        function simulatePayment(method) {
-            document.getElementById('paymentMethod').value = method;
-            document.getElementById('paymentForm').submit();
-        }
-    </script>
 </body>
 </html>
