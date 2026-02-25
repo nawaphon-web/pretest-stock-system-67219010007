@@ -17,7 +17,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $user = $stmt->fetch();
 
             if ($user && password_verify($password, $user['password'])) {
-                // Password is correct
                 $_SESSION['user_id'] = $user['id'];
                 $_SESSION['role'] = $user['role'];
                 $_SESSION['username'] = $user['username'];
@@ -43,49 +42,45 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - TechStock System</title>
+    <title>Login - TechStock</title>
     <link rel="stylesheet" href="style.css">
-    <!-- Font Awesome for icon -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 
-<body>
-    <div class="login-container">
-        <div class="logo-icon" style="color: var(--neon-blue); animation: glow-pulse 3s infinite;">
-            <i class="fa-solid fa-microchip"></i>
+<body class="login-screen">
+    <div class="login-card animate-fade-in">
+        <div style="margin-bottom: 2rem; color: var(--primary-color);">
+            <i class="fa-solid fa-microchip" style="font-size: 4rem;"></i>
         </div>
-        <h2 class="shimmer-text" style="font-size: 2.5rem; letter-spacing: -2px;">TECHSTOCK</h2>
-        <p class="subtitle" style="text-transform: uppercase; letter-spacing: 2px;">เข้าสู่ระบบสมาชิก</p>
+        <h2 style="font-size: 2.5rem; font-weight: 800; margin-bottom: 0.5rem; color: #1e293b;">TECHSTOCK</h2>
+        <p style="color: var(--text-muted); margin-bottom: 2.5rem;">ระบบบริหารจัดการสินค้าและจัดสเปค</p>
 
         <?php if ($error): ?>
-            <div class="alert"
-                style="background: rgba(239, 68, 68, 0.1); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.2); padding: 1rem; border-radius: 0.5rem; margin-bottom: 2rem;">
-                <i class="fa-solid fa-triangle-exclamation"></i> <?php echo htmlspecialchars($error); ?>
+            <div
+                style="background: #fee2e2; color: #b91c1c; padding: 1rem; border-radius: 0.75rem; margin-bottom: 2rem; font-size: 0.875rem; text-align: left;">
+                <i class="fa-solid fa-circle-exclamation"></i> <?php echo htmlspecialchars($error); ?>
             </div>
         <?php endif; ?>
 
-        <form method="POST" action="">
+        <form method="POST">
             <div class="form-group">
-                <label for="username" style="color: var(--primary-color);">ชื่อผู้ใช้งาน (USERNAME)</label>
-                <input type="text" id="username" name="username" placeholder="Username" required
-                    style="background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); color: white; padding: 1rem; border-radius: 0.75rem; transition: 0.3s;"
-                    onfocus="this.style.borderColor='var(--primary-color)'"
-                    onblur="this.style.borderColor='var(--glass-border)'">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" placeholder="Enter your username" required
+                    autocomplete="username">
             </div>
             <div class="form-group">
-                <label for="password" style="color: var(--primary-color);">รหัสผ่าน (PASSWORD)</label>
+                <label for="password">Password</label>
                 <input type="password" id="password" name="password" placeholder="••••••••" required
-                    style="background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); color: white; padding: 1rem; border-radius: 0.75rem; transition: 0.3s;"
-                    onfocus="this.style.borderColor='var(--primary-color)'"
-                    onblur="this.style.borderColor='var(--glass-border)'">
+                    autocomplete="current-password">
             </div>
-            <button type="submit" class="cyber-btn" style="width: 100%; margin-top: 1rem;">เข้าสู่ระบบ</button>
+            <button type="submit" class="btn btn-primary" style="width: 100%; height: 3.5rem; font-size: 1.125rem;">
+                เข้าสู่ระบบ
+            </button>
         </form>
 
-        <div class="footer-link"
-            style="margin-top: 2rem; border-top: 1px solid var(--glass-border); padding-top: 2rem;">
-            <p style="color: var(--text-muted);">ระบบความปลอดภัยขั้นสูง <br><a href="#"
-                    style="color: var(--primary-color); text-decoration: none;">ลืมรหัสผ่าน?</a></p>
+        <div style="margin-top: 2rem; border-top: 1px solid var(--border-color); padding-top: 2rem;">
+            <a href="#"
+                style="color: var(--primary-color); text-decoration: none; font-weight: 600; font-size: 0.875rem;">ลืมรหัสผ่าน?</a>
         </div>
     </div>
 </body>

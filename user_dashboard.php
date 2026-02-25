@@ -14,178 +14,66 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'user') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Dashboard - TechStock</title>
+    <title>Customer Dashboard - TechStock</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        .dashboard-container {
-            max-width: 1200px;
-            width: 100%;
-            padding: 2rem;
-            animation: fadeIn 0.8s ease-out;
-        }
-
-        .bento-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            grid-auto-rows: minmax(150px, auto);
-            gap: 1.5rem;
-            margin-top: 2rem;
-        }
-
-        .bento-card {
-            background: var(--card-bg);
-            backdrop-filter: blur(20px);
-            border: 1px solid var(--glass-border);
-            border-radius: 2rem;
-            padding: 2rem;
-            position: relative;
-            overflow: hidden;
-            transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .bento-card:hover {
-            border-color: var(--primary-color);
-            transform: translateY(-5px);
-            box-shadow: 0 0 30px rgba(59, 130, 246, 0.2);
-        }
-
-        .bento-card::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.03), transparent);
-            transform: translateX(-100%);
-            transition: 0.5s;
-        }
-
-        .bento-card:hover::before {
-            transform: translateX(100%);
-        }
-
-        .stat-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.5rem 1rem;
-            background: rgba(16, 185, 129, 0.1);
-            color: var(--success-color);
-            border-radius: 2rem;
-            font-size: 0.75rem;
-            font-weight: 700;
-            text-transform: uppercase;
-        }
-
-        .module-icon {
-            font-size: 3rem;
-            margin-bottom: 1.5rem;
-            background: linear-gradient(135deg, #fff 0%, var(--primary-color) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-    </style>
 </head>
 
-<body style="display: flex; justify-content: center; align-items: flex-start; min-height: 100vh;">
-    <div class="dashboard-container">
-        <header style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 3rem;">
+<body style="background: #f8fafc;">
+    <div class="container animate-fade-in">
+        <header style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 3rem;">
             <div>
-                <h1 class="shimmer-text" style="font-size: 3rem; font-weight: 800; letter-spacing: -2px;">ยินดีต้อนรับ
-                </h1>
-                <div style="display: flex; align-items: center; gap: 1rem; color: var(--text-muted);">
-                    <span class="stat-badge"><i class="fa-solid fa-circle"
-                            style="font-size: 0.5rem; animation: pulse 2s infinite;"></i> ระบบพร้อมใช้งาน</span>
-                    <span>TECHSTOCK DASHBOARD</span>
-                </div>
+                <h1 style="font-size: 2.5rem; font-weight: 800; color: #1e293b;">ยินดีต้อนรับ</h1>
+                <p style="color: var(--text-muted);">TechStock - ระบบจัดการสเปคคอมพิวเตอร์และสต็อกสินค้า</p>
             </div>
-            <a href="logout.php" class="cyber-btn"
-                style="padding: 0.6rem 1.5rem; font-size: 0.8rem; border-color: var(--error-color); color: var(--error-color);">ออกจากระบบ</a>
+            <div style="display: flex; gap: 1rem;">
+                <a href="logout.php" class="btn btn-outline"
+                    style="color: #ef4444; border-color: #fecaca;">ออกจากระบบ</a>
+            </div>
         </header>
 
-        <div class="bento-grid">
-            <!-- Profile Module -->
-            <div class="bento-card" style="grid-column: span 2; display: flex; align-items: center; gap: 2rem;">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 2rem;">
+            <!-- Profile Card -->
+            <div class="card" style="display: flex; align-items: center; gap: 1.5rem;">
                 <div
-                    style="width: 100px; height: 100px; border-radius: 50%; background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); display: flex; align-items: center; justify-content: center; font-size: 3rem; border: 4px solid var(--glass-border);">
+                    style="width: 80px; height: 80px; border-radius: 50%; background: #e2e8f0; display: flex; align-items: center; justify-content: center; font-size: 2rem; color: #64748b; font-weight: 800;">
                     <?php echo strtoupper(substr($_SESSION['username'], 0, 1)); ?>
                 </div>
                 <div>
-                    <h2 style="font-size: 2rem;"><?php echo htmlspecialchars($_SESSION['username']); ?></h2>
-                    <p style="color: var(--text-muted);">ลูกค้าสมาชิก TechStock</p>
-                    <p style="margin-top: 0.5rem; font-size: 0.8rem; color: var(--primary-color);">สถานะ: สมาชิกปกติ</p>
+                    <h2 style="font-size: 1.5rem;"><?php echo htmlspecialchars($_SESSION['username']); ?></h2>
+                    <p style="color: #64748b;">สถานะ: สมาชิกปกติ</p>
                 </div>
             </div>
 
-            <!-- Fast Action: New Sale -->
-            <div class="bento-card"
-                style="cursor: pointer; background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, transparent 100%);"
-                onclick="window.location.href='new_sale.php'">
-                <div class="module-icon"><i class="fa-solid fa-cart-plus"></i></div>
-                <h3>โปรโมชั่น & เซตแนะนำ</h3>
-                <p style="color: var(--text-muted); font-size: 0.8rem; margin-top: 0.5rem;">เลือกซื้ออุปกรณ์ราคาพิเศษ
-                    หรือเซตคอมพิวเตอร์ที่เราจัดไว้ให้</p>
-                <div style="margin-top: 1.5rem; color: var(--primary-color); font-weight: 700;">ไปหน้าโปรโมชั่น <i
-                        class="fa-solid fa-arrow-right"></i></div>
+            <!-- Shop Actions -->
+            <div class="card">
+                <div style="color: var(--primary-color); font-size: 2rem; margin-bottom: 1rem;"><i
+                        class="fa-solid fa-shopping-bag"></i></div>
+                <h3 style="margin-bottom: 0.5rem;">สินค้าและโปรโมชั่น</h3>
+                <p style="color: var(--text-muted); font-size: 0.875rem; margin-bottom: 1.5rem;">
+                    ดูรายการสินค้าล่าสุดและเซตคอมประกอบแนะนำ</p>
+                <a href="new_sale.php" class="btn btn-primary" style="width: 100%;">เลือกดูสินค้า</a>
             </div>
 
-            <!-- PC Builder Module -->
-            <div class="bento-card"
-                style="cursor: pointer; background: linear-gradient(135deg, rgba(16, 185, 129, 0.05) 0%, transparent 100%);"
-                onclick="window.location.href='builder.php'">
-                <div class="module-icon"
-                    style="background: linear-gradient(135deg, #fff 0%, var(--success-color) 100%); -webkit-background-clip: text;">
-                    <i class="fa-solid fa-microchip"></i>
+            <div class="card">
+                <div style="color: #10b981; font-size: 2rem; margin-bottom: 1rem;"><i class="fa-solid fa-microchip"></i>
                 </div>
-                <h3>จัดสเปคคอมพิวเตอร์</h3>
-                <p style="color: var(--text-muted); font-size: 0.8rem; margin-top: 0.5rem;">เลือกชิ้นส่วนคอมพิวเตอร์เอง
-                    พร้อมระบบเช็คความเข้ากันได้</p>
-                <div style="margin-top: 1.5rem; color: var(--success-color); font-weight: 700;">เริ่มจัดสเปค <i
-                        class="fa-solid fa-arrow-right"></i></div>
+                <h3 style="margin-bottom: 0.5rem;">จัดสเปคคอมพิวเตอร์</h3>
+                <p style="color: var(--text-muted); font-size: 0.875rem; margin-bottom: 1.5rem;">
+                    สร้างเครื่องของคุณเองพร้อมระบบตรวจสอบความเข้ากันได้</p>
+                <a href="builder.php" class="btn btn-primary" style="width: 100%; background: #10b981;">เริ่มจัดสเปค</a>
             </div>
 
-            <!-- RMA Tracking -->
-            <div class="bento-card" style="cursor: pointer;" onclick="window.location.href='rma_check.php'">
-                <div class="module-icon"
-                    style="background: linear-gradient(135deg, #fff 0%, #fb923c 100%); -webkit-background-clip: text;">
-                    <i class="fa-solid fa-shield-virus"></i>
-                </div>
-                <h3>เช็คประกัน & เคลมสินค้า</h3>
-                <p style="color: var(--text-muted); font-size: 0.8rem; margin-top: 0.5rem;">ตรวจสอบสถานะการรับประกัน
-                    และติดตามงานเคลมของคุณ</p>
-            </div>
-
-            <!-- System Stats -->
-            <div class="bento-card">
-                <h4
-                    style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 1rem; text-transform: uppercase;">
-                    สินค้าทั้งหมดในระบบ</h4>
-                <div style="font-size: 2.5rem; font-weight: 800;">275<span
-                        style="font-size: 1rem; color: var(--text-muted); margin-left: 0.5rem;">ชิ้น</span></div>
-                <div
-                    style="width: 100%; height: 4px; background: rgba(255,255,255,0.05); margin-top: 1rem; border-radius: 2px;">
-                    <div
-                        style="width: 85%; height: 100%; background: var(--primary-color); border-radius: 2px; box-shadow: 0 0 10px var(--primary-color);">
-                    </div>
-                </div>
+            <div class="card">
+                <div style="color: #f59e0b; font-size: 2rem; margin-bottom: 1rem;"><i
+                        class="fa-solid fa-shield-check"></i></div>
+                <h3 style="margin-bottom: 0.5rem;">เช็คประกันสินค้า</h3>
+                <p style="color: var(--text-muted); font-size: 0.875rem; margin-bottom: 1.5rem;">
+                    ตรวจสอบระยะเวลาประกันหรือแจ้งเคลมสินค้า (RMA)</p>
+                <a href="rma_check.php" class="btn btn-outline" style="width: 100%;">ตรวจสอบประกัน</a>
             </div>
         </div>
     </div>
-
-    <style>
-        @keyframes pulse {
-
-            0%,
-            100% {
-                opacity: 1;
-                transform: scale(1);
-            }
-
-            50% {
-                opacity: 0.5;
-                transform: scale(1.2);
-            }
-        }
-    </style>
 </body>
 
 </html>
