@@ -31,131 +31,113 @@ $items = $bundle->getItems($pdo);
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         .bundle-view {
-            max-width: 1200px;
+            max-width: 1000px;
             width: 100%;
             padding: 4rem 2rem;
-            animation: fadeIn 0.8s ease-out;
         }
 
-        .bundle-header-tech {
-            background: var(--card-bg);
-            backdrop-filter: blur(30px);
-            padding: 5rem;
-            border-radius: 3rem;
-            border: 1px solid var(--glass-border);
+        .bundle-header-card {
+            background: linear-gradient(135deg, var(--primary-color) 0%, #1e40af 100%);
+            padding: 4rem;
+            border-radius: 2rem;
             text-align: center;
-            margin-bottom: 4rem;
+            margin-bottom: 3rem;
             position: relative;
             overflow: hidden;
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
         }
 
-        .bundle-header-tech::before {
-            content: '';
+        .bundle-header-card .icon-bg {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 5px;
-            background: linear-gradient(90deg, var(--primary-color), var(--neon-blue), var(--primary-color));
-            box-shadow: 0 0 20px var(--primary-color);
+            right: -2rem;
+            bottom: -2rem;
+            font-size: 15rem;
+            opacity: 0.1;
+            transform: rotate(-15deg);
         }
 
-        .items-terminal-grid {
+        .items-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 1.5rem;
         }
 
-        .item-card-mini {
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid var(--glass-border);
-            padding: 2rem;
-            border-radius: 1.5rem;
+        .item-card-lite {
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 1.5rem;
+            border-radius: 1rem;
             display: flex;
             align-items: center;
-            gap: 2rem;
-            transition: 0.3s;
+            gap: 1.5rem;
         }
 
-        .item-card-mini:hover {
-            border-color: var(--primary-color);
-            background: rgba(255, 255, 255, 0.05);
-            transform: translateX(10px);
-        }
-
-        .item-card-mini i {
-            font-size: 2.5rem;
+        .item-card-lite i {
+            font-size: 2rem;
             color: var(--primary-color);
-            filter: drop-shadow(0 0 10px rgba(59, 130, 246, 0.3));
+            width: 50px;
+            text-align: center;
         }
 
-        .savings-alert {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.75rem;
-            background: rgba(16, 185, 129, 0.1);
-            color: var(--success-color);
-            padding: 0.75rem 1.5rem;
-            border-radius: 3rem;
-            font-size: 0.8rem;
-            font-weight: 800;
-            border: 1px solid rgba(16, 185, 129, 0.2);
-            margin-top: 2rem;
+        .saving-tag {
+            background: #f43f5e;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            font-weight: 700;
+            display: inline-block;
+            margin-top: 1rem;
         }
     </style>
 </head>
 
-<body style="display: flex; justify-content: center; min-height: 100vh; background: var(--bg-color);">
+<body style="display: flex; justify-content: center;">
     <div class="bundle-view">
         <a href="new_sale.php"
-            style="color: var(--text-muted); text-decoration: none; display: inline-flex; align-items: center; gap: 0.75rem; margin-bottom: 3rem; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px;">
-            <i class="fa-solid fa-chevron-left" style="font-size: 0.7rem;"></i> กลับไปหน้าโปรโมชั่น
+            style="color: var(--text-muted); text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem; margin-bottom: 2rem;">
+            <i class="fa-solid fa-arrow-left"></i> Back to Hub
         </a>
 
-        <div class="bundle-header-tech">
-            <i class="fa-solid <?php echo $bundle->icon; ?>"
-                style="position: absolute; right: -2rem; bottom: -2rem; font-size: 20rem; opacity: 0.03; transform: rotate(-15deg); color: white;"></i>
-            <h1 class="shimmer-text"
-                style="font-size: 4rem; font-weight: 800; margin-bottom: 1.5rem; letter-spacing: -3px;">
+        <div class="bundle-header-card">
+            <i class="fa-solid <?php echo $bundle->icon; ?> icon-bg"></i>
+            <h1 style="font-size: 3rem; color: white; margin-bottom: 1rem;">
                 <?php echo $bundle->name; ?>
             </h1>
-            <p style="color: var(--text-muted); font-size: 1.1rem; max-width: 700px; margin: 0 auto; line-height: 1.6;">
+            <p style="color: rgba(255,255,255,0.8); font-size: 1.25rem; max-width: 600px; margin: 0 auto;">
                 <?php echo $bundle->description; ?>
             </p>
 
-            <div class="savings-alert">
-                <i class="fa-solid fa-shield-halved"></i> คุณประหยัดไปได้ถึง:
-                ฿<?php echo number_format($bundle->total_price - $bundle->discount_price); ?> ทันที!
+            <div class="saving-tag">
+                ประหยัดคนเดียวได้ถึง ฿
+                <?php echo number_format($bundle->total_price - $bundle->discount_price); ?>!
             </div>
 
-            <div style="margin-top: 4rem;">
-                <div
-                    style="font-size: 0.8rem; text-transform: uppercase; letter-spacing: 4px; color: var(--primary-color); margin-bottom: 1rem;">
-                    // ราคาสุดคุ้มทั้งเซต</div>
-                <div style="font-size: 5rem; font-weight: 900; color: white; line-height: 1;">
-                    ฿<?php echo number_format($bundle->discount_price); ?></div>
+            <div style="margin-top: 3rem;">
+                <div style="font-size: 1.5rem; opacity: 0.9;">ราคายกเซตเพียง</div>
+                <div style="font-size: 4rem; font-weight: 900; color: white;">฿
+                    <?php echo number_format($bundle->discount_price); ?>
+                </div>
             </div>
         </div>
 
-        <h2
-            style="margin-bottom: 2rem; font-size: 1rem; text-transform: uppercase; letter-spacing: 4px; color: var(--primary-color);">
-            [01] รายการอุปกรณ์ในเซตนี้</h2>
-        <div class="items-terminal-grid">
+        <h2 style="margin-bottom: 2rem;">รายการอุปกรณ์ในเซตนี้</h2>
+        <div class="items-grid">
             <?php foreach ($items as $item): ?>
-                <div class="item-card-mini">
+                <div class="item-card-lite">
                     <i class="fa-solid <?php echo $item->icon ?: 'fa-box'; ?>"></i>
-                    <div style="flex: 1;">
-                        <div
-                            style="color: var(--text-muted); font-size: 0.65rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.25rem;">
+                    <div>
+                        <h4 style="color: var(--text-muted); font-size: 0.75rem; text-transform: uppercase;">
                             <?php
+                            // Fetch category name
                             $stmt = $pdo->prepare('SELECT name FROM categories WHERE id = ?');
                             $stmt->execute([$item->category_id]);
                             echo $stmt->fetchColumn();
                             ?>
-                        </div>
-                        <h3 style="font-size: 1.1rem; margin-bottom: 0.5rem;"><?php echo $item->name; ?></h3>
-                        <div style="color: var(--neon-blue); font-weight: 700;">฿<?php echo number_format($item->price); ?>
+                        </h4>
+                        <h3 style="font-size: 1rem;">
+                            <?php echo $item->name; ?>
+                        </h3>
+                        <div style="color: var(--primary-color); font-weight: 700;">฿
+                            <?php echo number_format($item->price); ?>
                         </div>
                     </div>
                 </div>
@@ -163,13 +145,12 @@ $items = $bundle->getItems($pdo);
         </div>
 
         <div
-            style="margin-top: 5rem; text-align: center; padding: 5rem; background: var(--card-bg); backdrop-filter: blur(20px); border-radius: 3rem; border: 1px solid var(--glass-border);">
-            <h3 style="font-size: 1.5rem; margin-bottom: 2rem;">ต้องการใช้สเปคคอมพิวเตอร์เซตนี้ใช่หรือไม่?</h3>
-            <div style="display: flex; gap: 2rem; justify-content: center;">
-                <button onclick="location.href='new_sale.php'" class="cyber-btn"
-                    style="border-color: var(--glass-border); color: var(--text-muted); padding: 1rem 3rem;">เลือกเซตอื่น</button>
-                <button onclick="selectBundle(<?php echo $bundle->id; ?>)" class="cyber-btn"
-                    style="padding: 1rem 5rem;">ตกลง ใช้เซตนี้</button>
+            style="margin-top: 4rem; text-align: center; padding: 3rem; background: rgba(59, 130, 246, 0.05); border-radius: 2rem; border: 1px dashed rgba(59, 130, 246, 0.3);">
+            <h3 style="margin-bottom: 1.5rem;">ต้องการดำเนินการต่อด้วยเซตนี้ใช่หรือไม่?</h3>
+            <div style="display: flex; gap: 1.5rem; justify-content: center;">
+                <button onclick="location.href='new_sale.php'" class="btn-back">เลือกเซตอื่น</button>
+                <button onclick="selectBundle(<?php echo $bundle->id; ?>)" class="btn-checkout"
+                    style="padding: 1rem 3rem;">เลือกเซตนี้ทันที</button>
             </div>
         </div>
     </div>

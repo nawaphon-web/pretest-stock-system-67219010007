@@ -11,201 +11,110 @@ if (!isset($_SESSION['user_id'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>จัดสเปคคอมพิวเตอร์ - TechStock Builder</title>
+    <title>ระบบจัดสเปคคอมพิวเตอร์อัจฉริยะ - TechStock</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        .builder-layout {
-            display: grid;
-            grid-template-columns: 280px 1fr 380px;
-            height: 100vh;
-            width: 100vw;
-            overflow: hidden;
-            background: var(--bg-color);
-        }
-
-        .builder-nav {
-            background: rgba(15, 23, 42, 0.8);
-            border-right: 1px solid var(--glass-border);
-            padding: 2rem 1rem;
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-            overflow-y: auto;
-        }
-
-        .nav-item {
-            padding: 1rem 1.5rem;
-            border-radius: 1rem;
-            cursor: pointer;
-            transition: 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            font-weight: 600;
-            color: var(--text-muted);
-            border: 1px solid transparent;
-        }
-
-        .nav-item:hover {
-            background: rgba(255, 255, 255, 0.05);
-            color: white;
-        }
-
-        .nav-item.active {
-            background: rgba(59, 130, 246, 0.1);
-            color: var(--primary-color);
-            border-color: rgba(59, 130, 246, 0.3);
-            box-shadow: 0 0 20px rgba(59, 130, 246, 0.1);
-        }
-
-        .main-content {
-            padding: 3rem;
-            overflow-y: auto;
-            position: relative;
-        }
-
-        .build-summary-sidebar {
-            background: rgba(15, 23, 42, 0.9);
-            border-left: 1px solid var(--glass-border);
-            padding: 2rem;
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-            overflow-y: auto;
-        }
-
-        .product-card-advanced {
-            background: var(--card-bg);
-            border: 1px solid var(--glass-border);
-            border-radius: 1.5rem;
-            padding: 1.5rem;
-            transition: 0.4s;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .product-card-advanced:hover {
-            border-color: var(--primary-color);
-            transform: translateY(-5px);
-            background: rgba(30, 41, 59, 0.9);
-        }
-
-        .summary-item-lite {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            padding: 1rem;
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 1rem;
-            font-size: 0.85rem;
-            border: 1px solid transparent;
-        }
-
-        .summary-item-lite.filled {
-            border-color: rgba(16, 185, 129, 0.2);
-            background: rgba(16, 185, 129, 0.05);
-        }
-
-        .total-panel {
-            margin-top: auto;
-            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-            padding: 2rem;
-            border-radius: 1.5rem;
-            text-align: center;
-            box-shadow: 0 10px 30px rgba(59, 130, 246, 0.3);
-        }
-    </style>
 </head>
 
 <body>
-    <div class="builder-layout">
-        <!-- Left Nav -->
-        <aside class="builder-nav">
-            <div style="padding: 0 1rem 2rem 1rem;">
-                <h2 class="shimmer-text" onclick="location.href='user_dashboard.php'" style="cursor:pointer;">TECHSTOCK
-                </h2>
-                <div
-                    style="font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 2px;">
-                    ระบบจัดสเปคคอมพิวเตอร์</div>
+    <div class="builder-container">
+        <!-- Sidebar / Summary -->
+        <div class="build-summary">
+            <h2>สเปคของคุณ</h2>
+            <div id="build-list">
+                <!-- Selected parts will appear here -->
+                <div class="empty-state">ยังไม่ได้เลือกอุปกรณ์</div>
             </div>
-            <div class="nav-item active" onclick="loadCategory('cpu')"><i class="fa-solid fa-microchip"></i> CPU</div>
-            <div class="nav-item" onclick="loadCategory('mainboard')"><i class="fa-solid fa-circuit-board"></i>
-                Mainboard</div>
-            <div class="nav-item" onclick="loadCategory('ram')"><i class="fa-solid fa-memory"></i> RAM</div>
-            <div class="nav-item" onclick="loadCategory('gpu')"><i class="fa-solid fa-video"></i> GPU</div>
-            <div class="nav-item" onclick="loadCategory('psu')"><i class="fa-solid fa-plug"></i> PSU</div>
-            <div class="nav-item" onclick="loadCategory('case')"><i class="fa-solid fa-box-open"></i> Case</div>
-            <div class="nav-item" onclick="loadCategory('monitor')"><i class="fa-solid fa-desktop"></i> Monitor</div>
-            <div class="nav-item" onclick="loadCategory('ssd')"><i class="fa-solid fa-hard-drive"></i> SSD</div>
-            <div class="nav-item" onclick="loadCategory('cooler')"><i class="fa-solid fa-fan"></i> Cooler</div>
-            <div class="nav-item" onclick="loadCategory('keyboard')"><i class="fa-solid fa-keyboard"></i> Keyboard</div>
-            <div class="nav-item" onclick="loadCategory('mouse')"><i class="fa-solid fa-mouse"></i> Mouse</div>
 
-            <button class="cyber-btn" onclick="openBudgetModal()"
-                style="margin-top: 2rem; border-color: var(--secondary-color); color: var(--secondary-color);">
-                <i class="fa-solid fa-coins"></i> จัดสเปคตามงบประมาณ
-            </button>
-        </aside>
-
-        <!-- Main Content -->
-        <main class="main-content" id="productGridContainer">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
-                <h2 id="categoryTitle" style="font-size: 2.5rem; text-transform: uppercase;">เลือกอุปกรณ์</h2>
-                <div style="position: relative;">
-                    <i class="fa-solid fa-magnifying-glass"
-                        style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--text-muted);"></i>
-                    <input type="text" placeholder="ค้นหาชื่ออุปกรณ์..."
-                        style="background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); border-radius: 2rem; padding: 0.75rem 1rem 0.75rem 3rem; color: white;">
+            <div class="stats">
+                <div class="stat-item">
+                    <span>กำลังไฟที่ใช้ (โดยประมาณ)</span>
+                    <strong id="total-tdp">0 W</strong>
+                </div>
+                <div class="stat-item">
+                    <span>ราคารวม</span>
+                    <strong id="total-price" style="color: var(--primary-color);">฿0.00</strong>
                 </div>
             </div>
-            <div id="productGrid"
-                style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem;">
-                <!-- Products via JS -->
-            </div>
-        </main>
 
-        <!-- Right Summary -->
-        <aside class="build-summary-sidebar">
-            <h3
-                style="text-transform: uppercase; letter-spacing: 2px; font-size: 1rem; border-bottom: 1px solid var(--glass-border); padding-bottom: 1rem;">
-                รายการสเปคของคุณ</h3>
-            <div id="buildSummary" style="display: flex; flex-direction: column; gap: 0.75rem; flex: 1;">
-                <!-- Summary via JS -->
+            <form id="checkout-form" action="checkout.php" method="POST" style="display: none;">
+                <input type="hidden" name="build_data" id="form-build-data">
+                <input type="hidden" name="assembly" id="form-assembly">
+            </form>
+            <button class="btn-checkout" onclick="proceedToCheckout()">ไปที่หน้าชำระเงิน</button>
+            <a href="user_dashboard.php" class="btn-back">กลับไปยังหน้าหลัก</a>
+        </div>
+
+        <!-- Main Selection Area -->
+        <div class="selection-area">
+            <div class="budget-builder"
+                style="background: rgba(59, 130, 246, 0.1); padding: 1.5rem; border-radius: 1rem; margin-bottom: 2rem; border: 1px solid rgba(59, 130, 246, 0.3);">
+                <h3 style="color: var(--primary-color); margin-bottom: 1rem;"><i
+                        class="fa-solid fa-wand-magic-sparkles"></i>
+                    จัดสเปกตามงบประมาณ (Smart Budget Build)</h3>
+                <div style="display: flex; gap: 1rem; align-items: flex-end;">
+                    <div class="form-group" style="margin-bottom: 0; flex: 1;">
+                        <label>งบประมาณ (บาท)</label>
+                        <input type="number" id="budget-input" placeholder="เช่น 30000" min="15000">
+                    </div>
+                    <button class="btn-checkout" style="width: auto; margin-top: 0; padding: 0.75rem 2rem;"
+                        onclick="generateBudgetBuild()">แนะนำสเปก</button>
+                </div>
+                <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.5rem;">*
+                    ระบบจะคำนวณและเลือกอุปกรณ์ที่คุ้มค่าที่สุดภายใต้งบระบุ</p>
             </div>
 
-            <div class="total-panel">
-                <div style="font-size: 0.8rem; opacity: 0.8; text-transform: uppercase;">ราคารวมทั้งหมด</div>
-                <div style="font-size: 2.5rem; font-weight: 800;" id="totalPrice">฿0</div>
-                <button onclick="proceedToCheckout()" class="cyber-btn"
-                    style="width: 100%; margin-top: 1.5rem; background: white; color: var(--bg-color); border: none;">
-                    ยืนยันสเปคและสั่งซื้อ
+            <div class="steps-nav">
+                <button class="step-btn active" data-category="cpu" onclick="loadCategory('cpu')">ซีพียู (CPU)</button>
+                <button class="step-btn" data-category="cooler" onclick="loadCategory('cooler')">ซิงค์พัดลม
+                    (Cooler)</button>
+                <button class="step-btn" data-category="mainboard" onclick="loadCategory('mainboard')">เมนบอร์ด
+                    (Mainboard)</button>
+                <button class="step-btn" data-category="ram" onclick="loadCategory('ram')">แรม (RAM)</button>
+                <button class="step-btn" data-category="gpu" onclick="loadCategory('gpu')">การ์ดจอ (GPU)</button>
+                <button class="step-btn" data-category="ssd" onclick="loadCategory('ssd')">ฮาร์ดดิสก์/SSD
+                    (Storage)</button>
+                <button class="step-btn" data-category="psu" onclick="loadCategory('psu')">พาวเวอร์ซัพพลาย
+                    (PSU)</button>
+                <button class="step-btn" data-category="case" onclick="loadCategory('case')">เคส (Case)</button>
+                <button class="step-btn" data-category="keyboard" onclick="loadCategory('keyboard')">คีย์บอร์ด
+                    (Keyboard)</button>
+                <button class="step-btn" data-category="mouse" onclick="loadCategory('mouse')">เมาส์ (Mouse)</button>
+            </div>
+
+            <div class="assembly-options">
+                <h3><i class="fa-solid fa-screwdriver-wrench"></i> บริการประกอบคอมพิวเตอร์</h3>
+                <div class="options-grid">
+                    <label class="option-card">
+                        <input type="radio" name="assembly" value="box" checked onchange="updateAssembly(0)">
+                        <div class="option-content">
+                            <span class="option-title">แยกชิ้นส่วนลงกล่อง</span>
+                            <span class="option-desc">จัดส่งอุปกรณ์แบบแยกกล่องตามปกติ</span>
+                            <span class="option-price">ฟรี</span>
+                        </div>
+                    </label>
+                    <label class="option-card">
+                        <input type="radio" name="assembly" value="build" onchange="updateAssembly(500)">
+                        <div class="option-content">
+                            <span class="option-title">บริการประกอบมืออาชีพ</span>
+                            <span class="option-desc">ประกอบเครื่องพร้อมจัดสายไฟให้สวยงาม</span>
+                            <span class="option-price">฿500</span>
+                        </div>
+                    </label>
+                </div>
+            </div>
+
+            <div id="product-list" class="product-grid">
+                <!-- Products loaded via AJAX -->
+                <div class="loading">กำลังโหลดข้อมูล...</div>
+            </div>
+
+            <div class="action-footer">
+                <button class="btn-share" onclick="shareSpecs()">
+                    <i class="fa-solid fa-share-nodes"></i> แชร์สเปค
                 </button>
             </div>
-        </aside>
-    </div>
-    <label class="option-card">
-        <input type="radio" name="assembly" value="build" onchange="updateAssembly(500)">
-        <div class="option-content">
-            <span class="option-title">บริการประกอบมืออาชีพ</span>
-            <span class="option-desc">ประกอบเครื่องพร้อมจัดสายไฟให้สวยงาม</span>
-            <span class="option-price">฿500</span>
         </div>
-    </label>
-    </div>
-    </div>
-
-    <div id="product-list" class="product-grid">
-        <!-- Products loaded via AJAX -->
-        <div class="loading">กำลังโหลดข้อมูล...</div>
-    </div>
-
-    <div class="action-footer">
-        <button class="btn-share" onclick="shareSpecs()">
-            <i class="fa-solid fa-share-nodes"></i> แชร์สเปค
-        </button>
-    </div>
-    </div>
     </div>
 
     <!-- Comparison Tray -->
@@ -224,18 +133,6 @@ if (!isset($_SESSION['user_id'])) {
         <div id="compare-grid" class="compare-grid">
             <!-- Comparison data here -->
         </div>
-    </div>
-
-    <!-- Budget Modal -->
-    <div id="budget-overlay" class="compare-overlay" onclick="closeBudgetModal()"></div>
-    <div id="budget-modal" class="compare-modal" style="max-width: 400px; text-align: center;">
-        <i class="fa-solid fa-coins" style="font-size: 3rem; color: var(--secondary-color); margin-bottom: 1.5rem;"></i>
-        <h2 style="margin-bottom: 1rem;">ระบุงบประมาณ</h2>
-        <p style="color: var(--text-muted); margin-bottom: 2rem;">ระบุงบประมาณที่ต้องการ (ขั้นต่ำ 15,000 บาท)</p>
-        <input type="number" id="budget-input" placeholder="ตัวอย่าง: 30000"
-            style="width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); color: white; padding: 1rem; border-radius: 0.75rem; margin-bottom: 1.5rem; font-size: 1.25rem;">
-        <button onclick="generateBudgetBuild()" class="cyber-btn"
-            style="width: 100%; background: var(--secondary-color); color: white; border: none;">จัดสเปคเลย</button>
     </div>
 
     <script>
@@ -287,18 +184,16 @@ if (!isset($_SESSION['user_id'])) {
             currentCategory = category;
 
             // Update UI tabs
-            document.querySelectorAll('.nav-item').forEach(btn => {
+            document.querySelectorAll('.step-btn').forEach(btn => {
                 btn.classList.remove('active');
-                const catText = btn.textContent.trim().toLowerCase();
-                if (catText.includes(category.toLowerCase())) btn.classList.add('active');
+                if (btn.dataset.category === category) btn.classList.add('active');
             });
 
-            const grid = document.getElementById('productGrid');
-            const title = document.getElementById('categoryTitle');
-            title.textContent = `เลือกส่วนประกอบ: ${category.toUpperCase()}`;
-            grid.innerHTML = '<div class="loading" style="grid-column: 1/-1; text-align: center; padding: 3rem; color: var(--text-muted);"><i class="fa-solid fa-sync fa-spin"></i> กำลังโหลดข้อมูลอุปกรณ์...</div>';
+            const grid = document.getElementById('product-list');
+            grid.innerHTML = '<div class="loading">กำลังค้นหาอุปกรณ์ที่รองรับ...</div>';
 
             try {
+                // Prepare query params
                 const params = new URLSearchParams();
                 params.append('category', category);
                 params.append('current_build', JSON.stringify(currentBuild));
@@ -308,53 +203,62 @@ if (!isset($_SESSION['user_id'])) {
 
                 renderProducts(products);
             } catch (err) {
-                grid.innerHTML = '<div class="error" style="grid-column: 1/-1; text-align: center; color: var(--error-color);">การเชื่อมต่อขัดข้อง: ไม่สามารถโหลดข้อมูลได้</div>';
+                grid.innerHTML = '<div class="error">ไม่สามารถโหลดข้อมูลอุปกรณ์ได้</div>';
                 console.error(err);
             }
         }
 
         function renderProducts(products) {
-            const grid = document.getElementById('productGrid');
+            const grid = document.getElementById('product-list');
             grid.innerHTML = '';
 
             if (products.length === 0) {
-                grid.innerHTML = '<div class="empty-state" style="grid-column: 1/-1; text-align: center; padding: 3rem; color: var(--text-muted);">ไม่พบอุปกรณ์ที่รองรับสำหรับการจัดสเปคพจจุบัน</div>';
+                grid.innerHTML = '<div class="empty-state">ไม่พบอุปกรณ์ที่รองรับ ลองเปลี่ยนการเลือกอุปกรณ์อื่น</div>';
                 return;
             }
 
             products.forEach(p => {
                 const card = document.createElement('div');
-                card.className = `product-card-advanced ${p.is_compatible ? '' : 'incompatible'}`;
-                if (!p.is_compatible) card.style.opacity = '0.5';
+                card.className = `product-card ${p.is_compatible ? '' : 'incompatible'}`;
 
-                let specsHtml = '<div style="margin: 1rem 0; font-size: 0.75rem; color: var(--text-muted); display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;">';
+                let specsHtml = '<ul class="specs-list">';
                 if (p.specs) {
-                    let count = 0;
                     for (const [key, value] of Object.entries(p.specs)) {
-                        if (count++ > 3) break;
+                        // Cleanup key name for display (e.g., base_clock -> Base Clock)
                         const label = key.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
-                        specsHtml += `<div><span style="color: var(--primary-color)">//</span> ${label}: <span style="color: white">${value}</span></div>`;
+                        specsHtml += `<li><strong>${label}:</strong> ${value}</li>`;
                     }
                 }
-                specsHtml += '</div>';
+                specsHtml += '</ul>';
 
                 const actionBtn = p.is_compatible
-                    ? `<button class="cyber-btn" style="width: 100%; padding: 0.5rem; font-size: 0.7rem;" onclick="selectPart('${currentCategory}', ${p.id}, '${p.name}', ${p.price}, ${p.specs?.tdp || 0})">เลือก</button>`
-                    : `<button class="cyber-btn" disabled style="width: 100%; padding: 0.5rem; font-size: 0.7rem; border-color: #334155; color: #334155;">ไม่ค่อยรับ</button>`;
+                    ? `<button class="btn-select" onclick="selectPart('${currentCategory}', ${p.id}, '${p.name}', ${p.price}, ${p.specs?.tdp || 0})">เลือก</button>`
+                    : `<button class="btn-disabled" disabled>ไม่รองรับ</button>`;
+
+                const compareBtn = `<button class="btn-back" style="margin-top: 0.5rem; padding: 0.4rem;" onclick="toggleCompare(${JSON.stringify(p).replace(/"/g, '&quot;')})">
+                    <i class="fa-solid fa-scale-balanced"></i> เปรียบเทียบ
+                </button>`;
+
+                const warning = p.is_compatible ? '' : `<div class="warning-msg"><i class="fa-solid fa-triangle-exclamation"></i> ${p.incompatibility_reason}</div>`;
 
                 const stockStatus = p.stock > 0
-                    ? `<span style="font-size: 0.6rem; color: var(--success-color);"><i class="fa-solid fa-circle" style="font-size: 0.4rem;"></i> พร้อมส่ง (${p.stock})</span>`
-                    : `<span style="font-size: 0.6rem; color: var(--error-color);"><i class="fa-solid fa-circle" style="font-size: 0.4rem;"></i> สินค้าหมด</span>`;
+                    ? `<span class="stock-badge in-stock">มีของ (${p.stock})</span>`
+                    : `<span class="stock-badge out-of-stock">สินค้าหมด</span>`;
 
                 card.innerHTML = `
-                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem;">
-                        <i class="fa-solid ${p.icon || 'fa-box'}" style="font-size: 2rem; color: var(--primary-color);"></i>
-                        ${stockStatus}
+                    <div class="product-icon-container">
+                        <i class="fa-solid ${p.icon || 'fa-box'} main-icon"></i>
+                        <div class="icon-overlay"></div>
                     </div>
-                    <h3 style="font-size: 1rem; margin-bottom: 0.25rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${p.name}</h3>
-                    <div style="font-size: 1.25rem; font-weight: 700; color: var(--neon-blue);">฿${parseFloat(p.price).toLocaleString()}</div>
-                    ${specsHtml}
-                    ${actionBtn}
+                    <div class="product-info">
+                        ${stockStatus}
+                        <h3>${p.name}</h3>
+                        <div class="price">฿${parseFloat(p.price).toLocaleString()}</div>
+                        ${specsHtml}
+                        ${warning}
+                        ${actionBtn}
+                        ${compareBtn}
+                    </div>
                 `;
                 grid.appendChild(card);
             });
@@ -364,7 +268,8 @@ if (!isset($_SESSION['user_id'])) {
             currentBuild[category] = { id, name, price, tdp };
             updateSummary();
 
-            const categories = ['cpu', 'cooler', 'mainboard', 'ram', 'gpu', 'ssd', 'psu', 'case', 'keyboard', 'mouse', 'monitor'];
+            // Auto-advance to next category logic
+            const categories = ['cpu', 'cooler', 'mainboard', 'ram', 'gpu', 'ssd', 'psu', 'case', 'keyboard', 'mouse'];
             const nextIdx = categories.indexOf(category) + 1;
             if (nextIdx < categories.length) {
                 loadCategory(categories[nextIdx]);
@@ -372,179 +277,174 @@ if (!isset($_SESSION['user_id'])) {
         }
 
         function updateSummary() {
-            const list = document.getElementById('buildSummary');
+            const list = document.getElementById('build-list');
             list.innerHTML = '';
 
-            let total = assemblyPrice;
-            let totalTdp = 50;
+            let totalPrice = assemblyPrice;
+            let totalTdp = 0;
 
-            if (Object.keys(currentBuild).length === 0) {
-                list.innerHTML = '<div style="color: var(--text-muted); text-align: center; padding: 2rem; border: 1px dashed var(--glass-border); border-radius: 1rem;">ยังไม่มีการเลือกอุปกรณ์...</div>';
+            if (Object.keys(currentBuild).length === 0 && assemblyPrice === 0) {
+                list.innerHTML = '<div class="empty-state">ยังไม่ได้เลือกอุปกรณ์</div>';
             } else {
                 for (const [cat, part] of Object.entries(currentBuild)) {
-                    total += part.price;
+                    totalPrice += part.price;
                     totalTdp += part.tdp;
 
                     const item = document.createElement('div');
-                    item.className = 'summary-item-lite filled';
+                    item.className = 'summary-item';
                     item.innerHTML = `
-                        <div style="width: 32px; height: 32px; border-radius: 8px; background: rgba(59, 130, 246, 0.1); display: flex; align-items: center; justify-content: center; color: var(--primary-color);">
-                            <i class="fa-solid ${getCategoryIcon(cat)}"></i>
+                        <div class="info">
+                            <span class="cat-label">${cat.toUpperCase()}</span>
+                            <span class="part-name">${part.name}</span>
                         </div>
-                        <div style="flex: 1;">
-                            <div style="font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase;">${cat}</div>
-                            <div style="font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 150px;">${part.name}</div>
+                        <div class="item-price">฿${part.price.toLocaleString()}</div>
+                        <button class="btn-remove" onclick="removePart('${cat}')"><i class="fa-solid fa-xmark"></i></button>
+                    `;
+                    list.appendChild(item);
+                }
+
+                if (assemblyPrice > 0) {
+                    const item = document.createElement('div');
+                    item.className = 'summary-item assembly-item';
+                    item.innerHTML = `
+                        <div class="info">
+                            <span class="cat-label">SERVICE</span>
+                            <span class="part-name">ประกอบมืออาชีพ</span>
                         </div>
-                        <div style="font-weight: 700;">฿${part.price.toLocaleString()}</div>
-                        <i class="fa-solid fa-xmark" style="cursor: pointer; color: var(--error-color); font-size: 0.8rem; margin-left: 0.5rem;" onclick="removePart('${cat}')"></i>
+                        <div class="item-price">฿${assemblyPrice.toLocaleString()}</div>
                     `;
                     list.appendChild(item);
                 }
             }
 
-            document.getElementById('totalPrice').textContent = `฿${total.toLocaleString()}`;
-        }
+            // Base TDP overhead
+            totalTdp += 50;
 
-        function getCategoryIcon(cat) {
-            const icons = {
-                cpu: 'fa-microchip', cooler: 'fa-fan', mainboard: 'fa-circuit-board',
-                ram: 'fa-memory', gpu: 'fa-video', ssd: 'fa-hard-drive',
-                psu: 'fa-plug', case: 'fa-box-open', monitor: 'fa-desktop',
-                keyboard: 'fa-keyboard', mouse: 'fa-mouse'
-            };
-            return icons[cat] || 'fa-box';
+            document.getElementById('total-price').textContent = `฿${totalPrice.toLocaleString()}`;
+            document.getElementById('total-tdp').textContent = `${totalTdp} W`;
         }
 
         function removePart(category) {
             delete currentBuild[category];
             updateSummary();
+            // Reload current category to refresh compatibility if needed
             loadCategory(currentCategory);
         }
 
         function proceedToCheckout() {
             if (Object.keys(currentBuild).length === 0) {
-                alert("กรุณาเลือกอุปกรณ์ให้ครบถ้วนก่อนยืนยันสเปค");
+                alert("กรุณาเลือกอุปกรณ์ก่อน!");
                 return;
             }
-            const form = document.createElement('form');
-            form.method = 'POST';
-            form.action = 'checkout.php';
-
-            const input = document.createElement('input');
-            input.type = 'hidden';
-            input.name = 'build_data';
-            input.value = JSON.stringify(currentBuild);
-            form.appendChild(input);
-
-            const assembly = document.createElement('input');
-            assembly.type = 'hidden';
-            assembly.name = 'assembly';
-            assembly.value = 'box'; // Default for now
-            form.appendChild(assembly);
-
-            document.body.appendChild(form);
-            form.submit();
+            document.getElementById('form-build-data').value = JSON.stringify(currentBuild);
+            document.getElementById('form-assembly').value = assemblyPrice > 0 ? 'build' : 'box';
+            document.getElementById('checkout-form').submit();
         }
-    </script>
 
-    function openBudgetModal() {
-    document.getElementById('budget-overlay').style.display = 'block';
-    document.getElementById('budget-modal').style.display = 'block';
-    }
+        async function generateBudgetBuild() {
+            const budget = document.getElementById('budget-input').value;
+            if (!budget || budget < 15000) {
+                alert("กรุณาระบุงบประมาณอย่างน้อย 15,000 บาท");
+                return;
+            }
+            window.location.href = `budget_result.php?budget=${budget}`;
+        }
 
-    function closeBudgetModal() {
-    document.getElementById('budget-overlay').style.display = 'none';
-    document.getElementById('budget-modal').style.display = 'none';
-    }
+        function shareSpecs() {
+            if (Object.keys(currentBuild).length === 0) {
+                alert("กรุณาเลือกอุปกรณ์ก่อน!");
+                return;
+            }
+            const summary = Object.entries(currentBuild)
+                .map(([cat, part]) => `${cat.toUpperCase()}: ${part.name}`)
+                .join('\n');
+            const fullText = `คอมพิวเตอร์ที่ฉันจัดสเปค:\n${summary}\nราคารวม: ${document.getElementById('total-price').textContent}`;
 
-    function generateBudgetBuild() {
-    const budget = document.getElementById('budget-input').value;
-    if (!budget || budget < 15000) { alert("กรุณาระบุงบประมาณอย่างน้อย 15,000 บาท"); return; }
-        window.location.href=`budget_result.php?budget=${budget}`; } function shareSpecs() { if
-        (Object.keys(currentBuild).length===0) { alert("กรุณาเลือกอุปกรณ์ก่อน!"); return; } const
-        summary=Object.entries(currentBuild) .map(([cat, part])=> `${cat.toUpperCase()}: ${part.name}`)
-        .join('\n');
-        const fullText = `คอมพิวเตอร์ที่ฉันจัดสเปค:\n${summary}\nราคารวม:
-        ${document.getElementById('totalPrice').textContent}`;
-
-        navigator.clipboard.writeText(fullText).then(() => {
-        alert("คัดลอกสเปคไปยังคลิปบอร์ดแล้ว!");
-        }).catch(err => {
-        console.error('Could not copy text: ', err);
-        });
+            navigator.clipboard.writeText(fullText).then(() => {
+                alert("คัดลอกสเปคไปยังคลิปบอร์ดแล้ว!");
+            }).catch(err => {
+                console.error('Could not copy text: ', err);
+            });
         }
 
         // Compare Logic
         let compareList = [];
 
         function toggleCompare(product) {
-        const index = compareList.findIndex(p => p.id === product.id);
-        if (index > -1) {
-        compareList.splice(index, 1);
-        } else {
-        if (compareList.length >= 3) {
-        alert("เปรียบเทียบได้สูงสุด 3 ชิ้นเท่านั้น");
-        return;
-        }
-        compareList.push(product);
-        }
-        renderCompareTray();
+            const index = compareList.findIndex(p => p.id === product.id);
+            if (index > -1) {
+                compareList.splice(index, 1);
+            } else {
+                if (compareList.length >= 3) {
+                    alert("เปรียบเทียบได้สูงสุด 3 ชิ้นเท่านั้น");
+                    return;
+                }
+                compareList.push(product);
+            }
+            renderCompareTray();
         }
 
         function renderCompareTray() {
-        const tray = document.getElementById('compare-tray');
-        const items = document.getElementById('compare-items');
-        items.innerHTML = '';
+            const tray = document.getElementById('compare-tray');
+            const items = document.getElementById('compare-items');
+            items.innerHTML = '';
 
-        if (compareList.length > 0) {
-        tray.style.display = 'flex';
-        compareList.forEach(p => {
-        const thumb = document.createElement('div');
-        thumb.className = 'compare-item-thumb';
-        thumb.innerHTML = `
-        <i class="fa-solid ${p.icon || 'fa-box'}"></i>
-        <span>${p.name}</span>
-        <i class="fa-solid fa-xmark" style="cursor:pointer; color:var(--error-color)"
-            onclick="toggleCompare({id: ${p.id}})"></i>
-        `;
-        items.appendChild(thumb);
-        });
-        } else {
-        tray.style.display = 'none';
-        }
+            if (compareList.length > 0) {
+                tray.style.display = 'flex';
+                compareList.forEach(p => {
+                    const thumb = document.createElement('div');
+                    thumb.className = 'compare-item-thumb';
+                    thumb.innerHTML = `
+                        <i class="fa-solid ${p.icon || 'fa-box'}"></i>
+                        <span>${p.name}</span>
+                        <i class="fa-solid fa-xmark" style="cursor:pointer; color:var(--error-color)" onclick="toggleCompare({id: ${p.id}})"></i>
+                    `;
+                    items.appendChild(thumb);
+                });
+            } else {
+                tray.style.display = 'none';
+            }
         }
 
         function showComparison() {
-        if (compareList.length < 2) { alert("กรุณาเลือกอย่างน้อย 2 ชิ้นเพื่อเปรียบเทียบ"); return; }
-            document.getElementById('compare-overlay').style.display='block' ; const
-            modal=document.getElementById('compare-modal'); modal.style.display='block' ; const
-            grid=document.getElementById('compare-grid'); grid.innerHTML='' ; compareList.forEach(p=> {
-            const col = document.createElement('div');
-            col.className = 'compare-col';
-
-            let specsHtml = '';
-            if (p.specs) {
-            for (const [key, value] of Object.entries(p.specs)) {
-            const label = key.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
-            specsHtml += `<div><strong>${label}:</strong> ${value}</div>`;
+            if (compareList.length < 2) {
+                alert("กรุณาเลือกอย่างน้อย 2 ชิ้นเพื่อเปรียบเทียบ");
+                return;
             }
-            }
+            document.getElementById('compare-overlay').style.display = 'block';
+            const modal = document.getElementById('compare-modal');
+            modal.style.display = 'block';
 
-            col.innerHTML = `
-            <i class="fa-solid ${p.icon || 'fa-box'}" style="font-size: 3rem; color: var(--primary-color);"></i>
-            <h3>${p.name}</h3>
-            <div class="price" style="margin-bottom: 2rem;">฿${parseFloat(p.price).toLocaleString()}</div>
-            <div class="compare-specs">${specsHtml}</div>
-            `;
-            grid.appendChild(col);
+            const grid = document.getElementById('compare-grid');
+            grid.innerHTML = '';
+
+            compareList.forEach(p => {
+                const col = document.createElement('div');
+                col.className = 'compare-col';
+
+                let specsHtml = '';
+                if (p.specs) {
+                    for (const [key, value] of Object.entries(p.specs)) {
+                        const label = key.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+                        specsHtml += `<div><strong>${label}:</strong> ${value}</div>`;
+                    }
+                }
+
+                col.innerHTML = `
+                    <i class="fa-solid ${p.icon || 'fa-box'}" style="font-size: 3rem; color: var(--primary-color);"></i>
+                    <h3>${p.name}</h3>
+                    <div class="price" style="margin-bottom: 2rem;">฿${parseFloat(p.price).toLocaleString()}</div>
+                    <div class="compare-specs">${specsHtml}</div>
+                `;
+                grid.appendChild(col);
             });
-            }
+        }
 
-            function closeComparison() {
+        function closeComparison() {
             document.getElementById('compare-overlay').style.display = 'none';
             document.getElementById('compare-modal').style.display = 'none';
-            }
-            </script>
+        }
+    </script>
 </body>
 
 </html>

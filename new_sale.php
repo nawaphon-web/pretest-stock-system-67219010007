@@ -19,211 +19,227 @@ $newArrivals = Product::getNewArrivals($pdo, 4);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>โปรโมชั่นและเซตแนะนำ - TechStock Promotional Hub</title>
+    <title>New Sale - TechStock Promotional Hub</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         .hub-container {
-            max-width: 1400px;
+            max-width: 1200px;
             width: 100%;
-            padding: 3rem;
-            animation: fadeIn 0.8s ease-out;
+            padding: 2rem;
+            height: 100vh;
+            overflow-y: auto;
         }
 
         .hub-header {
-            margin-bottom: 4rem;
-            border-bottom: 1px solid var(--glass-border);
-            padding-bottom: 2rem;
             display: flex;
             justify-content: space-between;
             align-items: flex-end;
+            margin-bottom: 3rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 1.5rem;
         }
 
         .bundle-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-            gap: 2rem;
-            margin-bottom: 5rem;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2.5rem;
+            margin-bottom: 4rem;
         }
 
-        .bundle-card-tech {
-            background: var(--card-bg);
-            backdrop-filter: blur(20px);
-            border: 1px solid var(--glass-border);
-            border-radius: 2.5rem;
-            padding: 3rem;
+        .bundle-card {
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(15, 23, 42, 0.9) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 1.5rem;
+            padding: 2.5rem;
             position: relative;
+            transition: 0.4s;
             overflow: hidden;
-            transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            flex-direction: column;
         }
 
-        .bundle-card-tech:hover {
-            transform: translateY(-10px);
+        .bundle-card:hover {
+            transform: scale(1.02);
             border-color: var(--primary-color);
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5), 0 0 30px rgba(59, 130, 246, 0.2);
+            box-shadow: 0 20px 50px rgba(59, 130, 246, 0.2);
         }
 
-        .bundle-card-tech.hot {
-            border-color: var(--accent-color);
+        .bundle-card.hot {
+            border-color: #f43f5e;
         }
 
-        .bundle-card-tech.hot::before {
-            content: 'HIGH PRIORITY';
+        .bundle-card.hot::after {
+            content: 'HOT DEAL';
             position: absolute;
-            top: 2rem;
-            right: -2.5rem;
-            background: var(--accent-color);
+            top: 1rem;
+            right: -2rem;
+            background: #f43f5e;
             color: white;
             padding: 0.5rem 3rem;
             transform: rotate(45deg);
-            font-size: 0.6rem;
-            font-weight: 900;
-            letter-spacing: 2px;
+            font-size: 0.75rem;
+            font-weight: 800;
         }
 
-        .bundle-icon-glow {
+        .bundle-icon {
             font-size: 4rem;
-            margin-bottom: 2rem;
-            color: var(--primary-color);
-            filter: drop-shadow(0 0 15px var(--primary-color));
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, white 0%, var(--primary-color) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
-        .tech-list {
-            margin: 2rem 0;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
+        .item-list-mini {
+            margin: 1.5rem 0;
+            padding: 0;
+            list-style: none;
+            color: var(--text-muted);
+            font-size: 0.85rem;
         }
 
-        .tech-item {
+        .item-list-mini li {
             display: flex;
             align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .btn-hub-action {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
             gap: 0.75rem;
-            font-size: 0.8rem;
-            color: var(--text-muted);
+            padding: 1rem 2rem;
+            border-radius: 1rem;
+            text-decoration: none;
+            font-weight: 700;
+            transition: 0.3s;
+            cursor: pointer;
+            border: none;
         }
 
-        .tech-item i {
-            color: var(--primary-color);
-            font-size: 0.6rem;
+        .btn-primary-hub {
+            background: var(--primary-color);
+            color: white;
         }
 
-        .price-tag-advanced {
-            display: flex;
-            flex-direction: column;
-            gap: 0.25rem;
+        .btn-outline-hub {
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-hub-action:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
         }
     </style>
 </head>
 
-<body style="display: flex; justify-content: center; align-items: flex-start; min-height: 100vh;">
+<body style="display: flex; justify-content: center; align-items: flex-start;">
     <div class="hub-container">
         <div class="hub-header">
             <div>
-                <nav style="margin-bottom: 1rem; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px;">
-                    <a href="user_dashboard.php" style="color: var(--text-muted); text-decoration: none;">หน้าแรก</a>
-                    <span style="color:var(--primary-color)">//</span> โปรโมชั่นทั้งหมด
-                </nav>
-                <h1 class="shimmer-text" style="font-size: 3.5rem; font-weight: 800; letter-spacing: -3px;">
-                    โปรโมชั่นพิเศษ</h1>
-                <p style="color: var(--text-muted); margin-top: 0.5rem;">เซตคอมพิวเตอร์แนะนำและอุปกรณ์ราคาพิเศษสำหรับคุณ
-                </p>
+                <nav style="margin-bottom: 0.5rem;"><a href="user_dashboard.php"
+                        style="color: var(--text-muted); text-decoration: none;">Dashboard</a> / New Sale</nav>
+                <h1 style="font-size: 2.5rem;"><i class="fa-solid fa-basket-shopping"></i> Promotional Hub</h1>
+                <p class="subtitle">เลือกเซตคอมพิวเตอร์แนะนำ หรืออุปกรณ์ราคาพิเศษสำหรับลูกค้า</p>
             </div>
-            <a href="builder.php" class="cyber-btn" style="border-radius: 2rem;">
-                <i class="fa-solid fa-microchip"></i> จัดสเปคเองเครื่องใหม่
+            <a href="builder.php" class="btn-hub-action btn-outline-hub">
+                <i class="fa-solid fa-gear"></i> Manual PC Builder
             </a>
         </div>
 
-        <h2
-            style="margin-bottom: 2rem; font-size: 1rem; text-transform: uppercase; letter-spacing: 4px; color: var(--primary-color);">
-            [01] เซตคอมพิวเตอร์แนะนำ</h2>
+        <!-- Curated PC Sets -->
+        <h2 style="margin-bottom: 2rem;"><i class="fa-solid fa-layer-group" style="color: var(--primary-color);"></i>
+            Curated PC Sets</h2>
         <div class="bundle-grid">
             <?php foreach ($bundles as $b): ?>
-                <div class="bundle-card-tech <?php echo $b->is_hot ? 'hot' : ''; ?>">
-                    <div class="bundle-icon-glow"><i class="fa-solid <?php echo $b->icon; ?>"></i></div>
-                    <h3 style="font-size: 2rem; margin-bottom: 1rem;"><?php echo $b->name; ?></h3>
-                    <p style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.6;"><?php echo $b->description; ?>
+                <div class="bundle-card <?php echo $b->is_hot ? 'hot' : ''; ?>">
+                    <div class="bundle-icon"><i class="fa-solid <?php echo $b->icon; ?>"></i></div>
+                    <h3 style="font-size: 1.75rem; color: white;">
+                        <?php echo $b->name; ?>
+                    </h3>
+                    <p style="color: var(--text-muted); margin-top: 0.5rem;">
+                        <?php echo $b->description; ?>
                     </p>
 
-                    <div class="tech-list">
+                    <ul class="item-list-mini">
                         <?php
                         $items = $b->getItems($pdo);
                         foreach (array_slice($items, 0, 4) as $item): ?>
-                            <div class="tech-item">
-                                <i class="fa-solid fa-square"></i> <?php echo $item->name; ?>
-                            </div>
+                            <li><i class="fa-solid fa-circle-check" style="color: #10b981; font-size: 0.7rem;"></i>
+                                <?php echo $item->name; ?>
+                            </li>
                         <?php endforeach; ?>
-                        <div class="tech-item" style="font-style: italic;">... [+ Full Component Set]</div>
-                    </div>
+                        <li style="font-style: italic;">+ และอุปกรณ์อื่นๆ อีกมากมาย</li>
+                    </ul>
 
-                    <div style="margin-top: 3rem; display: flex; justify-content: space-between; align-items: flex-end;">
-                        <div class="price-tag-advanced">
-                            <span
-                                style="font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase;">ราคาสุดคุ้มทั้งเซต</span>
-                            <div style="display: flex; align-items: baseline; gap: 1rem;">
-                                <span
-                                    style="font-size: 2.5rem; font-weight: 800; color: var(--neon-blue);">฿<?php echo number_format($b->discount_price); ?></span>
-                                <span
-                                    style="text-decoration: line-through; color: var(--text-muted); font-size: 1rem;">฿<?php echo number_format($b->total_price); ?></span>
-                            </div>
+                    <div style="margin-top: auto; padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.05);">
+                        <div class="price-flex" style="margin-bottom: 1.5rem; align-items: baseline;">
+                            <span style="font-size: 2.25rem; font-weight: 800; color: #f43f5e;">฿
+                                <?php echo number_format($b->discount_price); ?>
+                            </span>
+                            <span style="text-decoration: line-through; color: var(--text-muted); margin-left: 1rem;">฿
+                                <?php echo number_format($b->total_price); ?>
+                            </span>
                         </div>
-                    </div>
-
-                    <div style="margin-top: 2rem; display: grid; grid-template-columns: 1fr 1.5fr; gap: 1rem;">
-                        <a href="bundle_view.php?id=<?php echo $b->id; ?>" class="cyber-btn"
-                            style="text-align: center; border-radius: 1rem; padding: 0.75rem; font-size: 0.7rem; border-color: var(--glass-border); color: var(--text-muted);">ดูรายละเอียด</a>
-                        <button onclick="selectBundle(<?php echo $b->id; ?>)" class="cyber-btn"
-                            style="border-radius: 1rem; padding: 0.75rem; font-size: 0.7rem;">เริ่มจัดสเปคเซตนี้</button>
+                        <div style="display: flex; gap: 1rem;">
+                            <a href="bundle_view.php?id=<?php echo $b->id; ?>" class="btn-hub-action btn-outline-hub"
+                                style="flex: 1;">View Details</a>
+                            <button onclick="selectBundle(<?php echo $b->id; ?>)" class="btn-hub-action btn-primary-hub"
+                                style="flex: 1.5;">Select this Set</button>
+                        </div>
                     </div>
                 </div>
             <?php endforeach; ?>
         </div>
 
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 4rem;">
+        <!-- Special Offers & New Arrivals (Mini Grid) -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 3rem;">
             <div>
-                <h2
-                    style="margin-bottom: 2rem; font-size: 1rem; text-transform: uppercase; letter-spacing: 4px; color: var(--accent-color);">
-                    [02] สินค้าราคาพิเศษ</h2>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                <h2 style="margin-bottom: 1.5rem;"><i class="fa-solid fa-fire" style="color: #f43f5e;"></i> Special
+                    Offers</h2>
+                <div class="promo-mini-grid" style="grid-template-columns: 1fr 1fr;">
                     <?php foreach ($promotions as $p): ?>
-                        <div class="glass-panel" style="padding: 2rem; border-radius: 2rem; position: relative;">
-                            <div
-                                style="position: absolute; top: 1rem; right: 1rem; background: var(--accent-color); color: white; padding: 0.2rem 0.6rem; border-radius: 2rem; font-size: 0.6rem; font-weight: 800;">
-                                PROMO</div>
-                            <i class="fa-solid <?php echo $p->icon ?: 'fa-box'; ?>"
-                                style="font-size: 2.5rem; margin-bottom: 1.5rem; color: var(--accent-color);"></i>
-                            <h4
-                                style="font-size: 1rem; margin-bottom: 0.5rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                        <div class="promo-card" style="padding: 1.5rem;">
+                            <div class="promo-tag tag-deal">DEAL</div>
+                            <div class="promo-icon" style="font-size: 2.5rem;"><i
+                                    class="fa-solid <?php echo $p->icon ?: 'fa-box'; ?>"></i></div>
+                            <h4 style="margin-bottom: 0.5rem;">
                                 <?php echo $p->name; ?>
                             </h4>
-                            <div style="font-size: 1.5rem; font-weight: 800; color: white; margin-bottom: 1.5rem;">
-                                ฿<?php echo number_format($p->sale_price); ?></div>
-                            <a href="product_view.php?id=<?php echo $p->id; ?>" class="cyber-btn"
-                                style="width: 100%; display: block; text-align: center; font-size: 0.6rem; padding: 0.6rem; border-color: var(--accent-color); color: var(--accent-color);">ดูสินค้าชิ้นนี้</a>
+                            <div class="price-flex">
+                                <span class="sale-price" style="font-size: 1.25rem;">฿
+                                    <?php echo number_format($p->sale_price); ?>
+                                </span>
+                            </div>
+                            <a href="product_view.php?id=<?php echo $p->id; ?>" class="buy-now-btn"
+                                style="text-decoration: none; text-align: center;">View Item</a>
                         </div>
                     <?php endforeach; ?>
                 </div>
             </div>
             <div>
-                <h2
-                    style="margin-bottom: 2rem; font-size: 1rem; text-transform: uppercase; letter-spacing: 4px; color: var(--secondary-color);">
-                    [03] สินค้าเข้าใหม่</h2>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                <h2 style="margin-bottom: 1.5rem;"><i class="fa-solid fa-star" style="color: #fbbf24;"></i> New Hardware
+                </h2>
+                <div class="promo-mini-grid" style="grid-template-columns: 1fr 1fr;">
                     <?php foreach ($newArrivals as $p): ?>
-                        <div class="glass-panel" style="padding: 2rem; border-radius: 2rem; position: relative;">
-                            <div
-                                style="position: absolute; top: 1rem; right: 1rem; background: var(--secondary-color); color: white; padding: 0.2rem 0.6rem; border-radius: 2rem; font-size: 0.6rem; font-weight: 800;">
-                                NEW</div>
-                            <i class="fa-solid <?php echo $p->icon ?: 'fa-box'; ?>"
-                                style="font-size: 2.5rem; margin-bottom: 1.5rem; color: var(--secondary-color);"></i>
-                            <h4
-                                style="font-size: 1rem; margin-bottom: 0.5rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                        <div class="promo-card" style="padding: 1.5rem;">
+                            <div class="promo-tag tag-new">NEW</div>
+                            <div class="promo-icon" style="font-size: 2.5rem;"><i
+                                    class="fa-solid <?php echo $p->icon ?: 'fa-box'; ?>"></i></div>
+                            <h4 style="margin-bottom: 0.5rem;">
                                 <?php echo $p->name; ?>
                             </h4>
-                            <div style="font-size: 1.5rem; font-weight: 800; color: white; margin-bottom: 1.5rem;">
-                                ฿<?php echo number_format($p->price); ?></div>
-                            <a href="product_view.php?id=<?php echo $p->id; ?>" class="cyber-btn"
-                                style="width: 100%; display: block; text-align: center; font-size: 0.6rem; padding: 0.6rem; border-color: var(--secondary-color); color: var(--secondary-color);">ดูรายละเอียด</a>
+                            <div class="price-flex">
+                                <span class="normal-price" style="font-size: 1.25rem;">฿
+                                    <?php echo number_format($p->price); ?>
+                                </span>
+                            </div>
+                            <a href="product_view.php?id=<?php echo $p->id; ?>" class="buy-now-btn"
+                                style="text-decoration: none; text-align: center;">View Item</a>
                         </div>
                     <?php endforeach; ?>
                 </div>
@@ -232,7 +248,9 @@ $newArrivals = Product::getNewArrivals($pdo, 4);
     </div>
 
     <script>
-        function selectBundle(id) {
+        async function selectBundle(id) {
+            // Logic to load bundle into builder
+            // We'll redirect to builder.php with a bundle_id parameter
             window.location.href = `builder.php?load_bundle=${id}`;
         }
     </script>
