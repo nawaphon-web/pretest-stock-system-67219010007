@@ -3,87 +3,142 @@ session_start();
 require 'db.php';
 require 'includes/Product.php';
 
-$id = $_GET['id'] ?? null;
-if (!$id) {
-    header("Location: new_sale.php");
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.php");
     exit;
 }
 
-$p = Product::findById($pdo, $id);
-if (!$p) {
-    header("Location: new_sale.php");
+$id = isset($_GET['id']) ? intval($_GET['id']) : 0;
+$product = Product::findById($pdo, $id);
+
+if (!$product) {
+    echo "Product not found.";
     exit;
 }
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="th">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo $p->name; ?> - TechStock</title>
+    <title>
+        <?php echo $product->name; ?> - TechStock
+    </title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .view-container {
+            max-width: 900px;
+            width: 100%;
+            padding: 4rem 2rem;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .product-hero {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 4rem;
+            background: var(--card-bg);
+            padding: 4rem;
+            border-radius: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+        }
+
+        .product-visual {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 8rem;
+            color: var(--primary-color);
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 1.5rem;
+            aspect-ratio: 1;
+        }
+
+        .spec-badge {
+            display: inline-block;
+            padding: 0.4rem 1rem;
+            background: rgba(59, 130, 246, 0.1);
+            color: var(--primary-color);
+            border-radius: 0.5rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .price-tag-large {
+            font-size: 3rem;
+            font-weight: 800;
+            margin: 2rem 0;
+            display: flex;
+            flex-direction: column;
+        }
+    </style>
 </head>
 
-<body style="background: #f8fafc;">
-    <div class="container animate-fade-in">
-        <header style="margin-bottom: 3rem;">
-            <a href="new_sale.php" style="text-decoration: none; color: #64748b; font-weight: 600;">
-                <i class="fa-solid fa-arrow-left"></i> กลับไปหน้าสินค้า
-            </a>
-        </header>
+<body style="display: flex; justify-content: center;">
+    <div class="view-container">
+        <a href="new_sale.php"
+            style="color: var(--text-muted); text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem; margin-bottom: 2rem;">
+            <i class="fa-solid fa-arrow-left"></i> Back to Hub
+        </a>
 
-        <div class="card" style="display: grid; grid-template-columns: 400px 1fr; gap: 3rem; padding: 3rem;">
-            <div
-                style="background: #f1f5f9; border-radius: 1rem; display: flex; align-items: center; justify-content: center; height: 400px; font-size: 10rem; color: #cbd5e1;">
-                <i class="fa-solid <?php echo $p->icon ?? 'fa-box'; ?>"></i>
+        <div class="product-hero">
+            <div class="product-visual">
+                <i class="fa-solid <?php echo $product->icon ?: 'fa-box'; ?>"></i>
             </div>
 
-            <div>
-                <span class="badge <?php echo $p->stock > 0 ? 'badge-success' : 'badge-danger'; ?>"
-                    style="margin-bottom: 1rem;">
-                    <?php echo $p->stock > 0 ? 'สินค้าพร้อมจำหน่าย' : 'สินค้าหมด'; ?>
+            <div class="product-info">
+                <span class="spec-badge">AVAILABLE IN STOCK (
+                    <?php echo $product->stock; ?>)
                 </span>
-                <h1 style="font-size: 2.5rem; font-weight: 800; color: #1e293b; margin-bottom: 1rem;">
-                    <?php echo htmlspecialchars($p->name); ?></h1>
-                <p style="color: #64748b; font-size: 0.875rem; margin-bottom: 2rem;">รหัสสินค้า:
-                    TECH-<?php echo str_pad($p->id, 5, '0', STR_PAD_LEFT); ?></p>
+                <h1 style="font-size: 2.5rem; margin-bottom: 1rem;">
+                    <?php echo $product->name; ?>
+                </h1>
 
-                <div
-                    style="background: #f8fafc; padding: 2rem; border-radius: 1rem; margin-bottom: 2.5rem; border: 1px solid #f1f5f9;">
-                    <div style="font-size: 0.875rem; font-weight: 700; color: #94a3b8; margin-bottom: 0.5rem;">ราคาพิเศษ
-                    </div>
-                    <div style="font-size: 3rem; font-weight: 800; color: var(--primary-color);">
-                        ฿<?php echo number_format($p->sale_price ?? $p->price); ?>
+                <div style="margin-top: 2rem;">
+                    <h4
+                        style="color: var(--text-muted); text-transform: uppercase; font-size: 0.75rem; letter-spacing: 0.1em; margin-bottom: 1rem;">
+                        Specifications</h4>
+                    <div style="display: grid; gap: 0.75rem;">
+                        <?php foreach ($product->specifications as $key => $val): ?>
+                            <div
+                                style="display: flex; justify-content: space-between; padding: 0.75rem; background: rgba(255,255,255,0.03); border-radius: 0.5rem;">
+                                <strong style="text-transform: capitalize; color: var(--text-muted);">
+                                    <?php echo $key; ?>:
+                                </strong>
+                                <span>
+                                    <?php echo $val; ?>
+                                </span>
+                            </div>
+                        <?php endforeach; ?>
                     </div>
                 </div>
 
-                <div style="margin-bottom: 2.5rem;">
-                    <h3
-                        style="font-size: 1rem; font-weight: 700; margin-bottom: 1rem; color: #1e293b; border-bottom: 2px solid #f1f5f9; padding-bottom: 0.5rem; display: inline-block;">
-                        ข้อมูลทางเทคนิค
-                    </h3>
-                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem;">
-                        <?php if ($p->specifications): ?>
-                            <?php foreach ($p->specifications as $key => $value): ?>
-                                <div style="display: flex; gap: 0.5rem; font-size: 0.9rem;">
-                                    <span
-                                        style="color: #94a3b8; font-weight: 600; min-width: 100px;"><?php echo strtoupper(str_replace('_', ' ', $key)); ?>:</span>
-                                    <span style="color: #475569;"><?php echo $value; ?></span>
-                                </div>
-                            <?php endforeach; ?>
-                        <?php endif; ?>
-                    </div>
+                <div class="price-tag-large">
+                    <?php if ($product->is_promotion): ?>
+                        <span style="font-size: 1rem; color: #f43f5e; text-transform: uppercase;">Promotional Price</span>
+                        <span style="color: #f43f5e;">฿
+                            <?php echo number_format($product->sale_price); ?>
+                        </span>
+                        <span style="font-size: 1.25rem; color: var(--text-muted); text-decoration: line-through;">฿
+                            <?php echo number_format($product->price); ?>
+                        </span>
+                    <?php else: ?>
+                        <span style="font-size: 1rem; color: var(--primary-color); text-transform: uppercase;">Standard
+                            Price</span>
+                        <span style="color: var(--primary-color);">฿
+                            <?php echo number_format($product->price); ?>
+                        </span>
+                    <?php endif; ?>
                 </div>
 
                 <div style="display: flex; gap: 1rem;">
-                    <button onclick="location.href='builder.php?load_part=<?php echo $p->id; ?>'"
-                        class="btn btn-primary" style="flex: 1; height: 3.5rem;">
-                        <i class="fa-solid fa-plus-circle"></i> เลือกชิ้นนี้ใส่สเปคคอม
-                    </button>
-                    <button class="btn btn-outline" style="flex: 1;"><i class="fa-solid fa-copy"></i>
-                        เปรียบเทียบสเปค</button>
+                    <button onclick="location.href='builder.php'" class="btn-checkout" style="flex: 2;">Add to
+                        Build</button>
+                    <button class="btn-back" style="flex: 1;">Compare</button>
                 </div>
             </div>
         </div>
