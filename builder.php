@@ -60,26 +60,52 @@ if (!isset($_SESSION['user_id'])) {
                     <button class="btn-checkout" style="width: auto; margin-top: 0; padding: 0.75rem 2rem;"
                         onclick="generateBudgetBuild()">แนะนำสเปก</button>
                 </div>
+                <div class="quick-budget-tiers"
+                    style="display: flex; gap: 0.6rem; margin-top: 1.25rem; flex-wrap: wrap;">
+                    <button class="step-btn" style="flex: 1; min-width: 120px;" onclick="setBudget(15000)">
+                        <i class="fa-solid fa-seedling"></i> ฿15,000 (Starting)
+                    </button>
+                    <button class="step-btn" style="flex: 1; min-width: 120px;" onclick="setBudget(20000)">
+                        <i class="fa-solid fa-briefcase"></i> ฿20,000 (Office)
+                    </button>
+                    <button class="step-btn" style="flex: 1; min-width: 120px;" onclick="setBudget(35000)">
+                        <i class="fa-solid fa-gamepad"></i> ฿35,000 (Gaming)
+                    </button>
+                    <button class="step-btn" style="flex: 1; min-width: 120px;" onclick="setBudget(55000)">
+                        <i class="fa-solid fa-tower-broadcast"></i> ฿55,000 (Streamer)
+                    </button>
+                    <button class="step-btn" style="flex: 1; min-width: 120px;" onclick="setBudget(80000)">
+                        <i class="fa-solid fa-microchip"></i> ฿80,000 (Pro Work)
+                    </button>
+                    <button class="step-btn" style="flex: 1; min-width: 120px;" onclick="setBudget(120000)">
+                        <i class="fa-solid fa-crown"></i> ฿120,000+
+                    </button>
+                </div>
                 <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.5rem;">*
                     ระบบจะคำนวณและเลือกอุปกรณ์ที่คุ้มค่าที่สุดภายใต้งบระบุ</p>
             </div>
 
             <div class="steps-nav">
-                <button class="step-btn active" data-category="cpu" onclick="loadCategory('cpu')">ซีพียู (CPU)</button>
-                <button class="step-btn" data-category="cooler" onclick="loadCategory('cooler')">ซิงค์พัดลม
-                    (Cooler)</button>
-                <button class="step-btn" data-category="mainboard" onclick="loadCategory('mainboard')">เมนบอร์ด
-                    (Mainboard)</button>
-                <button class="step-btn" data-category="ram" onclick="loadCategory('ram')">แรม (RAM)</button>
-                <button class="step-btn" data-category="gpu" onclick="loadCategory('gpu')">การ์ดจอ (GPU)</button>
-                <button class="step-btn" data-category="ssd" onclick="loadCategory('ssd')">ฮาร์ดดิสก์/SSD
-                    (Storage)</button>
-                <button class="step-btn" data-category="psu" onclick="loadCategory('psu')">พาวเวอร์ซัพพลาย
-                    (PSU)</button>
-                <button class="step-btn" data-category="case" onclick="loadCategory('case')">เคส (Case)</button>
-                <button class="step-btn" data-category="keyboard" onclick="loadCategory('keyboard')">คีย์บอร์ด
-                    (Keyboard)</button>
-                <button class="step-btn" data-category="mouse" onclick="loadCategory('mouse')">เมาส์ (Mouse)</button>
+                <button class="step-btn active" data-category="cpu" onclick="loadCategory('cpu')"><i
+                        class="fa-solid fa-microchip"></i> ซีพียู (CPU)</button>
+                <button class="step-btn" data-category="cooler" onclick="loadCategory('cooler')"><i
+                        class="fa-solid fa-fan"></i> ซิงค์พัดลม (Cooler)</button>
+                <button class="step-btn" data-category="mainboard" onclick="loadCategory('mainboard')"><i
+                        class="fa-solid fa-microchip"></i> เมนบอร์ด (Mainboard)</button>
+                <button class="step-btn" data-category="ram" onclick="loadCategory('ram')"><i
+                        class="fa-solid fa-memory"></i> แรม (RAM)</button>
+                <button class="step-btn" data-category="gpu" onclick="loadCategory('gpu')"><i
+                        class="fa-solid fa-bolt"></i> การ์ดจอ (GPU)</button>
+                <button class="step-btn" data-category="ssd" onclick="loadCategory('ssd')"><i
+                        class="fa-solid fa-hard-drive"></i> ฮาร์ดดิสก์/SSD (Storage)</button>
+                <button class="step-btn" data-category="psu" onclick="loadCategory('psu')"><i
+                        class="fa-solid fa-plug"></i> พาวเวอร์ซัพพลาย (PSU)</button>
+                <button class="step-btn" data-category="case" onclick="loadCategory('case')"><i
+                        class="fa-solid fa-box"></i> เคส (Case)</button>
+                <button class="step-btn" data-category="keyboard" onclick="loadCategory('keyboard')"><i
+                        class="fa-solid fa-keyboard"></i> คีย์บอร์ด (Keyboard)</button>
+                <button class="step-btn" data-category="mouse" onclick="loadCategory('mouse')"><i
+                        class="fa-solid fa-mouse"></i> เมาส์ (Mouse)</button>
             </div>
 
             <div class="assembly-options">
@@ -350,6 +376,11 @@ if (!isset($_SESSION['user_id'])) {
             window.location.href = `budget_result.php?budget=${budget}`;
         }
 
+        function setBudget(amount) {
+            document.getElementById('budget-input').value = amount;
+            generateBudgetBuild();
+        }
+
         function shareSpecs() {
             if (Object.keys(currentBuild).length === 0) {
                 alert("กรุณาเลือกอุปกรณ์ก่อน!");
@@ -443,7 +474,7 @@ if (!isset($_SESSION['user_id'])) {
         function closeComparison() {
             document.getElementById('compare-overlay').style.display = 'none';
             document.getElementById('compare-modal').style.display = 'none';
-        }
+    }
     </script>
 </body>
 

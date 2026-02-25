@@ -23,6 +23,7 @@ if ($budget < 15000) {
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+    <style>
         .result-container {
             max-width: 1000px;
             width: 100%;
@@ -34,7 +35,7 @@ if ($budget < 15000) {
 
         .result-header {
             text-align: center;
-            margin-bottom: 3rem;
+            margin-bottom: 2rem;
         }
 
         .result-grid {
@@ -80,10 +81,46 @@ if ($budget < 15000) {
 
         .summary-card {
             background: linear-gradient(135deg, var(--primary-color) 0%, #1e40af 100%);
-            padding: 2rem;
+            padding: 1.5rem;
             border-radius: 1rem;
             text-align: center;
             margin-bottom: 2rem;
+        }
+
+        .suitability-card {
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            text-align: left;
+        }
+
+        .suitability-icon {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            background: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .suitability-info h2 {
+            font-size: 1.25rem;
+            color: white;
+            margin-bottom: 0.25rem;
+        }
+
+        .suitability-info p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.4;
         }
 
         .actions {
@@ -127,6 +164,34 @@ if ($budget < 15000) {
 </head>
 
 <body style="display: flex; justify-content: center; align-items: flex-start;">
+    <?php
+    $suitability = "";
+    $suitIcon = "";
+    $suitTitle = "";
+
+    if ($budget <= 20000) {
+        $suitTitle = "Entry-level / Home Office";
+        $suitability = "เหมาะสำหรับงานเอกสาร เรียนออนไลน์ ดูหนัง ฟังเพลง และการใช้งานทั่วไปในชีวิตประจำวัน";
+        $suitIcon = "fa-house-laptop";
+    } elseif ($budget <= 35000) {
+        $suitTitle = "Mainstream Gaming / Content Creation";
+        $suitability = "เหมาะสำหรับการเล่นเกมยอดนิยมในปัจจุบัน (Esports) และงานตัดต่อวิดีโอ/กราฟิกพื้นฐาน";
+        $suitIcon = "fa-gamepad";
+    } elseif ($budget <= 55000) {
+        $suitTitle = "High-Performance Gaming";
+        $suitability = "รองรับการเล่นเกมระดับ AAA ที่ความละเอียด 1080p หรือ 1440p ได้อย่างไหลลื่น และงานสร้างสรรค์เนื้อหาที่เข้มข้นขึ้น";
+        $suitIcon = "fa-bolt";
+    } elseif ($budget <= 80000) {
+        $suitTitle = "Professional Workstation / 4K Gaming";
+        $suitability = "เหมาะสำหรับมืออาชีพ งานเรนเดอร์ 3D, ตัดต่อวิดีโอ 4K และการเล่นเกมที่ความละเอียดสูงสุด";
+        $suitIcon = "fa-briefcase";
+    } else {
+        $suitTitle = "Enthusiast / Extreme Performance";
+        $suitability = "ที่สุดของความแรงสำหรับผู้ใช้ที่ต้องการประสิทธิภาพสูงสุดในทุกด้าน รองรับเทคโนโลยีล้ำสมัยที่สุด";
+        $suitIcon = "fa-crown";
+    }
+    ?>
+
     <div class="result-container">
         <div class="result-header">
             <h1 style="font-size: 2.5rem; margin-bottom: 0.5rem;">เสร็จเรียบร้อย!</h1>
@@ -141,6 +206,17 @@ if ($budget < 15000) {
         </div>
 
         <div id="result-content" style="display: none;">
+            <div class="suitability-card">
+                <div class="suitability-icon">
+                    <i class="fa-solid <?php echo $suitIcon; ?>"></i>
+                </div>
+                <div class="suitability-info">
+                    <h4 style="color: var(--primary-color); font-size: 0.75rem; text-transform: uppercase;">ความเหมาะสมของงบประมาณนี้</h4>
+                    <h2><?php echo $suitTitle; ?></h2>
+                    <p><?php echo $suitability; ?></p>
+                </div>
+            </div>
+
             <div class="summary-card">
                 <div style="font-size: 0.9rem; opacity: 0.9;">ราคารวมประมาณ</div>
                 <div id="total-price" style="font-size: 3rem; font-weight: 800; margin: 0.5rem 0;">฿0</div>
