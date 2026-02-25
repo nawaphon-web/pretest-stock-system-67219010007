@@ -192,8 +192,90 @@ INSERT INTO products (id, category_id, name, price, stock, icon, specifications)
 INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (51, 11, 'G Pro X Superlight', 5600, 5, 'fa-mouse', '{"sensor": "HERO 25K", "weight": "63g"}');
 INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (52, 11, 'DeathAdder V3', 4900, 5, 'fa-mouse', '{"sensor": "Focus Pro 30K", "weight": "63g"}');
 INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (53, 11, 'Aerox 3 Wireless', 2900, 5, 'fa-mouse', '{"sensor": "TrueMove Air", "weight": "66g"}');
-INSERT INTO products (id, category_id, name, price, stock, icon, specifications, is_new, is_promotion, sale_price) VALUES (54, 11, 'Zowie EC2-C', 2400, 5, 'fa-mouse', '{"sensor": "3360", "weight": "73g"}', 0, 1, 2100);
-INSERT INTO products (id, category_id, name, price, stock, icon, specifications, is_new, is_promotion, sale_price) VALUES (55, 11, 'Glorious Model O 2', 2200, 5, 'fa-mouse', '{"sensor": "BAMF 2.0", "weight": "68g"}', 1, 0, NULL);
+INSERT INTO products (id, category_id, name, price, stock, icon, specifications, is_new, is_promotion, sale_price) VALUES (55, 11, 'Zowie EC2-C', 2400, 5, 'fa-mouse', '{"sensor": "3360", "weight": "73g"}', 0, 1, 2100);
+INSERT INTO products (id, category_id, name, price, stock, icon, specifications, is_new, is_promotion, sale_price) VALUES (56, 11, 'Glorious Model O 2', 2200, 5, 'fa-mouse', '{"sensor": "BAMF 2.0", "weight": "68g"}', 1, 0, NULL);
+
+-- Budget CPUs (Category 1)
+INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (57, 1, 'Intel Celeron G6900', 1850, 10, 'fa-microchip', '{"socket": "LGA1700", "tdp": 46, "cores": 2}');
+INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (58, 1, 'Intel Pentium G7400', 2590, 10, 'fa-microchip', '{"socket": "LGA1700", "tdp": 46, "cores": 2}');
+INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (59, 1, 'AMD Athlon 3000G', 1790, 10, 'fa-microchip', '{"socket": "AM4", "tdp": 35, "cores": 2}');
+INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (60, 1, 'AMD Ryzen 3 4100', 2250, 10, 'fa-microchip', '{"socket": "AM4", "tdp": 65, "cores": 4}');
+INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (61, 1, 'Intel i3-12100F', 3150, 10, 'fa-microchip', '{"socket": "LGA1700", "tdp": 58, "cores": 4}');
+
+-- Budget Motherboards (Category 2)
+INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (62, 2, 'Gigabyte H610M S2H V2', 2450, 10, 'fa-microchip', '{"socket": "LGA1700", "memory_type": "DDR4", "memory_slots": 2}');
+INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (63, 2, 'MSI A520M-A PRO', 1890, 10, 'fa-microchip', '{"socket": "AM4", "memory_type": "DDR4", "memory_slots": 2}');
+INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (64, 2, 'ASUS Prime H610M-K', 2550, 10, 'fa-microchip', '{"socket": "LGA1700", "memory_type": "DDR4", "memory_slots": 2}');
+INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (65, 2, 'ASRock A520M-HVS', 1750, 10, 'fa-microchip', '{"socket": "AM4", "memory_type": "DDR4", "memory_slots": 2}');
+INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (66, 2, 'Biostar H610MHP', 2190, 10, 'fa-microchip', '{"socket": "LGA1700", "memory_type": "DDR4", "memory_slots": 2}');
+
+-- Budget RAM (Category 3)
+INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (67, 3, 'Hiksemi 8GB DDR4 3200', 650, 20, 'fa-memory', '{"memory_type": "DDR4", "capacity": "8GB", "modules": 1}');
+INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (68, 3, 'TeamGroup Elite 8GB DDR4', 690, 20, 'fa-memory', '{"memory_type": "DDR4", "capacity": "8GB", "modules": 1}');
+INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (69, 3, 'Kingston Value 8GB DDR4', 750, 20, 'fa-memory', '{"memory_type": "DDR4", "capacity": "8GB", "modules": 1}');
+INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (70, 3, 'Apacer Panther 8GB DDR4', 790, 20, 'fa-memory', '{"memory_type": "DDR4", "capacity": "8GB", "modules": 1}');
+INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (71, 3, 'Corsair LPX 8GB DDR4', 850, 20, 'fa-memory', '{"memory_type": "DDR4", "capacity": "8GB", "modules": 1}');
+
+-- Budget GPUs (Category 4)
+INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (72, 4, 'ASUS GT 730 2GB', 1490, 10, 'fa-bolt', '{"tdp": 38, "recommended_psu": 300}');
+INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (73, 4, 'MSI GT 1030 2GB GDDR5', 2790, 10, 'fa-bolt', '{"tdp": 30, "recommended_psu": 300}');
+INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (74, 4, 'Biostar RX 550 4GB', 2450, 10, 'fa-bolt', '{"tdp": 50, "recommended_psu": 350}');
+INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (75, 4, 'Inno3D GTX 1050 Ti', 3900, 10, 'fa-bolt', '{"tdp": 75, "recommended_psu": 300}');
+INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (76, 4, 'Sparkle Arc A310', 3500, 10, 'fa-bolt', '{"tdp": 75, "recommended_psu": 350}');
+
+-- Budget PSUs (Category 5)
+INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (77, 5, 'DTECH 450W', 450, 15, 'fa-plug', '{"wattage": 450, "efficiency": "Standard"}');
+INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (78, 5, 'Deepcool DE600 v2', 890, 15, 'fa-plug', '{"wattage": 600, "efficiency": "Standard"}');
+INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (79, 5, 'SilverStone 500W White', 1050, 15, 'fa-plug', '{"wattage": 500, "efficiency": "80+ White"}');
+INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (80, 5, 'Aerocool United 500W', 950, 15, 'fa-plug', '{"wattage": 500, "efficiency": "80+ White"}');
+INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (81, 5, 'Plenty 500W Super Black', 650, 15, 'fa-plug', '{"wattage": 500, "efficiency": "Standard"}');
+
+-- Budget Cases (Category 6)
+INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (82, 6, 'Gview i2-31', 650, 10, 'fa-box', '{"max_gpu_length": 300, "max_cpu_height": 150}');
+INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (83, 6, 'Nubwo NPC-01', 790, 10, 'fa-box', '{"max_gpu_length": 320, "max_cpu_height": 160}');
+INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (84, 6, 'Tsunami G15 Galaxy', 850, 10, 'fa-box', '{"max_gpu_length": 310, "max_cpu_height": 160}');
+INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (85, 6, 'ITSONAS Spark', 590, 10, 'fa-box', '{"max_gpu_length": 280, "max_cpu_height": 145}');
+INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (86, 6, 'AeroCool CS-107', 890, 10, 'fa-box', '{"max_gpu_length": 286, "max_cpu_height": 157}');
+
+-- Budget SSDs (Category 8)
+INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (87, 8, 'Hiksemi Wave(S) 256GB', 590, 20, 'fa-hard-drive', '{"interface": "SATA", "read_speed": 530}');
+INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (88, 8, 'Kingston A400 240GB', 750, 20, 'fa-hard-drive', '{"interface": "SATA", "read_speed": 500}');
+INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (89, 8, 'Team GX2 256GB', 620, 20, 'fa-hard-drive', '{"interface": "SATA", "read_speed": 500}');
+INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (90, 8, 'WD Green 240GB', 820, 20, 'fa-hard-drive', '{"interface": "SATA", "read_speed": 545}');
+INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (91, 8, 'Silicon Power 256GB', 680, 20, 'fa-hard-drive', '{"interface": "SATA", "read_speed": 550}');
+
+-- Budget Coolers (Category 9)
+INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (92, 9, 'Tsunami TSS-1000', 290, 15, 'fa-snowflake', '{"sockets": ["LGA1700", "AM4"], "height_mm": 130}');
+INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (93, 9, 'Deepcool AG200', 350, 15, 'fa-snowflake', '{"sockets": ["LGA1700", "AM4"], "height_mm": 133}');
+INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (94, 9, 'ID-COOLING DK-03', 250, 15, 'fa-snowflake', '{"sockets": ["LGA1700", "AM4"], "height_mm": 63}');
+INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (95, 9, 'Sigma GT400', 450, 15, 'fa-snowflake', '{"sockets": ["LGA1700", "AM4"], "height_mm": 135}');
+INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (96, 9, 'Cooler Master T2', 390, 15, 'fa-snowflake', '{"sockets": ["LGA1700", "AM4"], "height_mm": 140}');
+
+-- Budget Keyboards (Category 10)
+INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (97, 10, 'Logitech K120', 320, 20, 'fa-keyboard', '{"layout": "Full"}');
+INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (98, 10, 'Nubwo NK-18', 190, 20, 'fa-keyboard', '{"layout": "Full"}');
+INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (99, 10, 'OKER KB-20', 220, 20, 'fa-keyboard', '{"layout": "Full"}');
+INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (100, 10, 'Rapoo N1200', 250, 20, 'fa-keyboard', '{"layout": "Full"}');
+INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (101, 10, 'Microsoft Keyboard 600', 450, 20, 'fa-keyboard', '{"layout": "Full"}');
+
+-- Budget Mice (Category 11)
+INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (102, 11, 'Logitech M100', 240, 20, 'fa-mouse', '{"sensor": "Optical"}');
+INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (103, 11, 'OKER L7-300', 150, 20, 'fa-mouse', '{"sensor": "Optical"}');
+INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (104, 11, 'Nubwo NM-18', 120, 20, 'fa-mouse', '{"sensor": "Optical"}');
+INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (105, 11, 'HP M150', 180, 20, 'fa-mouse', '{"sensor": "Optical"}');
+INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (106, 11, 'Microsoft Mouse 200', 290, 20, 'fa-mouse', '{"sensor": "Optical"}');
+
+-- Ultra Budget Collection (107-116)
+INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (107, 1, 'Intel Celeron G6900', 1490, 10, 'fa-microchip', '{"socket": "LGA1700", "tdp": 46, "cores": 2}');
+INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (108, 2, 'ECS H610H7-M12', 1850, 10, 'fa-microchip', '{"socket": "LGA1700", "memory_type": "DDR4", "memory_slots": 2}');
+INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (109, 3, 'Generic 4GB DDR4 2400', 390, 20, 'fa-memory', '{"memory_type": "DDR4", "capacity": "4GB", "modules": 1}');
+INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (110, 4, 'OEM GT 710 1GB', 890, 10, 'fa-bolt', '{"tdp": 19, "recommended_psu": 250}');
+INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (111, 5, 'Generic 450W PSU', 350, 15, 'fa-plug', '{"wattage": 450, "efficiency": "Standard"}');
+INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (112, 6, 'Simple Office Case', 390, 10, 'fa-box', '{"max_gpu_length": 250, "max_cpu_height": 140}');
+INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (113, 8, 'Generic 120GB SSD', 390, 20, 'fa-hard-drive', '{"interface": "SATA", "read_speed": 450}');
+INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (114, 9, 'Stock Style Cooler', 150, 15, 'fa-snowflake', '{"sockets": ["LGA1700", "AM4"], "height_mm": 50}');
+INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (115, 10, 'Generic Keyboard', 120, 20, 'fa-keyboard', '{"layout": "Full"}');
+INSERT INTO products (id, category_id, name, price, stock, icon, specifications) VALUES (116, 11, 'Generic Optical Mouse', 80, 20, 'fa-mouse', '{"sensor": "Optical"}');
 
 INSERT INTO suppliers (id, name) VALUES (1, 'Synnex');
 

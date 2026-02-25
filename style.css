@@ -252,34 +252,58 @@ button:hover {
     display: block;
     width: 100%;
     text-align: center;
-    padding: 0.75rem;
-    border-radius: 0.5rem;
+    padding: 0.85rem;
+    border-radius: 0.75rem;
     text-decoration: none;
-    font-weight: 600;
-    margin-bottom: 0.5rem;
-    transition: all 0.2s;
+    font-weight: 700;
+    margin-bottom: 0.6rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     border: none;
     cursor: pointer;
+    position: relative;
+    overflow: hidden;
 }
 
 .btn-checkout {
-    background: var(--primary-color);
+    background: linear-gradient(135deg, var(--primary-color) 0%, #2563eb 100%);
     color: white;
+    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+}
+
+.btn-checkout::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -60%;
+    width: 20%;
+    height: 200%;
+    background: rgba(255, 255, 255, 0.2);
+    transform: rotate(30deg);
+    transition: all 0.5s;
+    pointer-events: none;
 }
 
 .btn-checkout:hover {
-    background: var(--primary-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(59, 130, 246, 0.6);
+    background: linear-gradient(135deg, #4f46e5 0%, #2563eb 100%);
+}
+
+.btn-checkout:hover::after {
+    left: 140%;
 }
 
 .btn-back {
-    background: transparent;
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     color: var(--text-muted);
 }
 
 .btn-back:hover {
-    border-color: white;
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.3);
     color: white;
+    transform: translateY(-1px);
 }
 
 
@@ -294,30 +318,76 @@ button:hover {
 
 .steps-nav {
     display: flex;
-    gap: 0.5rem;
-    margin-bottom: 2rem;
+    gap: 0.6rem;
+    margin-bottom: 2.5rem;
     flex-wrap: wrap;
 }
 
 .step-btn {
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(15, 23, 42, 0.6);
     border: 1px solid rgba(255, 255, 255, 0.1);
     color: var(--text-muted);
-    padding: 0.5rem 1rem;
+    padding: 0.75rem 1.25rem;
     border-radius: 2rem;
     cursor: pointer;
-    transition: all 0.2s;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    font-weight: 600;
+    font-size: 0.85rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.step-btn i {
+    font-size: 1rem;
+    transition: transform 0.3s ease;
 }
 
 .step-btn:hover {
     background: rgba(255, 255, 255, 0.1);
     color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.step-btn:hover i {
+    transform: scale(1.2);
 }
 
 .step-btn.active {
     background: var(--primary-color);
     color: white;
     border-color: var(--primary-color);
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.4);
+    transform: scale(1.05);
+}
+
+.step-btn.active i {
+    animation: pulse-glow 2s infinite;
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: -200% center;
+    }
+
+    100% {
+        background-position: 200% center;
+    }
+}
+
+@keyframes pulse-glow {
+    0% {
+        box-shadow: 0 0 5px rgba(59, 130, 246, 0.2);
+    }
+
+    50% {
+        box-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
+    }
+
+    100% {
+        box-shadow: 0 0 5px rgba(59, 130, 246, 0.2);
+    }
 }
 
 /* Product Grid */
@@ -389,17 +459,39 @@ button:hover {
 
 .btn-select {
     width: 100%;
-    padding: 0.5rem;
-    background: rgba(255, 255, 255, 0.1);
-    border: none;
+    padding: 0.75rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     color: white;
-    border-radius: 0.5rem;
+    border-radius: 0.75rem;
     cursor: pointer;
-    font-weight: 600;
+    font-weight: 700;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
 }
 
 .btn-select:hover {
     background: var(--primary-color);
+    border-color: var(--primary-color);
+    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.5);
+    transform: scale(1.02);
+}
+
+.btn-select::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -100%;
+    width: 20%;
+    height: 200%;
+    background: rgba(255, 255, 255, 0.1);
+    transform: rotate(30deg);
+    transition: all 0.6s ease;
+}
+
+.btn-select:hover::after {
+    left: 150%;
 }
 
 .product-card.incompatible {
@@ -778,6 +870,7 @@ button:hover {
     line-height: 1.1;
     background: linear-gradient(to right, #fff, var(--primary-color));
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
