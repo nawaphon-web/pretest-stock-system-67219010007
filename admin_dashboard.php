@@ -76,11 +76,13 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
                         <h3 style="margin-top: 0.5rem;">Manage Products</h3>
                     </div>
                 </a>
-                <div
-                    style="background: rgba(255,255,255,0.05); padding: 1.5rem; border-radius: 0.5rem; border: 1px solid rgba(255,255,255,0.1);">
-                    <i class="fa-solid fa-chart-line" style="font-size: 2rem; color: #f59e0b;"></i>
-                    <h3 style="margin-top: 0.5rem;">Sales Reports</h3>
-                </div>
+                <a href="admin_orders.php" style="text-decoration: none; color: inherit;">
+                    <div
+                        style="background: rgba(255,255,255,0.05); padding: 1.5rem; border-radius: 0.5rem; border: 1px solid rgba(255,255,255,0.1); transition: 0.2s;">
+                        <i class="fa-solid fa-receipt" style="font-size: 2rem; color: #f59e0b;"></i>
+                        <h3 style="margin-top: 0.5rem;">Manage Orders</h3>
+                    </div>
+                </a>
                 <a href="rma_check.php" style="text-decoration: none; color: inherit;">
                     <div
                         style="background: rgba(255,255,255,0.05); padding: 1.5rem; border-radius: 0.5rem; border: 1px solid rgba(255,255,255,0.1); transition: 0.2s;">
